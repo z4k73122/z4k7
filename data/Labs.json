@@ -1,0 +1,45 @@
+[
+  {
+    "platform": "HackTheBox",
+    "platformClass": "htb",
+    "difficulty": "⬜ Easy",
+    "slug": "forest",
+    "title": "Forest",
+    "desc": "Explotación de Active Directory. AS-REP Roasting sobre svc-alfresco + DCSync vía WriteDACL.",
+    "tags": ["AS-REP Roasting", "DCSync", "BloodHound", "Privilege Escalation"],
+    "soon": false
+  },
+  {
+    "platform": "HackTheBox",
+    "platformClass": "htb",
+    "difficulty": "⬜ Easy",
+    "slug": "sqli-union-attack",
+    "title": "Legacy",
+    "desc": "Máquina Windows clásica vulnerable a MS17-010 (EternalBlue). Explotación con Metasploit.",
+    "tags": ["EternalBlue", "Metasploit", "SMB Exploit", "Windows XP"],
+    "soon": false
+  },
+  {
+    "platform": "TryHackMe",
+    "platformClass": "thm",
+    "difficulty": "🟧 +40 labs",
+    "title": "Offensive Pentesting Path",
+    "desc": "Ruta completa: reconocimiento, explotación web y post-explotación con Metasploit.",
+    "tags": [
+      "Reconocimiento",
+      "SQLi · XXE",
+      "Priv Escalation",
+      "Post-explotación"
+    ],
+    "soon": false
+  },
+  {
+    "platform": "Próximamente",
+    "platformClass": "soon",
+    "difficulty": "",
+    "title": "Write-up en progreso...",
+    "desc": "Nuevos laboratorios siendo documentados. Vuelve pronto.",
+    "tags": ["Web App Pentesting", "Buffer Overflow"],
+    "soon": true
+  }
+]
