@@ -53,6 +53,16 @@ function parse(text) {
       .trim()
       .replace(/\n/g, " ");
 
+  // 3. TOOLS — línea "herramientas: nmap, gobuster, sqlmap"
+  let tools = [];
+  const toolsMatch = text.match(/^herramientas\s*:\s*(.+)$/im);
+  if (toolsMatch) {
+    tools = toolsMatch[1]
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+  }
+
   const detectedFlags = [];
 
   const idMap = [
@@ -399,13 +409,13 @@ function parse(text) {
     }
   }
 
-  return { tags, summary, steps, lessons, mitigation, detectedFlags };
+  return { tags, summary, steps, lessons, mitigation, detectedFlags, tools };
 }
 
 // ─── GENERATOR ────────────────────────────────────────────────────────────────
 
 function generate(meta, data) {
-  const { tags, summary, steps, lessons, mitigation } = data;
+  const { tags, summary, steps, lessons, mitigation, tools } = data;
   const slug = meta.slug || slugify(meta.title);
   const year = meta.date ? meta.date.split("-")[0] : new Date().getFullYear();
   const allTags = tags.length ? tags : ["Web Security", "Pentesting"];
@@ -414,6 +424,13 @@ function generate(meta, data) {
   let out = `---\ntitle: "${meta.title}"\nplatform: "${meta.platform}"\nos: "${meta.os}"\ndifficulty: "${meta.diff}"\nip: "${meta.ip || "10.10.10.XXX"}"\nslug: "${slug}"\nauthor: "Z4k7"\ndate: "${meta.date || new Date().toISOString().split("T")[0]}"\nyear: "${year}"\nstatus: "pwned"\ntags:\n`;
   allTags.forEach((t) => (out += `  - "${t}"\n`));
   out += 'techniques:\n  - "Completar manualmente"\n';
+  // tools: extraídas de "herramientas: x, y, z" en el .md
+  out += "tools:\n";
+  if (tools && tools.length > 0) {
+    tools.forEach((t) => (out += `  - "${t}"\n`));
+  } else {
+    out += `  - "Completar herramientas"\n`;
+  }
   out += "flags_list:\n";
   if (df.length > 0) {
     df.forEach((f) => {
@@ -539,10 +556,33 @@ export default function ConverterPage() {
       const yaml = generate(meta, data);
       setOutput(yaml);
       buildPreview(data);
-      setStatus({
-        type: "ok",
-        msg: `// ✓ Listo — ${data.steps.length} pasos | ${data.tags.length} tags | ${data.lessons.length} lecciones | Reemplaza las URLs de imágenes`,
-      });
+
+      const allContent = data.steps.flatMap((s) => s.content || []);
+      const counts = {
+        pasos: data.steps.filter((s) => s.type !== "flag").length,
+        flags: data.steps
+          .filter((s) => s.type === "flag")
+          .flatMap((s) => s.flagItems || []).length,
+        tags: data.tags.length,
+        tools: data.tools?.length || 0,
+        callouts: allContent.filter((c) => c.kind === "callout").length,
+        images: allContent.filter((c) => c.kind === "image").length,
+        codes: allContent.filter((c) => c.kind === "code").length,
+        bullets: allContent.filter((c) => c.kind === "bullet").length,
+        lessons: data.lessons.length,
+      };
+      const parts = [
+        `${counts.pasos} pasos`,
+        counts.flags && `${counts.flags} flags`,
+        counts.tags && `${counts.tags} tags`,
+        counts.tools && `${counts.tools} tools`,
+        counts.callouts && `${counts.callouts} callouts`,
+        counts.images && `${counts.images} imgs`,
+        counts.codes && `${counts.codes} code`,
+        counts.bullets && `${counts.bullets} bullets`,
+        counts.lessons && `${counts.lessons} lecciones`,
+      ].filter(Boolean);
+      setStatus({ type: "ok", msg: `// ✓ ${parts.join("  |  ")}` });
     } catch (e) {
       setStatus({ type: "error", msg: `// Error: ${e.message}` });
     }
@@ -671,6 +711,9 @@ export default function ConverterPage() {
           </div>
           <div className="leg-item yellow">
             <b>---</b> Separador de sub-pasos
+          </div>
+          <div className="leg-item cyan">
+            <b>herramientas:</b> nmap, gobuster → tools:
           </div>
         </div>
 

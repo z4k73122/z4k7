@@ -1,10 +1,10 @@
 ---
-title: "S"
+title: "cas3"
 platform: "HackTheBox"
 os: "Windows"
 difficulty: "Easy"
 ip: "10.10.10.XXX"
-slug: "s"
+slug: "forest"
 author: "Z4k7"
 date: "2026-03-06"
 year: "2026"
@@ -21,6 +21,12 @@ tags:
   - "WAF"
 techniques:
   - "Completar manualmente"
+tools:
+  - "nmap"
+  - "burpsuite"
+  - "gobuster"
+  - "sqlmap"
+  - "burpsuite"
 flags_list:
   - label: "user"
     value: "hash_aqui"
