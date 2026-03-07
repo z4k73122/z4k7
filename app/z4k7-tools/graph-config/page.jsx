@@ -131,7 +131,7 @@ export default function GraphConfigPage() {
   };
 
   // ── Reset ─────────────────────────────────────────────────
-  const handleReset = () => {
+  const handleReset = async () => {
     setStep(1);
     setPreview(null);
     setGraphJson(null);
@@ -140,6 +140,11 @@ export default function GraphConfigPage() {
     setExpanded({});
     setCopied(false);
     setSaved(false);
+
+    // Borra data/graph.json
+    await fetch("/api/graph", {
+      method: "DELETE",
+    }).catch(() => {});
   };
 
   const card = {

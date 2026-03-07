@@ -513,12 +513,14 @@ export default function ConverterPage() {
     msg: "// Esperando — completa los metadatos y pega tu nota",
   });
   const [toast, setToast] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
   const toastTimer = useRef(null);
 
   const updateMeta = (key, val) => {
     setMeta((prev) => {
       const next = { ...prev, [key]: val };
-      if (key === "title" && !prev.slug) next.slug = slugify(val);
+      if (key === "title") next.slug = slugify(val); // siempre sincronizado
       return next;
     });
   };
@@ -555,6 +557,7 @@ export default function ConverterPage() {
       const data = parse(input);
       const yaml = generate(meta, data);
       setOutput(yaml);
+      setPreviewData(data);
       buildPreview(data);
 
       const allContent = data.steps.flatMap((s) => s.content || []);
@@ -738,9 +741,10 @@ export default function ConverterPage() {
               </label>
               <input
                 type="text"
-                placeholder="forest"
+                placeholder="se genera del título"
                 value={meta.slug}
-                onChange={(e) => updateMeta("slug", e.target.value)}
+                readOnly
+                style={{ cursor: "not-allowed", opacity: 0.6 }}
               />
             </div>
             <div className="field">
@@ -817,7 +821,47 @@ export default function ConverterPage() {
               <div className="panel-name">
                 <div className="dot"></div> OUTPUT — .md para portafolio
               </div>
-              <span className="panel-sub">content/writeups/slug.md</span>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}
+              >
+                <span className="panel-sub">content/writeups/slug.md</span>
+                <button
+                  onClick={() => {
+                    if (output) setModal(true);
+                    else
+                      setStatus({
+                        type: "warn",
+                        msg: "// Primero convierte una nota para previsualizar",
+                      });
+                  }}
+                  title="Previsualizar resultado"
+                  style={{
+                    background: "transparent",
+                    border: "1px solid var(--muted)",
+                    color: output ? "var(--cyan)" : "var(--muted)",
+                    padding: "3px 10px",
+                    fontFamily: "monospace",
+                    fontSize: "0.8rem",
+                    cursor: output ? "pointer" : "not-allowed",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (output) {
+                      e.currentTarget.style.borderColor = "var(--cyan)";
+                      e.currentTarget.style.background = "rgba(0,212,255,0.08)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--muted)";
+                    e.currentTarget.style.background = "transparent";
+                  }}
+                >
+                  &#128065; preview
+                </button>
+              </div>
             </div>
             <textarea
               className="output-ta"
@@ -902,6 +946,891 @@ export default function ConverterPage() {
       <div className={`toast${toast ? " show" : ""}`}>
         ✓ Copiado al portapapeles
       </div>
+
+      {/* ── MODAL PREVIEW ── */}
+      {modal && output && (
+        <PreviewModal
+          output={output}
+          slug={meta.slug}
+          meta={meta}
+          parsedData={previewData}
+          onClose={() => setModal(false)}
+        />
+      )}
     </>
+  );
+}
+
+// ─── PREVIEW MODAL ────────────────────────────────────────────────────────────
+
+const CALLOUT_COLORS = {
+  info: {
+    border: "#00d4ff",
+    bg: "rgba(0,212,255,0.07)",
+    label: "#00d4ff",
+    icon: "ℹ",
+  },
+  warning: {
+    border: "#ff8c00",
+    bg: "rgba(255,140,0,0.07)",
+    label: "#ff8c00",
+    icon: "⚠",
+  },
+  danger: {
+    border: "#ff3366",
+    bg: "rgba(255,51,102,0.07)",
+    label: "#ff3366",
+    icon: "✕",
+  },
+  default: {
+    border: "#00ff88",
+    bg: "rgba(0,255,136,0.06)",
+    label: "#00ff88",
+    icon: "✓",
+  },
+  tip: {
+    border: "#a78bfa",
+    bg: "rgba(167,139,250,0.07)",
+    label: "#a78bfa",
+    icon: "💡",
+  },
+};
+
+function PreviewModal({ output, slug, meta, parsedData, onClose }) {
+  const [confirmSave, setConfirmSave] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const filePath = `content/writeups/${slug || "nombre"}.md`;
+
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+
+  const handleSave = async () => {
+    setSaving(true);
+    setSaveError("");
+    try {
+      const res = await fetch(`/api/writeups/${slug || "writeup"}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: output }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error desconocido");
+      setSaved(true);
+      setConfirmSave(false);
+      setTimeout(() => setSaved(false), 4000);
+    } catch (err) {
+      setSaveError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!parsedData) return null;
+  const { tags, tools, summary, steps, lessons, mitigation } = parsedData;
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.88)",
+        zIndex: 9999,
+        overflowY: "auto",
+        backdropFilter: "blur(4px)",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: "900px",
+          margin: "2rem auto 4rem",
+          background: "#0a1520",
+          border: "1px solid #1a3a4a",
+          padding: "2.5rem",
+          position: "relative",
+          fontFamily: "'Rajdhani',sans-serif",
+          color: "#c8d8e8",
+          fontSize: "16px",
+          lineHeight: "1.7",
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: "1rem",
+            right: "1rem",
+            background: "transparent",
+            border: "1px solid #1a3a4a",
+            color: "#4a6a7a",
+            fontFamily: "monospace",
+            fontSize: "0.75rem",
+            padding: "4px 12px",
+            cursor: "pointer",
+          }}
+        >
+          ✕ cerrar
+        </button>
+
+        <div
+          style={{
+            fontFamily: "monospace",
+            fontSize: "0.65rem",
+            color: "#4a6a7a",
+            letterSpacing: "3px",
+            marginBottom: "1.2rem",
+          }}
+        >
+          // PREVIEW — así se verá en el portafolio
+        </div>
+
+        {/* Badges */}
+        <div
+          style={{
+            display: "flex",
+            gap: "0.8rem",
+            marginBottom: "1.5rem",
+            flexWrap: "wrap",
+          }}
+        >
+          {[
+            [meta.platform, "#00ff88", "0,255,136"],
+            [meta.diff, "#4ade80", "74,222,128"],
+            [meta.os, "#00d4ff", "0,212,255"],
+          ].map(([v, c, r], i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.72rem",
+                padding: "3px 12px",
+                border: `1px solid ${c}`,
+                color: c,
+                background: `rgba(${r},0.08)`,
+              }}
+            >
+              {v}
+            </span>
+          ))}
+        </div>
+
+        <h1
+          style={{
+            fontSize: "2.8rem",
+            fontWeight: 700,
+            color: "#fff",
+            letterSpacing: "3px",
+            lineHeight: 1,
+            marginBottom: "0.8rem",
+          }}
+        >
+          {meta.title}
+          <span style={{ color: "#00ff88" }}>.</span>
+        </h1>
+        <div
+          style={{
+            fontFamily: "monospace",
+            fontSize: "0.75rem",
+            color: "#4a6a7a",
+            marginBottom: "1.2rem",
+            display: "flex",
+            gap: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <span>
+            by <span style={{ color: "#00ff88" }}>{meta.author || "Z4k7"}</span>
+          </span>
+          <span style={{ color: "#1a3a4a" }}>|</span>
+          <span>{meta.date}</span>
+          {meta.ip && (
+            <>
+              <span style={{ color: "#1a3a4a" }}>|</span>
+              <span>{meta.ip}</span>
+            </>
+          )}
+        </div>
+
+        {tags?.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.4rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {tags.map((t, i) => (
+              <span
+                key={i}
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.65rem",
+                  padding: "2px 8px",
+                  border: "1px solid #1a3a4a",
+                  color: "#4a6a7a",
+                  background: "rgba(0,255,136,0.04)",
+                }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {tools?.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.4rem",
+              marginBottom: "1rem",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#4a6a7a",
+              }}
+            >
+              tools:
+            </span>
+            {tools.map((t, i) => (
+              <span
+                key={i}
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.65rem",
+                  padding: "2px 8px",
+                  border: "1px solid #1a3a4a",
+                  color: "#00d4ff",
+                  background: "rgba(0,212,255,0.05)",
+                }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {summary && (
+          <div
+            style={{
+              borderLeft: "3px solid #00d4ff",
+              background: "rgba(0,212,255,0.05)",
+              padding: "0.8rem 1rem",
+              marginBottom: "2rem",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#00d4ff",
+                letterSpacing: "2px",
+                marginBottom: "0.3rem",
+              }}
+            >
+              // Resumen ejecutivo
+            </div>
+            <p style={{ margin: 0 }}>{summary}</p>
+          </div>
+        )}
+
+        <div style={{ borderTop: "1px solid #1a3a4a", marginBottom: "2rem" }} />
+
+        {(steps || []).map((step, idx) => {
+          const hasTitle = step.num && step.num !== "";
+          return (
+            <div key={idx} style={{ marginBottom: "2.5rem" }}>
+              {step.type === "flag" && (
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(135deg,rgba(0,255,136,0.08),rgba(0,212,255,0.05))",
+                    border: "1px solid #1a3a4a",
+                    padding: "1.5rem",
+                    textAlign: "center",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "monospace",
+                      color: "#00ff88",
+                      fontSize: "1.1rem",
+                      letterSpacing: "3px",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    ✓ {step.id.toUpperCase()}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {(step.flagItems || []).map((f, fi) => (
+                      <div key={fi} style={{ minWidth: "160px" }}>
+                        <div
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "0.6rem",
+                            color: "#4a6a7a",
+                            marginBottom: "0.3rem",
+                          }}
+                        >
+                          // {f.label}
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "0.8rem",
+                            background: "#020608",
+                            border: "1px dashed #00ff88",
+                            padding: "0.4rem 0.8rem",
+                            color: "#00ff88",
+                            wordBreak: "break-all",
+                          }}
+                        >
+                          {f.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {hasTitle && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.8rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "0.68rem",
+                      color: "#00ff88",
+                      background: "rgba(0,255,136,0.08)",
+                      border: "1px solid #1a3a4a",
+                      padding: "2px 8px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    PASO {step.num}
+                  </span>
+                  <h2
+                    style={{
+                      fontSize: "1.4rem",
+                      fontWeight: 700,
+                      color: "#fff",
+                      letterSpacing: "1px",
+                      textTransform: "uppercase",
+                      margin: 0,
+                    }}
+                  >
+                    {step.title}
+                  </h2>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: "1px",
+                      background:
+                        "linear-gradient(to right,#1a3a4a,transparent)",
+                    }}
+                  />
+                </div>
+              )}
+              {(step.content || []).map((item, ci) => {
+                if (item.kind === "note")
+                  return (
+                    <p
+                      key={ci}
+                      style={{
+                        color: "#c8d8e8",
+                        whiteSpace: "pre-line",
+                        marginBottom: "0.8rem",
+                      }}
+                    >
+                      {item.text}
+                    </p>
+                  );
+                if (item.kind === "code")
+                  return (
+                    <div
+                      key={ci}
+                      style={{
+                        margin: "1rem 0",
+                        border: "1px solid #1a3a4a",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#0d1f2d",
+                          padding: "6px 14px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          borderBottom: "1px solid #1a3a4a",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "0.68rem",
+                            color: "#4a6a7a",
+                          }}
+                        >
+                          {step.title || "código"} — comandos
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "0.62rem",
+                            color: "#00ff88",
+                            background: "rgba(0,255,136,0.1)",
+                            padding: "1px 6px",
+                          }}
+                        >
+                          {item.lang}
+                        </span>
+                      </div>
+                      <pre
+                        style={{
+                          background: "#020608",
+                          padding: "1rem 1.2rem",
+                          fontFamily: "monospace",
+                          fontSize: "0.78rem",
+                          color: "#00ff88",
+                          overflowX: "auto",
+                          lineHeight: "1.8",
+                          whiteSpace: "pre-wrap",
+                          margin: 0,
+                        }}
+                      >
+                        {item.code}
+                      </pre>
+                    </div>
+                  );
+                if (item.kind === "image")
+                  return (
+                    <div
+                      key={ci}
+                      style={{
+                        border: "1px solid #1a3a4a",
+                        overflow: "hidden",
+                        margin: "0.8rem 0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#0d1f2d",
+                          padding: "5px 12px",
+                          borderBottom: "1px solid #1a3a4a",
+                          fontFamily: "monospace",
+                          fontSize: "0.65rem",
+                          color: "#4a6a7a",
+                        }}
+                      >
+                        ▸ // Evidencia técnica
+                      </div>
+                      <div
+                        style={{
+                          background: "#020608",
+                          padding: "1rem",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <img
+                          src={item.src}
+                          alt={item.caption}
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "300px",
+                            objectFit: "contain",
+                            border: "1px solid #1a3a4a",
+                          }}
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                            e.target.nextSibling.style.display = "flex";
+                          }}
+                        />
+                        <div
+                          style={{
+                            display: "none",
+                            fontFamily: "monospace",
+                            fontSize: "0.7rem",
+                            color: "#4a6a7a",
+                            padding: "2rem",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "100%",
+                            textAlign: "center",
+                            background: "#0d1f2d",
+                            border: "1px dashed #1a3a4a",
+                          }}
+                        >
+                          📷 {item.src}
+                        </div>
+                      </div>
+                      {item.caption && (
+                        <div
+                          style={{
+                            padding: "5px 12px",
+                            fontFamily: "monospace",
+                            fontSize: "0.68rem",
+                            color: "#4a6a7a",
+                            borderTop: "1px solid #1a3a4a",
+                            background: "#0d1f2d",
+                          }}
+                        >
+                          ↑ {item.caption}
+                        </div>
+                      )}
+                    </div>
+                  );
+                if (item.kind === "bullet")
+                  return (
+                    <div
+                      key={ci}
+                      style={{
+                        display: "flex",
+                        gap: "0.6rem",
+                        padding: "0.5rem 0.8rem",
+                        background: "#0d1f2d",
+                        border: "1px solid #1a3a4a",
+                        marginBottom: "0.3rem",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "#00ff88",
+                          fontFamily: "monospace",
+                          flexShrink: 0,
+                        }}
+                      >
+                        →
+                      </span>{" "}
+                      {item.text}
+                    </div>
+                  );
+                if (item.kind === "callout") {
+                  const c = CALLOUT_COLORS[item.type] || CALLOUT_COLORS.info;
+                  return (
+                    <div
+                      key={ci}
+                      style={{
+                        borderLeft: `3px solid ${c.border}`,
+                        background: c.bg,
+                        padding: "0.8rem 1rem",
+                        margin: "0.8rem 0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "0.65rem",
+                          letterSpacing: "2px",
+                          color: c.label,
+                          marginBottom: "0.3rem",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.4rem",
+                        }}
+                      >
+                        <span>{c.icon}</span>
+                        <span>// {item.label}</span>
+                      </div>
+                      <p style={{ color: "#c8d8e8", margin: 0 }}>{item.text}</p>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          );
+        })}
+
+        {lessons?.length > 0 && (
+          <div style={{ marginBottom: "2rem" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.8rem",
+                marginBottom: "1rem",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.68rem",
+                  color: "#00ff88",
+                  background: "rgba(0,255,136,0.08)",
+                  border: "1px solid #1a3a4a",
+                  padding: "2px 8px",
+                }}
+              >
+                LECCIONES
+              </span>
+              <div
+                style={{
+                  flex: 1,
+                  height: "1px",
+                  background: "linear-gradient(to right,#1a3a4a,transparent)",
+                }}
+              />
+            </div>
+            {lessons.map((l, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  gap: "0.6rem",
+                  padding: "0.5rem 0.8rem",
+                  background: "#0d1f2d",
+                  border: "1px solid #1a3a4a",
+                  marginBottom: "0.3rem",
+                }}
+              >
+                <span
+                  style={{
+                    color: "#00ff88",
+                    fontFamily: "monospace",
+                    flexShrink: 0,
+                  }}
+                >
+                  →
+                </span>{" "}
+                {l}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {mitigation && (
+          <div
+            style={{
+              borderLeft: "3px solid #00d4ff",
+              background: "rgba(0,212,255,0.05)",
+              padding: "0.8rem 1rem",
+              marginBottom: "2rem",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#00d4ff",
+                letterSpacing: "2px",
+                marginBottom: "0.3rem",
+              }}
+            >
+              // Mitigaciones recomendadas
+            </div>
+            <p style={{ color: "#c8d8e8", margin: 0 }}>{mitigation}</p>
+          </div>
+        )}
+
+        {/* GUARDAR */}
+        <div
+          style={{
+            marginTop: "2.5rem",
+            paddingTop: "1.5rem",
+            borderTop: "1px solid #1a3a4a",
+          }}
+        >
+          {!confirmSave && !saved && (
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setConfirmSave(true)}
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.78rem",
+                  letterSpacing: "2px",
+                  padding: "10px 28px",
+                  border: "1px solid #00ff88",
+                  background: "transparent",
+                  color: "#00ff88",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.6rem",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#00ff88";
+                  e.currentTarget.style.color = "#050a0e";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "#00ff88";
+                }}
+              >
+                &#128190; GUARDAR .MD
+              </button>
+            </div>
+          )}
+          {confirmSave && (
+            <div
+              style={{
+                background: "rgba(0,255,136,0.05)",
+                border: "1px solid rgba(0,255,136,0.3)",
+                padding: "1.2rem 1.5rem",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.7rem",
+                  color: "#00ff88",
+                  letterSpacing: "2px",
+                  marginBottom: "0.8rem",
+                }}
+              >
+                // Confirmar guardado
+              </div>
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.8rem",
+                  color: "#c8d8e8",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                El archivo se guardará en:
+              </div>
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.85rem",
+                  color: "#00d4ff",
+                  background: "#020608",
+                  border: "1px solid #1a3a4a",
+                  padding: "0.5rem 1rem",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.6rem",
+                }}
+              >
+                <span style={{ color: "#4a6a7a" }}>📁</span> {filePath}
+              </div>
+              {saveError && (
+                <div
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.72rem",
+                    color: "#ff3366",
+                    background: "rgba(255,51,102,0.07)",
+                    border: "1px solid rgba(255,51,102,0.3)",
+                    padding: "0.5rem 0.8rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  ✕ Error: {saveError}
+                </div>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+              >
+                <button
+                  onClick={() => {
+                    setConfirmSave(false);
+                    setSaveError("");
+                  }}
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.72rem",
+                    letterSpacing: "2px",
+                    padding: "8px 20px",
+                    border: "1px solid #4a6a7a",
+                    background: "transparent",
+                    color: "#4a6a7a",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "#4a6a7a";
+                    e.currentTarget.style.color = "#050a0e";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.color = "#4a6a7a";
+                  }}
+                >
+                  ✕ CANCELAR
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.72rem",
+                    letterSpacing: "2px",
+                    padding: "8px 24px",
+                    border: "1px solid #00ff88",
+                    background: saving
+                      ? "rgba(0,255,136,0.3)"
+                      : "rgba(0,255,136,0.1)",
+                    color: "#00ff88",
+                    cursor: saving ? "wait" : "pointer",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!saving) {
+                      e.currentTarget.style.background = "#00ff88";
+                      e.currentTarget.style.color = "#050a0e";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!saving) {
+                      e.currentTarget.style.background = "rgba(0,255,136,0.1)";
+                      e.currentTarget.style.color = "#00ff88";
+                    }
+                  }}
+                >
+                  {saving ? "⏳ GUARDANDO..." : "✓ SÍ, GUARDAR"}
+                </button>
+              </div>
+            </div>
+          )}
+          {saved && (
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.78rem",
+                color: "#00ff88",
+                border: "1px solid rgba(0,255,136,0.3)",
+                background: "rgba(0,255,136,0.05)",
+                padding: "0.8rem 1.2rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.6rem",
+              }}
+            >
+              ✓ Guardado en{" "}
+              <span style={{ color: "#00d4ff", margin: "0 0.3rem" }}>
+                {filePath}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

@@ -68,7 +68,10 @@ export default function Graph() {
   // ── Fetch datos ───────────────────────────────────────────
   useEffect(() => {
     fetch("/api/graph")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("no data");
+        return r.json();
+      })
       .then((data) => {
         setGraphData(data);
         setLoading(false);
@@ -597,17 +600,6 @@ export default function Graph() {
             }}
           >
             // No hay write-ups aún
-          </p>
-          <p
-            style={{
-              fontFamily: "monospace",
-              color: "#1a3a4a",
-              fontSize: "0.72rem",
-            }}
-          >
-            Agrega .md en{" "}
-            <span style={{ color: "#00ff88" }}>content/writeups/</span> y visita{" "}
-            <span style={{ color: "#00d4ff" }}>/z4k7-tools/graph-config</span>
           </p>
         </div>
       )}
