@@ -62,6 +62,14 @@ function parse(text) {
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
 
+  let techniques = [];
+  const techMatch = text.match(/^t[eé]cnicas?\s*:\s*(.+)$/im);
+  if (techMatch)
+    techniques = techMatch[1]
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+
   const detectedFlags = [];
   const idMap = [
     { keys: ["reconoc", "recon", "escaneo", "nmap", "detec"], id: "recon" },
@@ -317,12 +325,16 @@ function parse(text) {
             continue;
           } else flushCallout();
         }
-        const assetsImg = l.match(/!\[([^\]]*)\]\(assets\/images\/([^)]+)\)/i);
+        // Imagen Obsidian: extrae ruta desde assets/images/ en adelante (con ../ y %20)
+        const assetsImg = l.match(
+          /!\[([^\]]*)\]\([^)]*?(assets\/images\/[^)]+)\)/i,
+        );
         if (assetsImg) {
           flushNote();
+          const src = assetsImg[2].trim();
           content.push({
             kind: "image",
-            src: assetsImg[2].trim(),
+            src,
             caption: assetsImg[1].trim() || "Evidencia técnica",
           });
           continue;
@@ -361,21 +373,33 @@ function parse(text) {
       steps.push({ id: subStepId, num: subNum, title: subTitle, content });
     }
   }
-  return { tags, summary, steps, lessons, mitigation, detectedFlags, tools };
+  return {
+    tags,
+    summary,
+    steps,
+    lessons,
+    mitigation,
+    detectedFlags,
+    tools,
+    techniques,
+  };
 }
 
 // ─── GENERATOR ────────────────────────────────────────────────────────────────
 
 function generate(meta, data) {
-  const { tags, summary, steps, lessons, mitigation, tools } = data;
+  const { tags, summary, steps, lessons, mitigation, tools, techniques } = data;
   const slug = meta.slug || slugify(meta.title);
   const year = meta.date ? meta.date.split("-")[0] : new Date().getFullYear();
   const allTags = tags.length ? tags : ["Web Security", "Pentesting"];
   const df = data.detectedFlags || [];
+  const allTechs =
+    techniques && techniques.length > 0 ? techniques : allTags.slice(0, 5);
 
   let out = `---\ntitle: "${meta.title}"\nplatform: "${meta.platform}"\nos: "${meta.os}"\ndifficulty: "${meta.diff}"\nip: "${meta.ip || "10.10.10.XXX"}"\nslug: "${slug}"\nauthor: "Z4k7"\ndate: "${meta.date || new Date().toISOString().split("T")[0]}"\nyear: "${year}"\nstatus: "pwned"\ntags:\n`;
   allTags.forEach((t) => (out += `  - "${t}"\n`));
-  out += 'techniques:\n  - "Completar manualmente"\n';
+  out += "techniques:\n";
+  allTechs.forEach((t) => (out += `  - "${t}"\n`));
   out += "tools:\n";
   if (tools && tools.length > 0) tools.forEach((t) => (out += `  - "${t}"\n`));
   else out += `  - "Completar herramientas"\n`;
