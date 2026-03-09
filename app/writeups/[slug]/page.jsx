@@ -1,153 +1,96 @@
 "use client";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
+import Link from "next/link";
 
-const DEFAULT_COLORS = {
-  machine: "#00d4ff",
-  platform: "#ff8c00",
-  os: "#ffcc00",
-  difficulty: "#b06aff",
-  technique: "#ff3366",
-  tool: "#00ffcc",
-  tag: "#00ff88",
+const calloutColors = {
+  info: { border: "#00d4ff", bg: "rgba(0,212,255,0.05)", label: "#00d4ff" },
+  warning: { border: "#ff8c00", bg: "rgba(255,140,0,0.05)", label: "#ff8c00" },
+  danger: { border: "#ff3366", bg: "rgba(255,51,102,0.05)", label: "#ff3366" },
+  default: { border: "#00ff88", bg: "rgba(0,255,136,0.04)", label: "#00ff88" },
+  tip: { border: "#a78bfa", bg: "rgba(167,139,250,0.05)", label: "#a78bfa" },
 };
 
-const TYPE_LABELS = {
-  machine: "Máquina / Lab",
-  platform: "Plataforma",
-  os: "Sistema OS",
-  difficulty: "Dificultad",
-  technique: "Técnica",
-  tool: "Herramienta",
-  tag: "Tag",
-};
+export default function WriteupPage({ params }) {
+  const { slug } = use(params);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const TYPE_ORDER = [
-  "machine",
-  "platform",
-  "os",
-  "difficulty",
-  "technique",
-  "tool",
-  "tag",
-];
-const EXPANDABLE = ["platform", "os", "difficulty", "technique", "tool", "tag"];
+  useEffect(() => {
+    fetch(`/api/writeups/${slug}`)
+      .then((r) => r.json())
+      .then((res) => {
+        setData(res.frontmatter);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [slug]);
 
-export default function GraphConfigPage() {
-  const [colors, setColors] = useState(DEFAULT_COLORS);
-  const [subColors, setSubColors] = useState({});
-  const [expanded, setExpanded] = useState({});
-  const [preview, setPreview] = useState(null);
-  const [graphJson, setGraphJson] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [saveError, setSaveError] = useState("");
-  const [step, setStep] = useState(1);
-  const [token, setToken] = useState("");
+  if (loading)
+    return (
+      <div
+        style={{
+          background: "#050a0e",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div style={{ fontFamily: "monospace", color: "#00ff88" }}>
+          // Cargando write-up...
+        </div>
+      </div>
+    );
 
-  const getNodesByType = (type) =>
-    preview?.nodes?.filter((n) => n.type === type) || [];
-  const countByType = (type) => getNodesByType(type).length;
-  const machines = preview?.nodes?.filter((n) => n.type === "machine") || [];
+  if (!data)
+    return (
+      <div
+        style={{
+          background: "#050a0e",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div style={{ fontFamily: "monospace", textAlign: "center" }}>
+          <div
+            style={{
+              color: "#ff3366",
+              fontSize: "1.2rem",
+              marginBottom: "1rem",
+            }}
+          >
+            // Write-up no encontrado
+          </div>
+          <Link href="/" style={{ color: "#00d4ff" }}>
+            ← Volver al portafolio
+          </Link>
+        </div>
+      </div>
+    );
 
-  const toggleExpand = (type) =>
-    setExpanded((p) => ({ ...p, [type]: !p[type] }));
-  const setSubColor = (label, color) =>
-    setSubColors((p) => ({ ...p, [label]: color }));
-  const resetSubColor = (label) =>
-    setSubColors((p) => {
-      const n = { ...p };
-      delete n[label];
-      return n;
-    });
+  const titledSteps = (data.steps || []).filter((s) => s.num && s.num !== "");
+  const lastN = titledSteps.length;
+  const flagsNum = String(lastN + 1).padStart(2, "0");
+  const lessonsNum = String(lastN + 2).padStart(2, "0");
 
-  // ── Escanear ──────────────────────────────────────────────
-  const handleScan = async () => {
-    setLoading(true);
-    setGraphJson(null);
-    setPreview(null);
-    setSaved(false);
-    setSaveError("");
-    try {
-      const res = await fetch("/api/graph");
-      const data = await res.json();
-      setPreview(data);
-      setStep(2);
-    } catch (e) {
-      alert("Error: " + e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const flagsList =
+    data.flags_list && data.flags_list.length > 0
+      ? data.flags_list
+      : data.flags
+        ? Object.entries(data.flags).map(([label, value]) => ({ label, value }))
+        : [];
 
-  // ── Generar + Guardar ─────────────────────────────────────
-  const handleGenerate = async () => {
-    if (!preview) return;
-    setSaveError("");
-
-    const enrichedNodes = preview.nodes.map((n) => {
-      const sub = subColors[n.label];
-      return sub ? { ...n, color: sub } : n;
-    });
-
-    const body = { ...preview, nodes: enrichedNodes, colors, subColors };
-    const json = JSON.stringify(body, null, 2);
-    setGraphJson(json);
-    setStep(3);
-
-    try {
-      const res = await fetch("/api/graph", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...body, token }),
-      });
-      const result = await res.json();
-      if (result.ok) {
-        setSaved(true);
-        setTimeout(() => setSaved(false), 4000);
-      } else {
-        setSaveError(result.error || "Error al guardar");
-      }
-    } catch (e) {
-      setSaveError(e.message);
-    }
-  };
-
-  // ── Reset ─────────────────────────────────────────────────
-  const handleReset = async () => {
-    setStep(1);
-    setPreview(null);
-    setGraphJson(null);
-    setColors(DEFAULT_COLORS);
-    setSubColors({});
-    setExpanded({});
-    setCopied(false);
-    setSaved(false);
-    setSaveError("");
-
-    if (token) {
-      await fetch("/api/graph", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      }).catch(() => {});
-    }
-  };
-
-  const handleCopy = () => {
-    if (!graphJson) return;
-    navigator.clipboard.writeText(graphJson).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  const card = {
-    background: "#0a1520",
-    border: "1px solid #1a3a4a",
-    padding: "1.2rem 1.4rem",
-    marginBottom: "0.6rem",
-  };
+  const navItems = [
+    ...titledSteps.map((s) => ({ id: s.id, num: s.num, label: s.title })),
+    ...(flagsList.length > 0
+      ? [{ id: "flags", num: flagsNum, label: "Flags" }]
+      : []),
+    ...(data.lessons
+      ? [{ id: "lessons", num: lessonsNum, label: "Lecciones" }]
+      : []),
+  ];
 
   return (
     <div
@@ -155,354 +98,889 @@ export default function GraphConfigPage() {
         background: "#050a0e",
         minHeight: "100vh",
         color: "#c8d8e8",
-        fontFamily: "'Share Tech Mono', monospace",
+        fontFamily: "'Rajdhani', sans-serif",
+        fontSize: "16px",
+        lineHeight: "1.7",
       }}
     >
-      {/* Grid bg */}
       <div
         style={{
           position: "fixed",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(0,212,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.015) 1px,transparent 1px)",
+            "linear-gradient(rgba(0,255,136,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           pointerEvents: "none",
           zIndex: 0,
         }}
       />
 
-      {/* TOPBAR */}
       <div
         style={{
-          position: "sticky",
-          top: 0,
-          background: "rgba(5,10,14,0.97)",
-          borderBottom: "1px solid #1a3a4a",
-          padding: "0 2rem",
-          height: "52px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          zIndex: 100,
-          backdropFilter: "blur(10px)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.6rem",
-            fontSize: "0.78rem",
-          }}
-        >
-          <span style={{ color: "#4a6a7a" }}>z4k7-tools</span>
-          <span style={{ color: "#1a3a4a" }}>/</span>
-          <span style={{ color: "#00ff88", letterSpacing: "2px" }}>
-            graph-config
-          </span>
-        </div>
-        <div style={{ display: "flex", gap: "2rem", fontSize: "0.65rem" }}>
-          {[
-            ["01", "ESCANEAR"],
-            ["02", "COLOREAR"],
-            ["03", "JSON"],
-          ].map(([n, label], i) => (
-            <span
-              key={n}
-              style={{
-                color:
-                  step > i + 1
-                    ? "#00ff88"
-                    : step === i + 1
-                      ? "#00d4ff"
-                      : "#1a3a4a",
-                letterSpacing: "1px",
-                transition: "color 0.3s",
-              }}
-            >
-              {n} · {label} {step > i + 1 ? "✓" : ""}
-            </span>
-          ))}
-        </div>
-        <button
-          onClick={handleReset}
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.68rem",
-            padding: "4px 14px",
-            border: "1px solid #1a3a4a",
-            background: "transparent",
-            color: "#4a6a7a",
-            cursor: "pointer",
-            letterSpacing: "1px",
-          }}
-          onMouseOver={(e) => {
-            e.target.style.color = "#ff3366";
-            e.target.style.borderColor = "#ff3366";
-          }}
-          onMouseOut={(e) => {
-            e.target.style.color = "#4a6a7a";
-            e.target.style.borderColor = "#1a3a4a";
-          }}
-        >
-          // reset
-        </button>
-      </div>
-
-      <div
-        style={{
+          display: "grid",
+          gridTemplateColumns: "260px 1fr",
+          minHeight: "100vh",
           position: "relative",
           zIndex: 1,
-          maxWidth: "900px",
-          margin: "0 auto",
-          padding: "3rem 2rem",
         }}
       >
-        {/* TOKEN INPUT — siempre visible */}
-        <div
-          style={{ ...card, marginBottom: "2rem", borderColor: "#00ff8822" }}
+        {/* SIDEBAR */}
+        <aside
+          style={{
+            position: "sticky",
+            top: 0,
+            height: "100vh",
+            overflowY: "auto",
+            background: "#0a1520",
+            borderRight: "1px solid #1a3a4a",
+            padding: "2rem 1.5rem",
+          }}
         >
           <div
             style={{
               fontFamily: "monospace",
-              fontSize: "0.62rem",
-              color: "#4a6a7a",
+              fontSize: "0.8rem",
+              color: "#00ff88",
               letterSpacing: "2px",
-              marginBottom: "0.6rem",
+              marginBottom: "2rem",
+              paddingBottom: "1rem",
+              borderBottom: "1px solid #1a3a4a",
             }}
           >
-            // GITHUB TOKEN — requerido para guardar en producción
+            {"<z4k7_writeups/>"}
           </div>
-          <input
-            type="password"
-            placeholder="ghp_... (genera en github.com → Settings → Developer settings → Tokens)"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            style={{
-              width: "100%",
-              fontFamily: "monospace",
-              fontSize: "0.72rem",
-              padding: "10px 14px",
-              background: "#060d14",
-              border: `1px solid ${token ? "#00ff88" : "#1a3a4a"}`,
-              color: "#c8d8e8",
-              outline: "none",
-              letterSpacing: "1px",
-              boxSizing: "border-box",
-            }}
-          />
-          {token && (
-            <div
-              style={{
-                fontFamily: "monospace",
-                fontSize: "0.62rem",
-                color: "#00ff88",
-                marginTop: "0.4rem",
-              }}
-            >
-              ✓ Token ingresado
-            </div>
-          )}
-          {!token && (
-            <div
-              style={{
-                fontFamily: "monospace",
-                fontSize: "0.62rem",
-                color: "#4a6a7a",
-                marginTop: "0.4rem",
-              }}
-            >
-              // Sin token solo funciona en local. En producción (Vercel) es
-              obligatorio.
-            </div>
-          )}
-        </div>
 
-        {/* ════ PASO 1 — ESCANEAR ════ */}
-        <div style={{ marginBottom: "3rem" }}>
-          <StepHeader
-            num="01"
-            title="Escanear Write-ups"
-            done={step > 1}
-            active={step === 1}
-          />
-          {step === 1 && (
-            <div style={{ marginTop: "1.5rem" }}>
-              <p
-                style={{
-                  fontSize: "0.75rem",
-                  color: "#4a6a7a",
-                  marginBottom: "1.5rem",
-                  lineHeight: 1.8,
-                }}
-              >
-                Lee todos los <span style={{ color: "#00d4ff" }}>.md</span> de{" "}
-                <span style={{ color: "#00ff88" }}>content/</span> y extrae
-                nodos + conexiones.
-              </p>
-              <button
-                onClick={handleScan}
-                disabled={loading}
+          <div style={{ marginBottom: "2rem" }}>
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#4a6a7a",
+                letterSpacing: "2px",
+                textTransform: "uppercase",
+                marginBottom: "0.8rem",
+              }}
+            >
+              // Machine Info
+            </div>
+            <div
+              style={{
+                background: "#0d1f2d",
+                border: "1px solid #1a3a4a",
+                padding: "1rem",
+                fontFamily: "monospace",
+                fontSize: "0.72rem",
+              }}
+            >
+              {[
+                ["Name", data.title, "#00ff88"],
+                ["Platform", data.platform, "#c8d8e8"],
+                ["OS", data.os, "#c8d8e8"],
+                ["Difficulty", data.difficulty, "#4ade80"],
+                ["IP", data.ip, "#c8d8e8"],
+                ["Status", "✓ Pwned", "#00ff88"],
+              ].map(([k, v, c]) => (
+                <div
+                  key={k}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "3px 0",
+                    borderBottom: "1px solid #1a3a4a",
+                  }}
+                >
+                  <span style={{ color: "#4a6a7a" }}>{k}</span>
+                  <span style={{ color: c }}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: "2rem" }}>
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#4a6a7a",
+                letterSpacing: "2px",
+                textTransform: "uppercase",
+                marginBottom: "0.8rem",
+              }}
+            >
+              // Contenido
+            </div>
+            {navItems.map((item) => (
+              <a
+                key={item.id + item.num}
+                href={`#${item.id}`}
                 style={{
                   fontFamily: "monospace",
-                  fontSize: "0.78rem",
-                  padding: "10px 28px",
-                  border: "1px solid #00d4ff",
-                  background: loading ? "transparent" : "rgba(0,212,255,0.08)",
-                  color: "#00d4ff",
-                  cursor: loading ? "not-allowed" : "pointer",
-                  letterSpacing: "2px",
+                  fontSize: "0.75rem",
+                  color: "#4a6a7a",
+                  textDecoration: "none",
+                  padding: "5px 10px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  borderLeft: "2px solid transparent",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#00ff88";
+                  e.currentTarget.style.borderLeftColor = "#00ff88";
+                  e.currentTarget.style.background = "rgba(0,255,136,0.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "#4a6a7a";
+                  e.currentTarget.style.borderLeftColor = "transparent";
+                  e.currentTarget.style.background = "transparent";
                 }}
               >
-                {loading ? "// Escaneando..." : "// Escanear write-ups"}
-              </button>
-            </div>
-          )}
+                <span
+                  style={{
+                    color: "#1a3a4a",
+                    fontSize: "0.65rem",
+                    minWidth: "18px",
+                  }}
+                >
+                  {item.num}
+                </span>
+                {item.label}
+              </a>
+            ))}
+          </div>
 
-          {step > 1 && preview && (
-            <div style={{ marginTop: "1.5rem" }}>
+          {data.techniques && (
+            <div>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill,minmax(130px,1fr))",
-                  gap: "0.7rem",
+                  fontFamily: "monospace",
+                  fontSize: "0.65rem",
+                  color: "#4a6a7a",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  marginBottom: "0.8rem",
+                }}
+              >
+                // Técnicas
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.3rem",
+                }}
+              >
+                {data.techniques.map((t, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "0.68rem",
+                      padding: "3px 10px",
+                      background: "rgba(0,255,136,0.06)",
+                      border: "1px solid #1a3a4a",
+                      color: "#4a6a7a",
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+
+        {/* MAIN */}
+        <main style={{ padding: "3rem 6rem" }}>
+          <Link
+            href="/#labs"
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.78rem",
+              color: "#4a6a7a",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              marginBottom: "2rem",
+            }}
+          >
+            ← Volver al portafolio
+          </Link>
+
+          {/* HERO */}
+          <div
+            style={{
+              marginBottom: "3rem",
+              paddingBottom: "2rem",
+              borderBottom: "1px solid #1a3a4a",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                marginBottom: "1.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.75rem",
+                  padding: "4px 12px",
+                  background: "rgba(0,255,136,0.1)",
+                  border: "1px solid #00ff88",
+                  color: "#00ff88",
+                }}
+              >
+                {data.platform}
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.75rem",
+                  padding: "4px 12px",
+                  background: "rgba(74,222,128,0.1)",
+                  border: "1px solid #4ade80",
+                  color: "#4ade80",
+                }}
+              >
+                {data.difficulty}
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.75rem",
+                  padding: "4px 12px",
+                  background: "rgba(0,212,255,0.08)",
+                  border: "1px solid #00d4ff",
+                  color: "#00d4ff",
+                }}
+              >
+                {data.os}
+              </span>
+            </div>
+            <h1
+              style={{
+                fontSize: "3.5rem",
+                fontWeight: 700,
+                color: "#fff",
+                letterSpacing: "3px",
+                lineHeight: 1,
+                marginBottom: "1rem",
+              }}
+            >
+              {data.title}
+              <span style={{ color: "#00ff88" }}>.</span>
+            </h1>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                fontFamily: "monospace",
+                fontSize: "0.78rem",
+                color: "#4a6a7a",
+                marginBottom: "1.5rem",
+              }}
+            >
+              <span>by</span>
+              <span style={{ color: "#00ff88" }}>{data.author}</span>
+              <span style={{ color: "#1a3a4a" }}>|</span>
+              <span>Pentester Jr · eJPTv2</span>
+              <span style={{ color: "#1a3a4a" }}>|</span>
+              <span>{data.date}</span>
+            </div>
+            {data.tags && (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "0.5rem",
                   marginBottom: "1.5rem",
                 }}
               >
-                {TYPE_ORDER.map((type) => (
-                  <div
-                    key={type}
+                {data.tags.map((t, i) => (
+                  <span
+                    key={i}
                     style={{
-                      ...card,
-                      borderColor: DEFAULT_COLORS[type] + "44",
-                      marginBottom: 0,
+                      fontFamily: "monospace",
+                      fontSize: "0.68rem",
+                      padding: "3px 10px",
+                      background: "rgba(0,255,136,0.06)",
+                      border: "1px solid #1a3a4a",
+                      color: "#4a6a7a",
                     }}
                   >
-                    <div
-                      style={{
-                        fontSize: "0.58rem",
-                        color: "#4a6a7a",
-                        letterSpacing: "2px",
-                        marginBottom: "0.4rem",
-                      }}
-                    >
-                      {TYPE_LABELS[type].toUpperCase()}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "1.8rem",
-                        fontWeight: 700,
-                        color: DEFAULT_COLORS[type],
-                        lineHeight: 1,
-                      }}
-                    >
-                      {countByType(type)}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.58rem",
-                        color: "#4a6a7a",
-                        marginTop: "0.2rem",
-                      }}
-                    >
-                      nodos
-                    </div>
-                  </div>
+                    {t}
+                  </span>
                 ))}
-                <div style={{ ...card, marginBottom: 0 }}>
-                  <div
-                    style={{
-                      fontSize: "0.58rem",
-                      color: "#4a6a7a",
-                      letterSpacing: "2px",
-                      marginBottom: "0.4rem",
-                    }}
-                  >
-                    CONEXIONES
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.8rem",
-                      fontWeight: 700,
-                      color: "#c8d8e8",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {preview.links?.length || 0}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.58rem",
-                      color: "#4a6a7a",
-                      marginTop: "0.2rem",
-                    }}
-                  >
-                    links
-                  </div>
-                </div>
               </div>
+            )}
+            {data.summary && (
+              <div
+                style={{
+                  borderLeft: "3px solid #00d4ff",
+                  background: "rgba(0,212,255,0.05)",
+                  padding: "1rem 1.2rem",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.7rem",
+                    letterSpacing: "2px",
+                    color: "#00d4ff",
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  // Resumen ejecutivo
+                </div>
+                <p style={{ color: "#c8d8e8", margin: 0 }}>{data.summary}</p>
+              </div>
+            )}
+          </div>
 
-              {machines.length > 0 && (
-                <div style={card}>
+          {/* STEPS */}
+          {(data.steps || []).map((step, idx) => {
+            const hasTitle = step.num && step.num !== "";
+
+            // ── Normalizar a content[]: soporta formato nuevo y viejo ──
+            const contentList = (() => {
+              // Formato nuevo: content[] con kind
+              if (Array.isArray(step.content) && step.content.length > 0)
+                return step.content;
+              // Formato viejo: campos planos → reconstruir orden aproximado
+              const items = [];
+              if (step.notes) items.push({ kind: "note", text: step.notes });
+              if (step.code)
+                items.push({
+                  kind: "code",
+                  lang: step.code_lang || "BASH",
+                  code: step.code,
+                });
+              (step.images || []).forEach((img) =>
+                items.push({ kind: "image", ...img }),
+              );
+              (step.bullet_list || []).forEach((t) =>
+                items.push({ kind: "bullet", text: t }),
+              );
+              // callouts viejo: campo plano o array
+              if (Array.isArray(step.callouts))
+                step.callouts.forEach((c) =>
+                  items.push({ kind: "callout", ...c }),
+                );
+              else if (step.callout_type)
+                items.push({
+                  kind: "callout",
+                  type: step.callout_type,
+                  label: step.callout_label || "",
+                  text: step.callout_text || "",
+                });
+              return items;
+            })();
+
+            return (
+              <div
+                key={`${step.id}-${idx}`}
+                id={step.id}
+                style={{ marginBottom: "3rem", scrollMarginTop: "2rem" }}
+              >
+                {/* FLAG inline */}
+                {step.type === "flag" && (
                   <div
                     style={{
-                      fontSize: "0.62rem",
-                      color: "#4a6a7a",
-                      letterSpacing: "2px",
-                      marginBottom: "0.8rem",
+                      background:
+                        "linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.05))",
+                      border: "1px solid #1a3a4a",
+                      padding: "2rem",
+                      position: "relative",
+                      overflow: "hidden",
+                      width: "50%",
+                      margin: "auto",
                     }}
                   >
-                    // MÁQUINAS DETECTADAS
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "120px",
+                        height: "2px",
+                        background: "#00ff88",
+                      }}
+                    />
+                    <h3
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "1.3rem",
+                        color: "#00ff88",
+                        letterSpacing: "4px",
+                        marginBottom: "0.5rem",
+                        textAlign: "center",
+                      }}
+                    >
+                      ✓ {step.id.toUpperCase()}
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "0.8rem",
+                        color: "#4a6a7a",
+                        margin: "0 0 1.5rem",
+                        textAlign: "center",
+                      }}
+                    >
+                      {data.title} — {data.platform} · {data.difficulty}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "1rem",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {(step.flag_items || []).map((flag, fi) => (
+                        <div
+                          key={fi}
+                          style={{
+                            minWidth: "180px",
+                            flex: "1 1 180px",
+                            maxWidth: "420px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "0.65rem",
+                              color: "#4a6a7a",
+                              letterSpacing: "2px",
+                              textTransform: "uppercase",
+                              marginBottom: "0.4rem",
+                              textAlign: "center",
+                            }}
+                          >
+                            // {flag.label}
+                          </div>
+                          <div
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "0.85rem",
+                              background: "#020608",
+                              border: "1px dashed #00ff88",
+                              padding: "0.6rem 1rem",
+                              color: "#00ff88",
+                              letterSpacing: "1px",
+                              textAlign: "center",
+                              wordBreak: "break-all",
+                            }}
+                          >
+                            {flag.value}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                )}
+
+                {/* Título */}
+                {hasTitle && (
                   <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.8rem",
+                      marginBottom: "1.5rem",
+                    }}
                   >
-                    {machines.map((m) => (
-                      <div
-                        key={m.id}
+                    <span
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "0.72rem",
+                        color: "#00ff88",
+                        background: "rgba(0,255,136,0.08)",
+                        border: "1px solid #1a3a4a",
+                        padding: "3px 10px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      PASO {step.num}
+                    </span>
+                    <h2
+                      style={{
+                        fontSize: "1.6rem",
+                        fontWeight: 700,
+                        color: "#fff",
+                        letterSpacing: "1px",
+                        textTransform: "uppercase",
+                        margin: 0,
+                      }}
+                    >
+                      {step.title}
+                    </h2>
+                    <div
+                      style={{
+                        flex: 1,
+                        height: "1px",
+                        background:
+                          "linear-gradient(to right, #1a3a4a, transparent)",
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* ── Contenido ordenado — cada item en su posición exacta del .md ── */}
+                {contentList.map((item, ci) => {
+                  if (item.kind === "note")
+                    return (
+                      <p
+                        key={ci}
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.5rem",
-                          background: "#050a0e",
+                          color: "#c8d8e8",
+                          marginBottom: "1rem",
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {item.text}
+                      </p>
+                    );
+
+                  if (item.kind === "code")
+                    return (
+                      <div
+                        key={ci}
+                        style={{
+                          margin: "1.5rem 0",
                           border: "1px solid #1a3a4a",
-                          padding: "5px 12px",
+                          overflow: "hidden",
                         }}
                       >
                         <div
                           style={{
-                            width: 6,
-                            height: 6,
-                            borderRadius: "50%",
-                            background:
-                              m.status === "pwned" ? "#00ff88" : "#4a6a7a",
+                            background: "#0d1f2d",
+                            padding: "8px 16px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            borderBottom: "1px solid #1a3a4a",
                           }}
-                        />
-                        <span style={{ fontSize: "0.72rem", color: "#c8d8e8" }}>
-                          {m.label}
-                        </span>
-                        <span style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
-                          {m.platform} · {m.difficulty}
-                        </span>
+                        >
+                          <span
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "0.72rem",
+                              color: "#4a6a7a",
+                            }}
+                          >
+                            {step.title || "código"} — comandos
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "0.65rem",
+                              color: "#00ff88",
+                              background: "rgba(0,255,136,0.1)",
+                              padding: "2px 8px",
+                            }}
+                          >
+                            {item.lang}
+                          </span>
+                        </div>
+                        <pre
+                          style={{
+                            background: "#020608",
+                            padding: "1.2rem 1.5rem",
+                            fontFamily: "'Share Tech Mono', monospace",
+                            fontSize: "0.82rem",
+                            color: "#00ff88",
+                            overflowX: "auto",
+                            lineHeight: "1.8",
+                            whiteSpace: "pre-wrap",
+                            margin: 0,
+                          }}
+                        >
+                          {item.code}
+                        </pre>
                       </div>
-                    ))}
-                  </div>
+                    );
+
+                  if (item.kind === "image")
+                    return (
+                      <div key={ci} style={{ margin: "1.5rem 0" }}>
+                        <ImageBlock img={item} index={ci} />
+                      </div>
+                    );
+
+                  if (item.kind === "bullet")
+                    return (
+                      <div
+                        key={ci}
+                        style={{
+                          display: "flex",
+                          gap: "0.8rem",
+                          alignItems: "flex-start",
+                          padding: "0.6rem 1rem",
+                          background: "#0d1f2d",
+                          border: "1px solid #1a3a4a",
+                          margin: "0.3rem 0",
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "#00ff88",
+                            fontFamily: "monospace",
+                            flexShrink: 0,
+                          }}
+                        >
+                          →
+                        </span>{" "}
+                        {item.text}
+                      </div>
+                    );
+
+                  if (item.kind === "callout") {
+                    const c = calloutColors[item.type] || calloutColors.info;
+                    const icon =
+                      {
+                        info: "ℹ",
+                        warning: "⚠",
+                        danger: "✕",
+                        default: "✓",
+                        tip: "💡",
+                      }[item.type] || "ℹ";
+                    return (
+                      <div
+                        key={ci}
+                        style={{
+                          borderLeft: `3px solid ${c.border}`,
+                          background: c.bg,
+                          padding: "1rem 1.2rem",
+                          margin: "1rem 0",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "0.7rem",
+                            letterSpacing: "2px",
+                            color: c.label,
+                            marginBottom: "0.4rem",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                          }}
+                        >
+                          <span>{icon}</span>
+                          <span>// {item.label}</span>
+                        </div>
+                        <p style={{ color: "#c8d8e8", margin: 0 }}>
+                          {item.text}
+                        </p>
+                      </div>
+                    );
+                  }
+
+                  return null;
+                })}
+              </div>
+            );
+          })}
+
+          {/* FLAGS */}
+          {flagsList.length > 0 && (
+            <div
+              id="flags"
+              style={{ margin: "3rem 0", scrollMarginTop: "2rem" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.8rem",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.72rem",
+                    color: "#00ff88",
+                    background: "rgba(0,255,136,0.08)",
+                    border: "1px solid #1a3a4a",
+                    padding: "3px 10px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  PASO {flagsNum}
+                </span>
+                <h2
+                  style={{
+                    fontSize: "1.6rem",
+                    fontWeight: 700,
+                    color: "#fff",
+                    letterSpacing: "1px",
+                    textTransform: "uppercase",
+                    margin: 0,
+                  }}
+                >
+                  Flags
+                </h2>
+                <div
+                  style={{
+                    flex: 1,
+                    height: "1px",
+                    background:
+                      "linear-gradient(to right, #1a3a4a, transparent)",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.05))",
+                  border: "1px solid #1a3a4a",
+                  padding: "2rem",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "120px",
+                    height: "2px",
+                    background: "#00ff88",
+                  }}
+                />
+                <h3
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "1.5rem",
+                    color: "#00ff88",
+                    letterSpacing: "4px",
+                    marginBottom: "0.5rem",
+                    textAlign: "center",
+                  }}
+                >
+                  ✓ RECOPILACION
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.8rem",
+                    color: "#4a6a7a",
+                    margin: "0 0 1.5rem",
+                    textAlign: "center",
+                  }}
+                >
+                  {data.title} — {data.platform} · {data.difficulty}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                    justifyContent: "center",
+                  }}
+                >
+                  {flagsList.map((flag, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        minWidth: "180px",
+                        flex: "1 1 180px",
+                        maxWidth: "420px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "0.65rem",
+                          color: "#4a6a7a",
+                          letterSpacing: "2px",
+                          textTransform: "uppercase",
+                          marginBottom: "0.4rem",
+                          textAlign: "center",
+                        }}
+                      >
+                        // {flag.label}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "0.85rem",
+                          background: "#020608",
+                          border: "1px dashed #00ff88",
+                          padding: "0.6rem 1rem",
+                          color: "#00ff88",
+                          letterSpacing: "1px",
+                          textAlign: "center",
+                          wordBreak: "break-all",
+                        }}
+                      >
+                        {flag.value}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           )}
-        </div>
 
-        {/* ════ PASO 2 — COLOREAR ════ */}
-        {step >= 2 && (
-          <div style={{ marginBottom: "3rem" }}>
-            <StepHeader
-              num="02"
-              title="Asignar Colores"
-              done={step > 2}
-              active={step === 2}
-            />
-            <div style={{ marginTop: "1.5rem" }}>
+          {/* LECCIONES */}
+          {data.lessons && (
+            <div
+              id="lessons"
+              style={{ marginBottom: "3rem", scrollMarginTop: "2rem" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.8rem",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.72rem",
+                    color: "#00ff88",
+                    background: "rgba(0,255,136,0.08)",
+                    border: "1px solid #1a3a4a",
+                    padding: "3px 10px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  PASO {lessonsNum}
+                </span>
+                <h2
+                  style={{
+                    fontSize: "1.6rem",
+                    fontWeight: 700,
+                    color: "#fff",
+                    letterSpacing: "1px",
+                    textTransform: "uppercase",
+                    margin: 0,
+                  }}
+                >
+                  Lecciones Aprendidas
+                </h2>
+                <div
+                  style={{
+                    flex: 1,
+                    height: "1px",
+                    background:
+                      "linear-gradient(to right, #1a3a4a, transparent)",
+                  }}
+                />
+              </div>
               <div
                 style={{
                   display: "flex",
@@ -511,487 +989,179 @@ export default function GraphConfigPage() {
                   marginBottom: "1.5rem",
                 }}
               >
-                {TYPE_ORDER.map((type) => {
-                  const isExpandable = EXPANDABLE.includes(type);
-                  const isOpen = expanded[type];
-                  const subNodes = getNodesByType(type);
-                  return (
-                    <div key={type}>
-                      <div
-                        style={{
-                          ...card,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          marginBottom: 0,
-                          cursor: isExpandable ? "pointer" : "default",
-                        }}
-                        onClick={() => isExpandable && toggleExpand(type)}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.8rem",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: 12,
-                              height: 12,
-                              borderRadius: "50%",
-                              background: colors[type],
-                              boxShadow: `0 0 8px ${colors[type]}`,
-                              flexShrink: 0,
-                            }}
-                          />
-                          <div>
-                            <div
-                              style={{ fontSize: "0.72rem", color: "#c8d8e8" }}
-                            >
-                              {TYPE_LABELS[type]}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: "0.6rem",
-                                color: "#4a6a7a",
-                                marginTop: "1px",
-                              }}
-                            >
-                              {countByType(type)} nodos
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.8rem",
-                          }}
-                        >
-                          <span
-                            style={{ fontSize: "0.62rem", color: "#4a6a7a" }}
-                          >
-                            {colors[type]}
-                          </span>
-                          <input
-                            type="color"
-                            value={colors[type]}
-                            onChange={(e) => {
-                              e.stopPropagation();
-                              setColors((p) => ({
-                                ...p,
-                                [type]: e.target.value,
-                              }));
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                            style={{
-                              width: "32px",
-                              height: "26px",
-                              border: "1px solid #1a3a4a",
-                              background: "#0a1520",
-                              cursor: "pointer",
-                              padding: "1px",
-                            }}
-                          />
-                          {isExpandable && (
-                            <span
-                              style={{
-                                fontSize: "0.7rem",
-                                color: "#4a6a7a",
-                                marginLeft: "0.4rem",
-                                transition: "transform 0.2s",
-                                display: "inline-block",
-                                transform: isOpen
-                                  ? "rotate(90deg)"
-                                  : "rotate(0deg)",
-                              }}
-                            >
-                              ▶
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {isExpandable && isOpen && subNodes.length > 0 && (
-                        <div
-                          style={{
-                            background: "#060d14",
-                            border: "1px solid #1a3a4a",
-                            borderTop: "none",
-                            padding: "0.6rem 1rem",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: "0.58rem",
-                              color: "#4a6a7a",
-                              letterSpacing: "2px",
-                              marginBottom: "0.6rem",
-                            }}
-                          >
-                            // COLOR INDIVIDUAL
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "0.4rem",
-                            }}
-                          >
-                            {subNodes.map((n) => {
-                              const subColor = subColors[n.label];
-                              const activeColor = subColor || colors[type];
-                              return (
-                                <div
-                                  key={n.id}
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    padding: "6px 10px",
-                                    background: "#0a1520",
-                                    border: `1px solid ${subColor ? activeColor + "66" : "#1a3a4a"}`,
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "0.6rem",
-                                    }}
-                                  >
-                                    <div
-                                      style={{
-                                        width: 8,
-                                        height: 8,
-                                        borderRadius: "50%",
-                                        background: activeColor,
-                                        boxShadow: `0 0 5px ${activeColor}`,
-                                      }}
-                                    />
-                                    <span
-                                      style={{
-                                        fontSize: "0.72rem",
-                                        color: subColor ? "#fff" : "#c8d8e8",
-                                      }}
-                                    >
-                                      {n.label}
-                                    </span>
-                                    {subColor && (
-                                      <span
-                                        style={{
-                                          fontSize: "0.58rem",
-                                          color: "#4a6a7a",
-                                        }}
-                                      >
-                                        custom
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "0.6rem",
-                                    }}
-                                  >
-                                    <span
-                                      style={{
-                                        fontSize: "0.6rem",
-                                        color: "#4a6a7a",
-                                      }}
-                                    >
-                                      {activeColor}
-                                    </span>
-                                    {subColor && (
-                                      <button
-                                        onClick={() => resetSubColor(n.label)}
-                                        style={{
-                                          fontFamily: "monospace",
-                                          fontSize: "0.58rem",
-                                          padding: "2px 8px",
-                                          border: "1px solid #ff336644",
-                                          background: "transparent",
-                                          color: "#ff3366",
-                                          cursor: "pointer",
-                                        }}
-                                      >
-                                        reset
-                                      </button>
-                                    )}
-                                    <input
-                                      type="color"
-                                      value={activeColor}
-                                      onChange={(e) =>
-                                        setSubColor(n.label, e.target.value)
-                                      }
-                                      style={{
-                                        width: "28px",
-                                        height: "22px",
-                                        border: "1px solid #1a3a4a",
-                                        background: "#0a1520",
-                                        cursor: "pointer",
-                                        padding: "1px",
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div style={{ display: "flex", gap: "1rem" }}>
-                <button
-                  onClick={() => {
-                    setColors(DEFAULT_COLORS);
-                    setSubColors({});
-                  }}
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.72rem",
-                    padding: "9px 20px",
-                    border: "1px solid #1a3a4a",
-                    background: "transparent",
-                    color: "#4a6a7a",
-                    cursor: "pointer",
-                    letterSpacing: "1px",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.color = "#ff3366";
-                    e.currentTarget.style.borderColor = "#ff3366";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.color = "#4a6a7a";
-                    e.currentTarget.style.borderColor = "#1a3a4a";
-                  }}
-                >
-                  // reset colores
-                </button>
-                <button
-                  onClick={handleGenerate}
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.78rem",
-                    padding: "9px 28px",
-                    border: "1px solid #00ff88",
-                    background: "rgba(0,255,136,0.08)",
-                    color: "#00ff88",
-                    cursor: "pointer",
-                    letterSpacing: "2px",
-                  }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.background = "rgba(0,255,136,0.18)")
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.background = "rgba(0,255,136,0.08)")
-                  }
-                >
-                  // Generar y Guardar →
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ════ PASO 3 — JSON ════ */}
-        {step >= 3 && graphJson && (
-          <div style={{ marginBottom: "3rem" }}>
-            <StepHeader
-              num="03"
-              title="JSON Generado"
-              done={false}
-              active={true}
-            />
-            <div style={{ marginTop: "1.5rem" }}>
-              {saved && (
-                <div
-                  style={{
-                    background: "rgba(0,255,136,0.06)",
-                    border: "1px solid #00ff88",
-                    padding: "0.8rem 1.2rem",
-                    marginBottom: "1rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.8rem",
-                  }}
-                >
-                  <span
+                {data.lessons.map((l, i) => (
+                  <div
+                    key={i}
                     style={{
-                      color: "#00ff88",
-                      fontSize: "0.75rem",
-                      letterSpacing: "1px",
+                      display: "flex",
+                      gap: "0.8rem",
+                      alignItems: "flex-start",
+                      padding: "0.6rem 1rem",
+                      background: "#0d1f2d",
+                      border: "1px solid #1a3a4a",
                     }}
                   >
-                    ✓ Guardado en GitHub — Vercel redesplegará en ~30 segundos
-                  </span>
-                </div>
-              )}
-
-              {saveError && (
-                <div
-                  style={{
-                    background: "rgba(255,51,102,0.06)",
-                    border: "1px solid #ff3366",
-                    padding: "0.8rem 1.2rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <span
-                    style={{
-                      color: "#ff3366",
-                      fontSize: "0.75rem",
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    ✕ Error: {saveError}
-                  </span>
-                  {saveError.includes("token") && (
-                    <div
+                    <span
                       style={{
+                        color: "#00ff88",
                         fontFamily: "monospace",
-                        fontSize: "0.65rem",
-                        color: "#4a6a7a",
-                        marginTop: "0.4rem",
+                        flexShrink: 0,
                       }}
                     >
-                      // Verifica que el token tenga permisos de repo
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div
-                style={{
-                  background: "#020608",
-                  border: "1px solid #1a3a4a",
-                  borderLeft: "3px solid #00ff88",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "0.6rem 1rem",
-                    borderBottom: "1px solid #1a3a4a",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "0.62rem",
-                      color: "#4a6a7a",
-                      letterSpacing: "2px",
-                    }}
-                  >
-                    // data/graph.json
-                  </span>
-                  <div style={{ display: "flex", gap: "0.8rem" }}>
-                    <button
-                      onClick={handleGenerate}
-                      style={{
-                        fontFamily: "monospace",
-                        fontSize: "0.65rem",
-                        padding: "3px 12px",
-                        border: "1px solid #1a3a4a",
-                        background: "transparent",
-                        color: "#4a6a7a",
-                        cursor: "pointer",
-                      }}
-                      onMouseOver={(e) => {
-                        e.currentTarget.style.color = "#00d4ff";
-                        e.currentTarget.style.borderColor = "#00d4ff";
-                      }}
-                      onMouseOut={(e) => {
-                        e.currentTarget.style.color = "#4a6a7a";
-                        e.currentTarget.style.borderColor = "#1a3a4a";
-                      }}
-                    >
-                      // Re-generar
-                    </button>
-                    <button
-                      onClick={handleCopy}
-                      style={{
-                        fontFamily: "monospace",
-                        fontSize: "0.65rem",
-                        padding: "3px 12px",
-                        border: `1px solid ${copied ? "#00ff88" : "#1a3a4a"}`,
-                        background: copied
-                          ? "rgba(0,255,136,0.1)"
-                          : "transparent",
-                        color: copied ? "#00ff88" : "#4a6a7a",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {copied ? "✓ Copiado" : "// Copiar"}
-                    </button>
+                      →
+                    </span>{" "}
+                    {l}
                   </div>
-                </div>
-                <pre
+                ))}
+              </div>
+              {data.mitigation && (
+                <div
                   style={{
-                    padding: "1.2rem 1.5rem",
-                    fontSize: "0.7rem",
-                    color: "#00ff88",
-                    overflowX: "auto",
-                    maxHeight: "380px",
-                    overflowY: "auto",
-                    margin: 0,
-                    lineHeight: 1.6,
+                    borderLeft: "3px solid #00d4ff",
+                    background: "rgba(0,212,255,0.05)",
+                    padding: "1rem 1.2rem",
                   }}
                 >
-                  {graphJson}
-                </pre>
-              </div>
+                  <div
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "0.7rem",
+                      letterSpacing: "2px",
+                      color: "#00d4ff",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    // Mitigaciones recomendadas
+                  </div>
+                  <p style={{ color: "#c8d8e8", margin: 0 }}>
+                    {data.mitigation}
+                  </p>
+                </div>
+              )}
             </div>
+          )}
+
+          {/* FOOTER */}
+          <div
+            style={{
+              marginTop: "4rem",
+              paddingTop: "2rem",
+              borderTop: "1px solid #1a3a4a",
+              fontFamily: "monospace",
+              fontSize: "0.75rem",
+              color: "#4a6a7a",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ color: "#00ff88" }}>{data.author}</span>
+            <span>
+              {data.title} · {data.platform} ·{" "}
+              <span style={{ color: "#00ff88" }}>Pwned ✓</span>
+            </span>
           </div>
-        )}
+        </main>
       </div>
     </div>
   );
 }
 
-function StepHeader({ num, title, done, active }) {
+function ImageBlock({ img, index }) {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-      <span
-        style={{
-          fontFamily: "monospace",
-          fontSize: "0.72rem",
-          color: done ? "#00ff88" : active ? "#00d4ff" : "#1a3a4a",
-          letterSpacing: "2px",
-        }}
-      >
-        {done ? `${num} ✓` : num}
-      </span>
-      <h2
-        style={{
-          fontSize: "1.3rem",
-          fontWeight: 700,
-          color: done ? "#4a6a7a" : active ? "#fff" : "#1a3a4a",
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-          margin: 0,
-        }}
-      >
-        {title}
-      </h2>
+    <div style={{ border: "1px solid #1a3a4a", overflow: "hidden" }}>
       <div
         style={{
-          flex: 1,
-          height: "1px",
-          background: done
-            ? "#00ff8844"
-            : active
-              ? "linear-gradient(to right,#1a3a4a,transparent)"
-              : "#0d1f2d",
+          background: "#0d1f2d",
+          padding: "6px 16px",
+          borderBottom: "1px solid #1a3a4a",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
-      />
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <span
+            style={{
+              color: "#00ff88",
+              fontFamily: "monospace",
+              fontSize: "0.68rem",
+            }}
+          >
+            ▸
+          </span>
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.68rem",
+              color: "#4a6a7a",
+            }}
+          >
+            // Evidencia técnica
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.65rem",
+              color: "#1a3a4a",
+            }}
+          >
+            img_{String(index + 1).padStart(2, "0")}
+          </span>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.65rem",
+              color: "#00d4ff",
+              background: "transparent",
+              border: "1px solid #1a3a4a",
+              padding: "2px 8px",
+              cursor: "pointer",
+            }}
+          >
+            {expanded ? "⊟ colapsar" : "⊞ expandir"}
+          </button>
+        </div>
+      </div>
+      <div
+        style={{
+          background: "#020608",
+          padding: "1rem",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src={img.src}
+          alt={img.caption || `evidencia ${index + 1}`}
+          style={{
+            maxWidth: "100%",
+            maxHeight: expanded ? "none" : "350px",
+            objectFit: "contain",
+            border: "1px solid #1a3a4a",
+            cursor: "pointer",
+            transition: "max-height 0.3s ease",
+          }}
+          onClick={() => setExpanded(!expanded)}
+        />
+      </div>
+      {img.caption && (
+        <div
+          style={{
+            padding: "8px 16px",
+            fontFamily: "monospace",
+            fontSize: "0.72rem",
+            color: "#4a6a7a",
+            borderTop: "1px solid #1a3a4a",
+            background: "#0d1f2d",
+          }}
+        >
+          ↑ {img.caption}
+        </div>
+      )}
     </div>
   );
 }
