@@ -1,0 +1,99 @@
+{
+  "nodes": [
+    {
+      "id": "validcion",
+      "label": "VALIDCION",
+      "type": "machine",
+      "size": 19,
+      "platform": "HackTheBox",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "status": "pwned",
+      "desc": "Descripción del vector de ataque....",
+      "slug": "validcion"
+    },
+    {
+      "id": "plat_HackTheBox",
+      "label": "HackTheBox",
+      "type": "platform",
+      "size": 20
+    },
+    {
+      "id": "os_Windows",
+      "label": "Windows",
+      "type": "os",
+      "size": 16,
+      "color": "#0524fa"
+    },
+    {
+      "id": "diff_Easy",
+      "label": "Easy",
+      "type": "difficulty",
+      "size": 13,
+      "color": "#00ff00"
+    },
+    {
+      "id": "tool_completar_herramientas",
+      "label": "Completar herramientas",
+      "type": "tool",
+      "size": 13
+    },
+    {
+      "id": "tag_web_security",
+      "label": "Web Security",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_pentesting",
+      "label": "Pentesting",
+      "type": "tag",
+      "size": 11
+    }
+  ],
+  "links": [
+    {
+      "source": "plat_HackTheBox",
+      "target": "validcion",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "validcion",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Easy",
+      "target": "validcion",
+      "rel": "difficulty"
+    },
+    {
+      "source": "validcion",
+      "target": "tool_completar_herramientas",
+      "rel": "tool"
+    },
+    {
+      "source": "validcion",
+      "target": "tag_web_security",
+      "rel": "tag"
+    },
+    {
+      "source": "validcion",
+      "target": "tag_pentesting",
+      "rel": "tag"
+    }
+  ],
+  "colors": {
+    "machine": "#00d4ff",
+    "platform": "#ff8c00",
+    "os": "#ffcc00",
+    "difficulty": "#b06aff",
+    "technique": "#ff3366",
+    "tool": "#00ffcc",
+    "tag": "#00ff88"
+  },
+  "subColors": {
+    "Easy": "#00ff00",
+    "Windows": "#0524fa"
+  }
+}
