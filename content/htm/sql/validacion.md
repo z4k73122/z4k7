@@ -1,12 +1,12 @@
 ---
-title: "SQLI UNION"
+title: "validacion"
 platform: "HackTheBox"
 os: "Windows"
 difficulty: "Easy"
 ip: "10.10.10.XXX"
-slug: "sqli-union"
+slug: "validacion"
 author: "Z4k7"
-date: "2026-03-07"
+date: "2026-03-09"
 year: "2026"
 status: "pwned"
 tags:

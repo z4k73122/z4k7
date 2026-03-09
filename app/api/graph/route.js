@@ -12,6 +12,18 @@ const TYPE_SIZE = {
   tag: 11,
 };
 
+// ── Recursivo: busca todos los .md en cualquier nivel ─────────
+const getAllMdFiles = (dirPath) => {
+  if (!fs.existsSync(dirPath)) return [];
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  return entries.flatMap((entry) => {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) return getAllMdFiles(fullPath);
+    if (entry.name.endsWith(".md")) return [fullPath];
+    return [];
+  });
+};
+
 // ── GET — primero lee data/graph.json, si no existe lee los .md ──
 export async function GET() {
   const jsonPath = path.join(process.cwd(), "data", "graph.json");
@@ -21,10 +33,8 @@ export async function GET() {
     return Response.json(data);
   }
 
-  const dir = path.join(process.cwd(), "content/writeups");
-  if (!fs.existsSync(dir)) return Response.json({ nodes: [], links: [] });
-
-  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".md"));
+  const dir = path.join(process.cwd(), "content");
+  const files = getAllMdFiles(dir);
   if (!files.length) return Response.json({ nodes: [], links: [] });
 
   const nodes = [];
@@ -50,10 +60,10 @@ export async function GET() {
   };
 
   for (const file of files) {
-    const raw = fs.readFileSync(path.join(dir, file), "utf8");
+    const raw = fs.readFileSync(file, "utf8");
     const { data } = matter(raw);
 
-    const slug = data.slug || file.replace(".md", "");
+    const slug = data.slug || path.basename(file, ".md");
     const title = data.title || slug;
 
     addNode(slug, title, "machine", {

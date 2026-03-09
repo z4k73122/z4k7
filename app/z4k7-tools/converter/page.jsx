@@ -349,22 +349,17 @@ function parse(text) {
           } // línea sin ">" → callout terminó, seguir procesando
         }
 
-        // ── Imagen Obsidian ![[]] ──
-        const imgMatch = l.match(
-          /!\[\[([^\]]+\.(?:png|jpg|jpeg|gif|webp))\]\]/i,
-        );
-        if (imgMatch) {
+        // ── Imagen: ![caption](assets/images/filename) ──
+        const assetsImg = l.match(/!\[([^\]]*)\]\(assets\/images\/([^)]+)\)/i);
+        if (assetsImg) {
           flushNote();
-          const next = sLines[i + 1];
-          const caption =
-            next && next.trim() && !next.match(/^[\s#`>!\-*]/)
-              ? next.trim()
-              : "Evidencia técnica";
-          content.push({ kind: "image", src: imgMatch[1].trim(), caption });
+          const caption = assetsImg[1].trim() || "Evidencia técnica";
+          const src = assetsImg[2].trim();
+          content.push({ kind: "image", src, caption });
           continue;
         }
 
-        // ── Imagen URL externa ──
+        // ── Imagen URL externa: ![caption](https://...) ──
         const extImg = l.match(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/);
         if (extImg) {
           flushNote();
@@ -704,7 +699,7 @@ export default function ConverterPage() {
             <b>#tag</b> Hashtags → tags:
           </div>
           <div className="leg-item cyan">
-            <b>![[img.png]]</b> Imágenes → images:
+            <b>![](assets/images/f.png)</b> Imágenes → src: f.png
           </div>
           <div className="leg-item green">
             <b>### Flag</b> Flags inline → flag_items:
@@ -997,33 +992,7 @@ const CALLOUT_COLORS = {
 };
 
 function PreviewModal({ output, slug, meta, parsedData, onClose }) {
-  const [confirmSave, setConfirmSave] = useState(false);
   const [saved, setSaved] = useState(false);
-  const filePath = `content/writeups/${slug || "nombre"}.md`;
-
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState("");
-
-  const handleSave = async () => {
-    setSaving(true);
-    setSaveError("");
-    try {
-      const res = await fetch(`/api/writeups/${slug || "writeup"}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: output }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error desconocido");
-      setSaved(true);
-      setConfirmSave(false);
-      setTimeout(() => setSaved(false), 4000);
-    } catch (err) {
-      setSaveError(err.message);
-    } finally {
-      setSaving(false);
-    }
-  };
 
   if (!parsedData) return null;
   const { tags, tools, summary, steps, lessons, mitigation } = parsedData;
@@ -1650,187 +1619,577 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
             borderTop: "1px solid #1a3a4a",
           }}
         >
-          {!confirmSave && !saved && (
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button
-                onClick={() => setConfirmSave(true)}
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.78rem",
-                  letterSpacing: "2px",
-                  padding: "10px 28px",
-                  border: "1px solid #00ff88",
-                  background: "transparent",
-                  color: "#00ff88",
-                  cursor: "pointer",
-                  transition: "all 0.2s",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.6rem",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#00ff88";
-                  e.currentTarget.style.color = "#050a0e";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.color = "#00ff88";
-                }}
-              >
-                &#128190; GUARDAR .MD
-              </button>
-            </div>
-          )}
-          {confirmSave && (
-            <div
-              style={{
-                background: "rgba(0,255,136,0.05)",
-                border: "1px solid rgba(0,255,136,0.3)",
-                padding: "1.2rem 1.5rem",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.7rem",
-                  color: "#00ff88",
-                  letterSpacing: "2px",
-                  marginBottom: "0.8rem",
-                }}
-              >
-                // Confirmar guardado
-              </div>
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.8rem",
-                  color: "#c8d8e8",
-                  marginBottom: "0.4rem",
-                }}
-              >
-                El archivo se guardará en:
-              </div>
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.85rem",
-                  color: "#00d4ff",
-                  background: "#020608",
-                  border: "1px solid #1a3a4a",
-                  padding: "0.5rem 1rem",
-                  marginBottom: "1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.6rem",
-                }}
-              >
-                <span style={{ color: "#4a6a7a" }}>📁</span> {filePath}
-              </div>
-              {saveError && (
-                <div
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.72rem",
-                    color: "#ff3366",
-                    background: "rgba(255,51,102,0.07)",
-                    border: "1px solid rgba(255,51,102,0.3)",
-                    padding: "0.5rem 0.8rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  ✕ Error: {saveError}
-                </div>
-              )}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
-              >
-                <button
-                  onClick={() => {
-                    setConfirmSave(false);
-                    setSaveError("");
-                  }}
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.72rem",
-                    letterSpacing: "2px",
-                    padding: "8px 20px",
-                    border: "1px solid #4a6a7a",
-                    background: "transparent",
-                    color: "#4a6a7a",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "#4a6a7a";
-                    e.currentTarget.style.color = "#050a0e";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.color = "#4a6a7a";
-                  }}
-                >
-                  ✕ CANCELAR
-                </button>
-                <button
-                  onClick={handleSave}
-                  disabled={saving}
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.72rem",
-                    letterSpacing: "2px",
-                    padding: "8px 24px",
-                    border: "1px solid #00ff88",
-                    background: saving
-                      ? "rgba(0,255,136,0.3)"
-                      : "rgba(0,255,136,0.1)",
-                    color: "#00ff88",
-                    cursor: saving ? "wait" : "pointer",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!saving) {
-                      e.currentTarget.style.background = "#00ff88";
-                      e.currentTarget.style.color = "#050a0e";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!saving) {
-                      e.currentTarget.style.background = "rgba(0,255,136,0.1)";
-                      e.currentTarget.style.color = "#00ff88";
-                    }
-                  }}
-                >
-                  {saving ? "⏳ GUARDANDO..." : "✓ SÍ, GUARDAR"}
-                </button>
-              </div>
-            </div>
-          )}
-          {saved && (
-            <div
-              style={{
-                fontFamily: "monospace",
-                fontSize: "0.78rem",
-                color: "#00ff88",
-                border: "1px solid rgba(0,255,136,0.3)",
-                background: "rgba(0,255,136,0.05)",
-                padding: "0.8rem 1.2rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.6rem",
-              }}
-            >
-              ✓ Guardado en{" "}
-              <span style={{ color: "#00d4ff", margin: "0 0.3rem" }}>
-                {filePath}
-              </span>
-            </div>
-          )}
+          <SaveBlock
+            output={output}
+            slug={slug}
+            onSaved={() => {
+              setTimeout(() => onClose(), 1200);
+            }}
+          />
         </div>
       </div>
+    </div>
+  );
+}
+
+// ─── SAVE BLOCK ───────────────────────────────────────────────────────────────
+
+// Normaliza un segmento de ruta
+const safeSeg = (s) =>
+  s
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-_]/g, "");
+
+// Convierte input "a/b/c" en array de segmentos limpios
+const parsePathInput = (raw) => raw.split("/").map(safeSeg).filter(Boolean);
+
+function SaveBlock({ output, slug, onSaved }) {
+  const [phase, setPhase] = useState("idle"); // idle | open | saving | done
+  const [pathInput, setPathInput] = useState(""); // lo que escribe el usuario
+  const [tree, setTree] = useState(null); // árbol completo de content/
+  const [saveError, setSaveError] = useState("");
+  const [savedPath, setSavedPath] = useState("");
+  const [nameError, setNameError] = useState("");
+  const S = { fontFamily: "monospace" };
+
+  // Carga árbol recursivo desde la API
+  const loadTree = async () => {
+    try {
+      const res = await fetch("/api/writeups/--tree");
+      const data = await res.json();
+      setTree(data.tree || {});
+    } catch {
+      setTree({});
+    }
+  };
+
+  const openSelector = async () => {
+    await loadTree();
+    setPhase("open");
+    setPathInput("");
+    setNameError("");
+    setSaveError("");
+  };
+
+  // Segmentos actuales del input
+  const segs = parsePathInput(pathInput);
+
+  // Navega el árbol según los segmentos escritos y devuelve el nodo actual
+  const getNode = (node, path) => {
+    if (!node || path.length === 0) return node;
+    return getNode(node[path[0]]?.children, path.slice(1));
+  };
+
+  // Último segmento incompleto (lo que hay después del último /)
+  const rawParts = pathInput.split("/");
+  const doneParts = rawParts.slice(0, -1).map(safeSeg).filter(Boolean);
+  const current = safeSeg(rawParts[rawParts.length - 1]);
+  const doneNode = getNode(tree, doneParts); // nodo donde navegamos
+
+  // Hijos del nodo actual para mostrar en tree/lista
+  const siblings = doneNode ? Object.keys(doneNode) : [];
+  const exactMatch = siblings.includes(current);
+  const filtered = current
+    ? siblings.filter((k) => k.startsWith(current))
+    : siblings;
+
+  // Ruta destino final
+  const destParts = current ? [...doneParts, current] : doneParts;
+  const destPath = destParts.join("/");
+
+  const handleConfirm = async () => {
+    setNameError("");
+    if (!destPath) {
+      setNameError("Escribe una ruta destino");
+      return;
+    }
+    setPhase("saving");
+    setSaveError("");
+    try {
+      // 1) Verificar si el archivo ya existe en esa carpeta
+      const checkRes = await fetch(
+        `/api/writeups/${slug || "writeup"}?folder=${encodeURIComponent(destPath)}`,
+      );
+      const checkData = await checkRes.json();
+      if (checkRes.ok && !checkData.error) {
+        // Archivo ya existe — avisar y no sobreescribir
+        setSaveError(
+          `Ya existe "${slug || "writeup"}.md" en content/${destPath} — cambia el slug o elige otra carpeta`,
+        );
+        setPhase("open");
+        return;
+      }
+
+      // 2) Guardar (crea carpetas si no existen + escribe el archivo)
+      const res = await fetch(`/api/writeups/${slug || "writeup"}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: output, folder: destPath }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al guardar");
+      setSavedPath(data.path);
+      setPhase("done");
+      onSaved?.();
+    } catch (err) {
+      setSaveError(err.message);
+      setPhase("open");
+    }
+  };
+
+  // ── IDLE ─────────────────────────────────────────────────────────────────
+  if (phase === "idle")
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <button
+          onClick={openSelector}
+          style={{
+            ...S,
+            fontSize: "0.78rem",
+            letterSpacing: "2px",
+            padding: "10px 28px",
+            border: "1px solid #00ff88",
+            background: "transparent",
+            color: "#00ff88",
+            cursor: "pointer",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#00ff88";
+            e.currentTarget.style.color = "#050a0e";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "#00ff88";
+          }}
+        >
+          &#128190; GUARDAR .MD
+        </button>
+      </div>
+    );
+
+  // ── DONE ─────────────────────────────────────────────────────────────────
+  if (phase === "done")
+    return (
+      <div
+        style={{
+          ...S,
+          fontSize: "0.78rem",
+          color: "#00ff88",
+          border: "1px solid rgba(0,255,136,0.3)",
+          background: "rgba(0,255,136,0.05)",
+          padding: "0.8rem 1.2rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.6rem",
+        }}
+      >
+        ✓ Guardado en{" "}
+        <span style={{ color: "#00d4ff", margin: "0 0.3rem" }}>
+          {savedPath}
+        </span>
+      </div>
+    );
+
+  // ── OPEN ─────────────────────────────────────────────────────────────────
+  return (
+    <div
+      style={{
+        background: "rgba(0,255,136,0.03)",
+        border: "1px solid #1a3a4a",
+        padding: "1.4rem 1.6rem",
+      }}
+    >
+      <div
+        style={{
+          ...S,
+          fontSize: "0.65rem",
+          color: "#00ff88",
+          letterSpacing: "3px",
+          marginBottom: "1.2rem",
+        }}
+      >
+        // SELECCIONAR DESTINO
+      </div>
+
+      {/* ── Input de ruta ── */}
+      <div
+        style={{
+          ...S,
+          fontSize: "0.72rem",
+          color: "#4a6a7a",
+          marginBottom: "0.5rem",
+        }}
+      >
+        Ruta destino — usa <span style={{ color: "#00d4ff" }}>/</span> para
+        subcarpetas
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          marginBottom: "0.5rem",
+        }}
+      >
+        <span
+          style={{
+            ...S,
+            fontSize: "0.78rem",
+            color: "#4a6a7a",
+            whiteSpace: "nowrap",
+          }}
+        >
+          content/
+        </span>
+        <input
+          autoFocus
+          value={pathInput}
+          onChange={(e) => {
+            setPathInput(e.target.value);
+            setNameError("");
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && destPath) handleConfirm();
+          }}
+          placeholder="htb/maquinas  ó  writeups  ó  ctf/linux/easy"
+          style={{
+            flex: 1,
+            ...S,
+            fontSize: "0.8rem",
+            background: "#020608",
+            border: `1px solid ${nameError ? "#ff3366" : "#1a3a4a"}`,
+            color: "#c8d8e8",
+            padding: "6px 10px",
+            outline: "none",
+          }}
+        />
+      </div>
+
+      {/* Feedback del input */}
+      {destPath && (
+        <div style={{ ...S, fontSize: "0.68rem", marginBottom: "0.8rem" }}>
+          {exactMatch ? (
+            <span style={{ color: "#00d4ff" }}>
+              ℹ Existe — se guardará en{" "}
+              <span style={{ color: "#00ff88" }}>content/{destPath}</span>
+            </span>
+          ) : (
+            <span style={{ color: "#00ff88" }}>
+              ✓ Se creará{" "}
+              <span style={{ color: "#00d4ff" }}>content/{destPath}</span>
+            </span>
+          )}
+        </div>
+      )}
+      {nameError && (
+        <div
+          style={{
+            ...S,
+            fontSize: "0.68rem",
+            color: "#ff3366",
+            marginBottom: "0.6rem",
+          }}
+        >
+          ✕ {nameError}
+        </div>
+      )}
+
+      {/* ── Sugerencias del segmento actual ── */}
+      {filtered.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.35rem",
+            marginBottom: "0.9rem",
+          }}
+        >
+          {filtered.map((k) => {
+            const fullPath = [...doneParts, k].join("/");
+            const isExact = k === current;
+            return (
+              <span
+                key={k}
+                onClick={() => {
+                  setPathInput([...rawParts.slice(0, -1), k].join("/") + "/");
+                }}
+                style={{
+                  ...S,
+                  fontSize: "0.68rem",
+                  padding: "3px 10px",
+                  border: `1px solid ${isExact ? "#00ff88" : "#1a3a4a"}`,
+                  color: isExact ? "#00ff88" : "#00d4ff",
+                  background: isExact ? "rgba(0,255,136,0.07)" : "#0d1f2d",
+                  cursor: "pointer",
+                }}
+              >
+                📁 {k}
+              </span>
+            );
+          })}
+        </div>
+      )}
+
+      {/* ── Tree consola ── */}
+      <div
+        style={{
+          background: "#020608",
+          border: "1px solid #1a3a4a",
+          borderLeft: "2px solid #1a3a4a",
+          padding: "0.8rem 1rem",
+          marginBottom: "1rem",
+          maxHeight: "220px",
+          overflowY: "auto",
+        }}
+      >
+        <div
+          style={{
+            ...S,
+            fontSize: "0.6rem",
+            color: "#4a6a7a",
+            letterSpacing: "2px",
+            marginBottom: "0.4rem",
+          }}
+        >
+          // ESTRUCTURA content/
+        </div>
+        <TreeNode
+          node={tree || {}}
+          prefix=""
+          label="content"
+          depth={0}
+          focusPath={destParts}
+          S={S}
+          onSelect={(path) => {
+            setPathInput(path + "/");
+          }}
+        />
+        {/* Preview de nueva ruta en el tree */}
+        {destPath && !exactMatch && (
+          <div style={{ marginTop: "0.2rem" }}>
+            <TreePreview parts={destParts} S={S} />
+          </div>
+        )}
+      </div>
+
+      {/* Ruta final */}
+      {destPath && (
+        <div
+          style={{
+            background: "#0d1f2d",
+            border: "1px solid rgba(0,255,136,0.25)",
+            padding: "0.6rem 1rem",
+            marginBottom: "0.9rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <span>📄</span>
+          <span style={{ ...S, fontSize: "0.82rem", color: "#c8d8e8" }}>
+            content/<span style={{ color: "#00ff88" }}>{destPath}</span>/
+            <span style={{ color: "#00d4ff" }}>{slug || "writeup"}.md</span>
+          </span>
+        </div>
+      )}
+
+      {saveError && (
+        <div
+          style={{
+            ...S,
+            fontSize: "0.72rem",
+            color: "#ff3366",
+            background: "rgba(255,51,102,0.07)",
+            border: "1px solid rgba(255,51,102,0.3)",
+            padding: "0.5rem 0.8rem",
+            marginBottom: "0.8rem",
+          }}
+        >
+          ✕ {saveError}
+        </div>
+      )}
+
+      {/* Acciones */}
+      <div
+        style={{ display: "flex", justifyContent: "flex-end", gap: "0.8rem" }}
+      >
+        <button
+          onClick={() => {
+            setPhase("idle");
+            setSaveError("");
+            setPathInput("");
+          }}
+          style={{
+            ...S,
+            fontSize: "0.72rem",
+            letterSpacing: "2px",
+            padding: "8px 18px",
+            border: "1px solid #4a6a7a",
+            background: "transparent",
+            color: "#4a6a7a",
+            cursor: "pointer",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#4a6a7a";
+            e.currentTarget.style.color = "#050a0e";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "#4a6a7a";
+          }}
+        >
+          ✕ CANCELAR
+        </button>
+        {destPath && (
+          <button
+            onClick={handleConfirm}
+            disabled={phase === "saving"}
+            style={{
+              ...S,
+              fontSize: "0.72rem",
+              letterSpacing: "2px",
+              padding: "8px 26px",
+              border: "1px solid #00ff88",
+              background:
+                phase === "saving"
+                  ? "rgba(0,255,136,0.3)"
+                  : "rgba(0,255,136,0.1)",
+              color: "#00ff88",
+              cursor: phase === "saving" ? "wait" : "pointer",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              if (phase !== "saving") {
+                e.currentTarget.style.background = "#00ff88";
+                e.currentTarget.style.color = "#050a0e";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (phase !== "saving") {
+                e.currentTarget.style.background = "rgba(0,255,136,0.1)";
+                e.currentTarget.style.color = "#00ff88";
+              }
+            }}
+          >
+            {phase === "saving"
+              ? "⏳ GUARDANDO..."
+              : exactMatch
+                ? "✓ GUARDAR AQUÍ"
+                : "✓ CREAR Y GUARDAR"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Render recursivo del árbol
+function TreeNode({
+  node,
+  prefix,
+  label,
+  depth,
+  focusPath,
+  S,
+  onSelect,
+  pathSoFar = "",
+}) {
+  if (!node) return null;
+  const keys = Object.keys(node);
+  const fullPath = pathSoFar ? `${pathSoFar}/${label}` : depth > 0 ? label : "";
+  const isFocus = focusPath.join("/") === fullPath;
+
+  return (
+    <div>
+      {depth > 0 && (
+        <pre
+          onClick={() => fullPath && onSelect(fullPath)}
+          style={{
+            ...S,
+            fontSize: "0.72rem",
+            margin: 0,
+            lineHeight: "1.8",
+            whiteSpace: "pre",
+            cursor: "pointer",
+            color: isFocus ? "#00ff88" : depth === 1 ? "#c8d8e8" : "#7a9aaa",
+          }}
+        >
+          {prefix}
+          <span style={{ color: "#1a4a5a" }}>
+            {keys.length ? "├── " : "└── "}
+          </span>
+          <span>{isFocus ? "📂 " : "📁 "}</span>
+          <span>{label}/</span>
+          {node._files > 0 && (
+            <span style={{ color: "#2a4a5a" }}> ({node._files} .md)</span>
+          )}
+          {isFocus && <span style={{ color: "#00ff88" }}> ◀</span>}
+        </pre>
+      )}
+      {depth === 0 && (
+        <pre
+          style={{
+            ...S,
+            fontSize: "0.72rem",
+            margin: 0,
+            lineHeight: "1.8",
+            color: "#4a6a7a",
+          }}
+        >
+          content/
+        </pre>
+      )}
+      {keys
+        .filter((k) => k !== "_files")
+        .map((k, i) => {
+          const isLast = i === keys.filter((x) => x !== "_files").length - 1;
+          const childPrefix =
+            depth === 0 ? "" : prefix + (isLast ? "    " : "│   ");
+          return (
+            <TreeNode
+              key={k}
+              node={node[k]?.children || {}}
+              prefix={childPrefix}
+              label={k}
+              depth={depth + 1}
+              focusPath={focusPath}
+              S={S}
+              onSelect={onSelect}
+              pathSoFar={fullPath}
+            />
+          );
+        })}
+    </div>
+  );
+}
+
+// Preview de ruta nueva en el tree (punteada)
+function TreePreview({ parts, S }) {
+  return (
+    <div>
+      {parts.map((p, i) => (
+        <pre
+          key={i}
+          style={{
+            ...S,
+            fontSize: "0.72rem",
+            margin: 0,
+            lineHeight: "1.8",
+            whiteSpace: "pre",
+            color: "#3a5a4a",
+          }}
+        >
+          {"    ".repeat(i)}
+          <span style={{ color: "#1a3a2a" }}>└── </span>
+          <span>📁 </span>
+          <span>{p}/</span>
+          {i === parts.length - 1 && (
+            <span style={{ color: "#00ff88" }}> ← nuevo</span>
+          )}
+        </pre>
+      ))}
     </div>
   );
 }

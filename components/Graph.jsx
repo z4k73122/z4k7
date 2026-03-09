@@ -68,12 +68,9 @@ export default function Graph() {
   // ── Fetch datos ───────────────────────────────────────────
   useEffect(() => {
     fetch("/api/graph")
-      .then((r) => {
-        if (!r.ok) throw new Error("no data");
-        return r.json();
-      })
+      .then((r) => r.json())
       .then((data) => {
-        setGraphData(data);
+        if (data?.nodes?.length) setGraphData(data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
