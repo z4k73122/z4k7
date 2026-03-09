@@ -7,7 +7,6 @@ const calloutColors = {
   warning: { border: "#ff8c00", bg: "rgba(255,140,0,0.05)", label: "#ff8c00" },
   danger: { border: "#ff3366", bg: "rgba(255,51,102,0.05)", label: "#ff3366" },
   default: { border: "#00ff88", bg: "rgba(0,255,136,0.04)", label: "#00ff88" },
-  tip: { border: "#a78bfa", bg: "rgba(167,139,250,0.05)", label: "#a78bfa" },
 };
 
 export default function WriteupPage({ params }) {
@@ -70,11 +69,13 @@ export default function WriteupPage({ params }) {
       </div>
     );
 
+  // Pasos con título real (num no vacío)
   const titledSteps = (data.steps || []).filter((s) => s.num && s.num !== "");
   const lastN = titledSteps.length;
   const flagsNum = String(lastN + 1).padStart(2, "0");
   const lessonsNum = String(lastN + 2).padStart(2, "0");
 
+  // Flags dinámicas: flags_list primero, si no flags.user/root, si no vacío
   const flagsList =
     data.flags_list && data.flags_list.length > 0
       ? data.flags_list
@@ -82,6 +83,7 @@ export default function WriteupPage({ params }) {
         ? Object.entries(data.flags).map(([label, value]) => ({ label, value }))
         : [];
 
+  // Nav sidebar dinámico
   const navItems = [
     ...titledSteps.map((s) => ({ id: s.id, num: s.num, label: s.title })),
     ...(flagsList.length > 0
@@ -150,6 +152,7 @@ export default function WriteupPage({ params }) {
             {"<z4k7_writeups/>"}
           </div>
 
+          {/* Machine Info */}
           <div style={{ marginBottom: "2rem" }}>
             <div
               style={{
@@ -196,6 +199,7 @@ export default function WriteupPage({ params }) {
             </div>
           </div>
 
+          {/* Nav */}
           <div style={{ marginBottom: "2rem" }}>
             <div
               style={{
@@ -250,6 +254,7 @@ export default function WriteupPage({ params }) {
             ))}
           </div>
 
+          {/* Técnicas */}
           {data.techniques && (
             <div>
               <div
@@ -292,7 +297,7 @@ export default function WriteupPage({ params }) {
         </aside>
 
         {/* MAIN */}
-        <main style={{ padding: "3rem 6rem" }}>
+        <main style={{ padding: "3rem 4rem", maxWidth: "900px" }}>
           <Link
             href="/#labs"
             style={{
@@ -391,7 +396,7 @@ export default function WriteupPage({ params }) {
               <span style={{ color: "#1a3a4a" }}>|</span>
               <span>Pentester Jr · eJPTv2</span>
               <span style={{ color: "#1a3a4a" }}>|</span>
-              <span>{data.date}</span>
+              <span>{data.year}</span>
             </div>
             {data.tags && (
               <div
@@ -443,44 +448,13 @@ export default function WriteupPage({ params }) {
             )}
           </div>
 
-          {/* STEPS */}
+          {/* STEPS — formato content[] */}
           {(data.steps || []).map((step, idx) => {
             const hasTitle = step.num && step.num !== "";
 
-            // ── Normalizar a content[]: soporta formato nuevo y viejo ──
-            const contentList = (() => {
-              // Formato nuevo: content[] con kind
-              if (Array.isArray(step.content) && step.content.length > 0)
-                return step.content;
-              // Formato viejo: campos planos → reconstruir orden aproximado
-              const items = [];
-              if (step.notes) items.push({ kind: "note", text: step.notes });
-              if (step.code)
-                items.push({
-                  kind: "code",
-                  lang: step.code_lang || "BASH",
-                  code: step.code,
-                });
-              (step.images || []).forEach((img) =>
-                items.push({ kind: "image", ...img }),
-              );
-              (step.bullet_list || []).forEach((t) =>
-                items.push({ kind: "bullet", text: t }),
-              );
-              // callouts viejo: campo plano o array
-              if (Array.isArray(step.callouts))
-                step.callouts.forEach((c) =>
-                  items.push({ kind: "callout", ...c }),
-                );
-              else if (step.callout_type)
-                items.push({
-                  kind: "callout",
-                  type: step.callout_type,
-                  label: step.callout_label || "",
-                  text: step.callout_text || "",
-                });
-              return items;
-            })();
+            // Detectar si el step usa formato nuevo (content[]) o viejo (notes, code, images...)
+            const hasContent =
+              Array.isArray(step.content) && step.content.length > 0;
 
             return (
               <div
@@ -488,80 +462,48 @@ export default function WriteupPage({ params }) {
                 id={step.id}
                 style={{ marginBottom: "3rem", scrollMarginTop: "2rem" }}
               >
-                {/* FLAG inline */}
+                {/* Step tipo FLAG */}
                 {step.type === "flag" && (
                   <div
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.05))",
-                      border: "1px solid #1a3a4a",
-                      padding: "2rem",
-                      position: "relative",
-                      overflow: "hidden",
-                      width: "50%",
-                      margin: "auto",
+                        "linear-gradient(135deg, rgba(0,255,136,0.06), rgba(0,212,255,0.04))",
+                      border: "1px solid rgba(0,255,136,0.3)",
+                      padding: "1.2rem 1.5rem",
+                      marginBottom: "1rem",
                     }}
                   >
                     <div
                       style={{
-                        position: "absolute",
-                        top: 0,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "120px",
-                        height: "2px",
-                        background: "#00ff88",
-                      }}
-                    />
-                    <h3
-                      style={{
                         fontFamily: "monospace",
-                        fontSize: "1.3rem",
+                        fontSize: "0.65rem",
                         color: "#00ff88",
-                        letterSpacing: "4px",
-                        marginBottom: "0.5rem",
-                        textAlign: "center",
+                        letterSpacing: "2px",
+                        marginBottom: "0.8rem",
                       }}
                     >
-                      ✓ {step.id.toUpperCase()}
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: "monospace",
-                        fontSize: "0.8rem",
-                        color: "#4a6a7a",
-                        margin: "0 0 1.5rem",
-                        textAlign: "center",
-                      }}
-                    >
-                      {data.title} — {data.platform} · {data.difficulty}
-                    </p>
+                      // FLAG CAPTURADA
+                    </div>
                     <div
                       style={{
                         display: "flex",
                         flexWrap: "wrap",
-                        gap: "1rem",
-                        justifyContent: "center",
+                        gap: "0.8rem",
                       }}
                     >
                       {(step.flag_items || []).map((flag, fi) => (
                         <div
                           key={fi}
-                          style={{
-                            minWidth: "180px",
-                            flex: "1 1 180px",
-                            maxWidth: "420px",
-                          }}
+                          style={{ flex: "1 1 160px", maxWidth: "280px" }}
                         >
                           <div
                             style={{
                               fontFamily: "monospace",
-                              fontSize: "0.65rem",
+                              fontSize: "0.62rem",
                               color: "#4a6a7a",
-                              letterSpacing: "2px",
                               textTransform: "uppercase",
-                              marginBottom: "0.4rem",
-                              textAlign: "center",
+                              letterSpacing: "1px",
+                              marginBottom: "0.3rem",
                             }}
                           >
                             // {flag.label}
@@ -569,13 +511,11 @@ export default function WriteupPage({ params }) {
                           <div
                             style={{
                               fontFamily: "monospace",
-                              fontSize: "0.85rem",
+                              fontSize: "0.8rem",
                               background: "#020608",
                               border: "1px dashed #00ff88",
-                              padding: "0.6rem 1rem",
+                              padding: "0.5rem 0.8rem",
                               color: "#00ff88",
-                              letterSpacing: "1px",
-                              textAlign: "center",
                               wordBreak: "break-all",
                             }}
                           >
@@ -633,26 +573,178 @@ export default function WriteupPage({ params }) {
                   </div>
                 )}
 
-                {/* ── Contenido ordenado — cada item en su posición exacta del .md ── */}
-                {contentList.map((item, ci) => {
-                  if (item.kind === "note")
-                    return (
+                {/* FORMATO NUEVO — content[] con kind */}
+                {hasContent &&
+                  (step.content || []).map((item, ci) => {
+                    if (item.kind === "note")
+                      return (
+                        <p
+                          key={ci}
+                          style={{
+                            color: "#c8d8e8",
+                            marginBottom: "1rem",
+                            whiteSpace: "pre-line",
+                          }}
+                        >
+                          {item.text}
+                        </p>
+                      );
+                    if (item.kind === "code")
+                      return (
+                        <div
+                          key={ci}
+                          style={{
+                            margin: "1.5rem 0",
+                            border: "1px solid #1a3a4a",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#0d1f2d",
+                              padding: "8px 16px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              borderBottom: "1px solid #1a3a4a",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontFamily: "monospace",
+                                fontSize: "0.72rem",
+                                color: "#4a6a7a",
+                              }}
+                            >
+                              {step.title || "código"} — comandos
+                            </span>
+                            <span
+                              style={{
+                                fontFamily: "monospace",
+                                fontSize: "0.65rem",
+                                color: "#00ff88",
+                                background: "rgba(0,255,136,0.1)",
+                                padding: "2px 8px",
+                              }}
+                            >
+                              {item.lang}
+                            </span>
+                          </div>
+                          <pre
+                            style={{
+                              background: "#020608",
+                              padding: "1.2rem 1.5rem",
+                              fontFamily: "'Share Tech Mono', monospace",
+                              fontSize: "0.82rem",
+                              color: "#00ff88",
+                              overflowX: "auto",
+                              lineHeight: "1.8",
+                              whiteSpace: "pre-wrap",
+                              margin: 0,
+                            }}
+                          >
+                            {item.code}
+                          </pre>
+                        </div>
+                      );
+                    if (item.kind === "image") {
+                      const imgSrc =
+                        item.src && item.src.startsWith("http")
+                          ? item.src
+                          : `/${item.src}`;
+                      return (
+                        <ImageBlock
+                          key={ci}
+                          img={{ src: imgSrc, caption: item.caption }}
+                          index={ci}
+                        />
+                      );
+                    }
+                    if (item.kind === "bullet")
+                      return (
+                        <div
+                          key={ci}
+                          style={{
+                            display: "flex",
+                            gap: "0.8rem",
+                            alignItems: "flex-start",
+                            padding: "0.6rem 1rem",
+                            background: "#0d1f2d",
+                            border: "1px solid #1a3a4a",
+                            marginBottom: "0.3rem",
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: "#00ff88",
+                              fontFamily: "monospace",
+                              flexShrink: 0,
+                            }}
+                          >
+                            →
+                          </span>{" "}
+                          {item.text}
+                        </div>
+                      );
+                    if (item.kind === "callout") {
+                      const cc =
+                        calloutColors[item.type] || calloutColors.default;
+                      const icons = {
+                        info: "ℹ",
+                        warning: "⚠",
+                        danger: "✕",
+                        default: "✓",
+                        tip: "💡",
+                      };
+                      return (
+                        <div
+                          key={ci}
+                          style={{
+                            borderLeft: `3px solid ${cc.border}`,
+                            background: cc.bg,
+                            padding: "1rem 1.2rem",
+                            margin: "1rem 0",
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "0.7rem",
+                              letterSpacing: "2px",
+                              color: cc.label,
+                              marginBottom: "0.4rem",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.4rem",
+                            }}
+                          >
+                            <span>{icons[item.type] || "ℹ"}</span>
+                            <span>// {item.label}</span>
+                          </div>
+                          <p style={{ color: "#c8d8e8", margin: 0 }}>
+                            {item.text}
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+
+                {/* FORMATO VIEJO — fallback para .md legacy */}
+                {!hasContent && (
+                  <>
+                    {step.notes && (
                       <p
-                        key={ci}
                         style={{
                           color: "#c8d8e8",
                           marginBottom: "1rem",
                           whiteSpace: "pre-line",
                         }}
                       >
-                        {item.text}
+                        {step.notes}
                       </p>
-                    );
-
-                  if (item.kind === "code")
-                    return (
+                    )}
+                    {step.code && (
                       <div
-                        key={ci}
                         style={{
                           margin: "1.5rem 0",
                           border: "1px solid #1a3a4a",
@@ -675,7 +767,7 @@ export default function WriteupPage({ params }) {
                               color: "#4a6a7a",
                             }}
                           >
-                            {step.title || "código"} — comandos
+                            {step.code_title}
                           </span>
                           <span
                             style={{
@@ -686,7 +778,7 @@ export default function WriteupPage({ params }) {
                               padding: "2px 8px",
                             }}
                           >
-                            {item.lang}
+                            {step.code_lang}
                           </span>
                         </div>
                         <pre
@@ -702,94 +794,99 @@ export default function WriteupPage({ params }) {
                             margin: 0,
                           }}
                         >
-                          {item.code}
+                          {step.code}
                         </pre>
                       </div>
-                    );
-
-                  if (item.kind === "image")
-                    return (
-                      <div key={ci} style={{ margin: "1.5rem 0" }}>
-                        <ImageBlock img={item} index={ci} />
-                      </div>
-                    );
-
-                  if (item.kind === "bullet")
-                    return (
+                    )}
+                    {step.images && step.images.length > 0 && (
                       <div
-                        key={ci}
                         style={{
+                          margin: "1.5rem 0",
                           display: "flex",
-                          gap: "0.8rem",
-                          alignItems: "flex-start",
-                          padding: "0.6rem 1rem",
-                          background: "#0d1f2d",
-                          border: "1px solid #1a3a4a",
-                          margin: "0.3rem 0",
+                          flexDirection: "column",
+                          gap: "1rem",
                         }}
                       >
-                        <span
-                          style={{
-                            color: "#00ff88",
-                            fontFamily: "monospace",
-                            flexShrink: 0,
-                          }}
-                        >
-                          →
-                        </span>{" "}
-                        {item.text}
+                        {step.images.map((img, i) => (
+                          <ImageBlock key={i} img={img} index={i} />
+                        ))}
                       </div>
-                    );
-
-                  if (item.kind === "callout") {
-                    const c = calloutColors[item.type] || calloutColors.info;
-                    const icon =
-                      {
-                        info: "ℹ",
-                        warning: "⚠",
-                        danger: "✕",
-                        default: "✓",
-                        tip: "💡",
-                      }[item.type] || "ℹ";
-                    return (
-                      <div
-                        key={ci}
+                    )}
+                    {step.bullet_list && step.bullet_list.length > 0 && (
+                      <ul
                         style={{
-                          borderLeft: `3px solid ${c.border}`,
-                          background: c.bg,
-                          padding: "1rem 1.2rem",
+                          listStyle: "none",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.6rem",
                           margin: "1rem 0",
+                          padding: 0,
                         }}
                       >
-                        <div
-                          style={{
-                            fontFamily: "monospace",
-                            fontSize: "0.7rem",
-                            letterSpacing: "2px",
-                            color: c.label,
-                            marginBottom: "0.4rem",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.5rem",
-                          }}
-                        >
-                          <span>{icon}</span>
-                          <span>// {item.label}</span>
-                        </div>
-                        <p style={{ color: "#c8d8e8", margin: 0 }}>
-                          {item.text}
-                        </p>
-                      </div>
-                    );
-                  }
-
-                  return null;
-                })}
+                        {step.bullet_list.map((item, i) => (
+                          <li
+                            key={i}
+                            style={{
+                              display: "flex",
+                              gap: "0.8rem",
+                              alignItems: "flex-start",
+                              padding: "0.6rem 1rem",
+                              background: "#0d1f2d",
+                              border: "1px solid #1a3a4a",
+                            }}
+                          >
+                            <span
+                              style={{
+                                color: "#00ff88",
+                                fontFamily: "monospace",
+                                flexShrink: 0,
+                              }}
+                            >
+                              →
+                            </span>{" "}
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {step.callout_type &&
+                      (() => {
+                        const c =
+                          calloutColors[step.callout_type] ||
+                          calloutColors.default;
+                        return (
+                          <div
+                            style={{
+                              borderLeft: `3px solid ${c.border}`,
+                              background: c.bg,
+                              padding: "1rem 1.2rem",
+                              marginTop: "1rem",
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontFamily: "monospace",
+                                fontSize: "0.7rem",
+                                letterSpacing: "2px",
+                                color: c.label,
+                                marginBottom: "0.4rem",
+                              }}
+                            >
+                              // {step.callout_label}
+                            </div>
+                            <p style={{ color: "#c8d8e8", margin: 0 }}>
+                              {step.callout_text}
+                            </p>
+                          </div>
+                        );
+                      })()}
+                  </>
+                )}
               </div>
             );
           })}
 
-          {/* FLAGS */}
+          {/* FLAGS — dinámico, itera flagsList */}
           {flagsList.length > 0 && (
             <div
               id="flags"
@@ -837,11 +934,12 @@ export default function WriteupPage({ params }) {
                   }}
                 />
               </div>
+
               <div
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.05))",
-                  border: "1px solid #1a3a4a",
+                  border: "1px solid #00ff88",
                   padding: "2rem",
                   position: "relative",
                   overflow: "hidden",
@@ -868,7 +966,7 @@ export default function WriteupPage({ params }) {
                     textAlign: "center",
                   }}
                 >
-                  ✓ RECOPILACION
+                  ✓ MACHINE PWNED
                 </h3>
                 <p
                   style={{
@@ -881,6 +979,7 @@ export default function WriteupPage({ params }) {
                 >
                   {data.title} — {data.platform} · {data.difficulty}
                 </p>
+                {/* Una card por flag — se adapta sola a N flags */}
                 <div
                   style={{
                     display: "flex",
@@ -895,7 +994,7 @@ export default function WriteupPage({ params }) {
                       style={{
                         minWidth: "180px",
                         flex: "1 1 180px",
-                        maxWidth: "420px",
+                        maxWidth: "320px",
                       }}
                     >
                       <div
@@ -1068,6 +1167,10 @@ export default function WriteupPage({ params }) {
 
 function ImageBlock({ img, index }) {
   const [expanded, setExpanded] = useState(false);
+  const toggle = (e) => {
+    e.stopPropagation();
+    setExpanded((prev) => !prev);
+  };
   return (
     <div style={{ border: "1px solid #1a3a4a", overflow: "hidden" }}>
       <div
@@ -1111,7 +1214,7 @@ function ImageBlock({ img, index }) {
             img_{String(index + 1).padStart(2, "0")}
           </span>
           <button
-            onClick={() => setExpanded(!expanded)}
+            onClick={toggle}
             style={{
               fontFamily: "monospace",
               fontSize: "0.65rem",
@@ -1132,20 +1235,23 @@ function ImageBlock({ img, index }) {
           padding: "1rem",
           display: "flex",
           justifyContent: "center",
+          overflow: "hidden",
         }}
       >
         <img
           src={img.src}
           alt={img.caption || `evidencia ${index + 1}`}
+          onClick={toggle}
           style={{
             maxWidth: "100%",
-            maxHeight: expanded ? "none" : "350px",
+            height: "auto",
+            maxHeight: expanded ? "2000px" : "350px",
             objectFit: "contain",
             border: "1px solid #1a3a4a",
             cursor: "pointer",
-            transition: "max-height 0.3s ease",
+            transition: "max-height 0.4s ease",
+            display: "block",
           }}
-          onClick={() => setExpanded(!expanded)}
         />
       </div>
       {img.caption && (
