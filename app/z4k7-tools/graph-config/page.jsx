@@ -30,48 +30,77 @@ const TYPE_ORDER = [
   "tool",
   "tag",
 ];
-
-// Tipos que soportan subcolores por valor
 const EXPANDABLE = ["platform", "os", "difficulty", "technique", "tool", "tag"];
 
+const GITHUB_USER = "z4k73122";
+const GITHUB_REPO = "z4k7";
+
 export default function GraphConfigPage() {
+  const [token, setToken] = useState("");
+  const [tokenOk, setTokenOk] = useState(false);
+  const [tokenError, setTokenError] = useState("");
+  const [validating, setValidating] = useState(false);
+
   const [colors, setColors] = useState(DEFAULT_COLORS);
-  const [subColors, setSubColors] = useState({}); // { "HackTheBox": "#ff0000", "Easy": "#00ff00" }
-  const [expanded, setExpanded] = useState({}); // { platform: true, difficulty: false }
+  const [subColors, setSubColors] = useState({});
+  const [expanded, setExpanded] = useState({});
   const [preview, setPreview] = useState(null);
   const [graphJson, setGraphJson] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [step, setStep] = useState(1);
 
-  // ── Helpers ───────────────────────────────────────────────
+  // ── Validar token contra GitHub API ──────────────────────
+  const handleValidateToken = async () => {
+    setValidating(true);
+    setTokenError("");
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github+json",
+          },
+        },
+      );
+      if (res.ok) {
+        setTokenOk(true);
+      } else {
+        const err = await res.json();
+        setTokenError(err.message || "Token inválido o sin permisos");
+      }
+    } catch (e) {
+      setTokenError("Error de conexión: " + e.message);
+    } finally {
+      setValidating(false);
+    }
+  };
+
   const getNodesByType = (type) =>
     preview?.nodes?.filter((n) => n.type === type) || [];
-
   const countByType = (type) => getNodesByType(type).length;
-
   const machines = preview?.nodes?.filter((n) => n.type === "machine") || [];
 
   const toggleExpand = (type) =>
-    setExpanded((prev) => ({ ...prev, [type]: !prev[type] }));
-
+    setExpanded((p) => ({ ...p, [type]: !p[type] }));
   const setSubColor = (label, color) =>
-    setSubColors((prev) => ({ ...prev, [label]: color }));
-
+    setSubColors((p) => ({ ...p, [label]: color }));
   const resetSubColor = (label) =>
-    setSubColors((prev) => {
-      const n = { ...prev };
+    setSubColors((p) => {
+      const n = { ...p };
       delete n[label];
       return n;
     });
 
-  // ── Escanear ──────────────────────────────────────────────
   const handleScan = async () => {
     setLoading(true);
     setGraphJson(null);
     setPreview(null);
     setSaved(false);
+    setSaveError("");
     try {
       const res = await fetch("/api/graph");
       const data = await res.json();
@@ -84,53 +113,33 @@ export default function GraphConfigPage() {
     }
   };
 
-  // ── Generar + Guardar ─────────────────────────────────────
   const handleGenerate = async () => {
     if (!preview) return;
-
-    // Enriquecer nodos con subcolores individuales
+    setSaveError("");
     const enrichedNodes = preview.nodes.map((n) => {
       const sub = subColors[n.label];
       return sub ? { ...n, color: sub } : n;
     });
-
-    const body = {
-      ...preview,
-      nodes: enrichedNodes,
-      colors,
-      subColors,
-    };
-
+    const body = { ...preview, nodes: enrichedNodes, colors, subColors };
     const json = JSON.stringify(body, null, 2);
     setGraphJson(json);
     setStep(3);
-
     try {
       const res = await fetch("/api/graph", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, token }),
       });
       const result = await res.json();
       if (result.ok) {
         setSaved(true);
         setTimeout(() => setSaved(false), 4000);
-      }
+      } else setSaveError(result.error || "Error al guardar");
     } catch (e) {
-      console.error("Error guardando:", e);
+      setSaveError(e.message);
     }
   };
 
-  // ── Copiar ────────────────────────────────────────────────
-  const handleCopy = () => {
-    if (!graphJson) return;
-    navigator.clipboard.writeText(graphJson).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  // ── Reset ─────────────────────────────────────────────────
   const handleReset = async () => {
     setStep(1);
     setPreview(null);
@@ -140,11 +149,20 @@ export default function GraphConfigPage() {
     setExpanded({});
     setCopied(false);
     setSaved(false);
-
-    // Borra data/graph.json
+    setSaveError("");
     await fetch("/api/graph", {
       method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
     }).catch(() => {});
+  };
+
+  const handleCopy = () => {
+    if (!graphJson) return;
+    navigator.clipboard.writeText(graphJson).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
   const card = {
@@ -154,16 +172,196 @@ export default function GraphConfigPage() {
     marginBottom: "0.6rem",
   };
 
+  // ════════════════════════════════════════════════════════
+  // PANTALLA TOKEN
+  // ════════════════════════════════════════════════════════
+  if (!tokenOk) {
+    return (
+      <div
+        style={{
+          background: "#050a0e",
+          minHeight: "100vh",
+          color: "#c8d8e8",
+          fontFamily: "'Share Tech Mono',monospace",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundImage:
+              "linear-gradient(rgba(0,212,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.015) 1px,transparent 1px)",
+            backgroundSize: "32px 32px",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            width: "100%",
+            maxWidth: "480px",
+            padding: "2rem",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.72rem",
+              color: "#00ff88",
+              letterSpacing: "3px",
+              marginBottom: "0.4rem",
+            }}
+          >
+            {"<z4k7_tools/>"}
+          </div>
+          <h1
+            style={{
+              fontSize: "1.6rem",
+              fontWeight: 700,
+              color: "#fff",
+              letterSpacing: "3px",
+              textTransform: "uppercase",
+              marginBottom: "0.4rem",
+            }}
+          >
+            graph-config
+          </h1>
+          <div
+            style={{
+              height: "1px",
+              background: "linear-gradient(to right,#1a3a4a,transparent)",
+              marginBottom: "2.5rem",
+            }}
+          />
+
+          <div
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.62rem",
+              color: "#4a6a7a",
+              letterSpacing: "2px",
+              marginBottom: "0.6rem",
+            }}
+          >
+            // GITHUB TOKEN
+          </div>
+          <div
+            style={{
+              fontSize: "0.68rem",
+              color: "#4a6a7a",
+              marginBottom: "1.2rem",
+              lineHeight: 1.8,
+            }}
+          >
+            Necesario para leer y guardar{" "}
+            <span style={{ color: "#00d4ff" }}>data/graph.json</span> en el
+            repo.
+            <br />
+            github.com → Settings → Developer settings → Tokens (classic) →{" "}
+            <span style={{ color: "#00ff88" }}>repo ✓</span>
+          </div>
+
+          <input
+            type="password"
+            placeholder="ghp_..."
+            value={token}
+            onChange={(e) => {
+              setToken(e.target.value);
+              setTokenError("");
+            }}
+            onKeyDown={(e) =>
+              e.key === "Enter" && token && handleValidateToken()
+            }
+            style={{
+              width: "100%",
+              fontFamily: "monospace",
+              fontSize: "0.75rem",
+              padding: "12px 14px",
+              background: "#060d14",
+              border: `1px solid ${tokenError ? "#ff3366" : token ? "#00d4ff" : "#1a3a4a"}`,
+              color: "#c8d8e8",
+              outline: "none",
+              letterSpacing: "1px",
+              boxSizing: "border-box",
+              marginBottom: "0.8rem",
+            }}
+          />
+
+          {tokenError && (
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#ff3366",
+                marginBottom: "0.8rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              <span>✕</span> {tokenError}
+            </div>
+          )}
+
+          <button
+            onClick={handleValidateToken}
+            disabled={!token || validating}
+            style={{
+              width: "100%",
+              fontFamily: "monospace",
+              fontSize: "0.78rem",
+              padding: "12px",
+              border: `1px solid ${!token ? "#1a3a4a" : "#00ff88"}`,
+              background: !token ? "transparent" : "rgba(0,255,136,0.08)",
+              color: !token ? "#1a3a4a" : "#00ff88",
+              cursor: !token || validating ? "not-allowed" : "pointer",
+              letterSpacing: "2px",
+              transition: "all 0.2s",
+            }}
+            onMouseOver={(e) => {
+              if (token && !validating)
+                e.currentTarget.style.background = "rgba(0,255,136,0.18)";
+            }}
+            onMouseOut={(e) => {
+              if (token && !validating)
+                e.currentTarget.style.background = "rgba(0,255,136,0.08)";
+            }}
+          >
+            {validating ? "// Validando..." : "// Validar token →"}
+          </button>
+
+          <div
+            style={{
+              marginTop: "1.5rem",
+              fontFamily: "monospace",
+              fontSize: "0.6rem",
+              color: "#1a3a4a",
+              textAlign: "center",
+            }}
+          >
+            El token no se guarda — solo se usa en esta sesión
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════
+  // PANEL PRINCIPAL
+  // ════════════════════════════════════════════════════════
   return (
     <div
       style={{
         background: "#050a0e",
         minHeight: "100vh",
         color: "#c8d8e8",
-        fontFamily: "'Share Tech Mono', monospace",
+        fontFamily: "'Share Tech Mono',monospace",
       }}
     >
-      {/* Grid bg */}
       <div
         style={{
           position: "fixed",
@@ -205,6 +403,10 @@ export default function GraphConfigPage() {
           <span style={{ color: "#00ff88", letterSpacing: "2px" }}>
             graph-config
           </span>
+          <span style={{ color: "#1a3a4a" }}>|</span>
+          <span style={{ color: "#00ff88", fontSize: "0.62rem" }}>
+            ✓ token ok
+          </span>
         </div>
         <div style={{ display: "flex", gap: "2rem", fontSize: "0.65rem" }}>
           {[
@@ -229,29 +431,56 @@ export default function GraphConfigPage() {
             </span>
           ))}
         </div>
-        <button
-          onClick={handleReset}
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.68rem",
-            padding: "4px 14px",
-            border: "1px solid #1a3a4a",
-            background: "transparent",
-            color: "#4a6a7a",
-            cursor: "pointer",
-            letterSpacing: "1px",
-          }}
-          onMouseOver={(e) => {
-            e.target.style.color = "#ff3366";
-            e.target.style.borderColor = "#ff3366";
-          }}
-          onMouseOut={(e) => {
-            e.target.style.color = "#4a6a7a";
-            e.target.style.borderColor = "#1a3a4a";
-          }}
-        >
-          // reset
-        </button>
+        <div style={{ display: "flex", gap: "0.8rem", alignItems: "center" }}>
+          <button
+            onClick={() => {
+              setTokenOk(false);
+              setToken("");
+            }}
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.62rem",
+              padding: "3px 10px",
+              border: "1px solid #1a3a4a",
+              background: "transparent",
+              color: "#4a6a7a",
+              cursor: "pointer",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.color = "#ff8c00";
+              e.currentTarget.style.borderColor = "#ff8c00";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.color = "#4a6a7a";
+              e.currentTarget.style.borderColor = "#1a3a4a";
+            }}
+          >
+            // cambiar token
+          </button>
+          <button
+            onClick={handleReset}
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.68rem",
+              padding: "4px 14px",
+              border: "1px solid #1a3a4a",
+              background: "transparent",
+              color: "#4a6a7a",
+              cursor: "pointer",
+              letterSpacing: "1px",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.color = "#ff3366";
+              e.currentTarget.style.borderColor = "#ff3366";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.color = "#4a6a7a";
+              e.currentTarget.style.borderColor = "#1a3a4a";
+            }}
+          >
+            // reset
+          </button>
+        </div>
       </div>
 
       <div
@@ -263,7 +492,7 @@ export default function GraphConfigPage() {
           padding: "3rem 2rem",
         }}
       >
-        {/* ════ PASO 1 — ESCANEAR ════ */}
+        {/* ════ PASO 1 ════ */}
         <div style={{ marginBottom: "3rem" }}>
           <StepHeader
             num="01"
@@ -271,7 +500,6 @@ export default function GraphConfigPage() {
             done={step > 1}
             active={step === 1}
           />
-
           {step === 1 && (
             <div style={{ marginTop: "1.5rem" }}>
               <p
@@ -283,8 +511,8 @@ export default function GraphConfigPage() {
                 }}
               >
                 Lee todos los <span style={{ color: "#00d4ff" }}>.md</span> de{" "}
-                <span style={{ color: "#00ff88" }}>content/writeups/</span> y
-                extrae nodos + conexiones.
+                <span style={{ color: "#00ff88" }}>content/</span> y extrae
+                nodos + conexiones.
               </p>
               <button
                 onClick={handleScan}
@@ -299,21 +527,11 @@ export default function GraphConfigPage() {
                   cursor: loading ? "not-allowed" : "pointer",
                   letterSpacing: "2px",
                 }}
-                onMouseOver={(e) => {
-                  if (!loading)
-                    e.currentTarget.style.background = "rgba(0,212,255,0.18)";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = loading
-                    ? "transparent"
-                    : "rgba(0,212,255,0.08)";
-                }}
               >
                 {loading ? "// Escaneando..." : "// Escanear write-ups"}
               </button>
             </div>
           )}
-
           {step > 1 && preview && (
             <div style={{ marginTop: "1.5rem" }}>
               <div
@@ -396,7 +614,6 @@ export default function GraphConfigPage() {
                   </div>
                 </div>
               </div>
-
               {machines.length > 0 && (
                 <div style={card}>
                   <div
@@ -448,7 +665,7 @@ export default function GraphConfigPage() {
           )}
         </div>
 
-        {/* ════ PASO 2 — COLOREAR ════ */}
+        {/* ════ PASO 2 ════ */}
         {step >= 2 && (
           <div style={{ marginBottom: "3rem" }}>
             <StepHeader
@@ -457,20 +674,7 @@ export default function GraphConfigPage() {
               done={step > 2}
               active={step === 2}
             />
-
             <div style={{ marginTop: "1.5rem" }}>
-              <p
-                style={{
-                  fontSize: "0.72rem",
-                  color: "#4a6a7a",
-                  marginBottom: "1.2rem",
-                  lineHeight: 1.8,
-                }}
-              >
-                Color base por tipo. Los tipos expandibles permiten asignar
-                colores individuales a cada valor.
-              </p>
-
               <div
                 style={{
                   display: "flex",
@@ -483,10 +687,8 @@ export default function GraphConfigPage() {
                   const isExpandable = EXPANDABLE.includes(type);
                   const isOpen = expanded[type];
                   const subNodes = getNodesByType(type);
-
                   return (
                     <div key={type}>
-                      {/* Fila principal */}
                       <div
                         style={{
                           ...card,
@@ -549,8 +751,8 @@ export default function GraphConfigPage() {
                             value={colors[type]}
                             onChange={(e) => {
                               e.stopPropagation();
-                              setColors((prev) => ({
-                                ...prev,
+                              setColors((p) => ({
+                                ...p,
                                 [type]: e.target.value,
                               }));
                             }}
@@ -570,11 +772,11 @@ export default function GraphConfigPage() {
                                 fontSize: "0.7rem",
                                 color: "#4a6a7a",
                                 marginLeft: "0.4rem",
-                                transition: "transform 0.2s",
                                 display: "inline-block",
                                 transform: isOpen
                                   ? "rotate(90deg)"
                                   : "rotate(0deg)",
+                                transition: "transform 0.2s",
                               }}
                             >
                               ▶
@@ -582,8 +784,6 @@ export default function GraphConfigPage() {
                           )}
                         </div>
                       </div>
-
-                      {/* Sub-colores expandidos */}
                       {isExpandable && isOpen && subNodes.length > 0 && (
                         <div
                           style={{
@@ -601,7 +801,7 @@ export default function GraphConfigPage() {
                               marginBottom: "0.6rem",
                             }}
                           >
-                            // COLOR INDIVIDUAL (opcional)
+                            // COLOR INDIVIDUAL
                           </div>
                           <div
                             style={{
@@ -711,88 +911,12 @@ export default function GraphConfigPage() {
                               );
                             })}
                           </div>
-                          <div
-                            style={{
-                              fontSize: "0.6rem",
-                              color: "#1a3a4a",
-                              marginTop: "0.6rem",
-                            }}
-                          >
-                            // Si no asignas color individual, se usa el color
-                            base del tipo
-                          </div>
                         </div>
                       )}
                     </div>
                   );
                 })}
               </div>
-
-              {/* Preview */}
-              <div style={{ ...card, marginBottom: "1.5rem" }}>
-                <div
-                  style={{
-                    fontSize: "0.62rem",
-                    color: "#4a6a7a",
-                    letterSpacing: "2px",
-                    marginBottom: "0.8rem",
-                  }}
-                >
-                  // PREVIEW
-                </div>
-                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                  {TYPE_ORDER.map((type) => (
-                    <div
-                      key={type}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: "50%",
-                          background: colors[type],
-                          boxShadow: `0 0 6px ${colors[type]}`,
-                        }}
-                      />
-                      <span
-                        style={{ fontSize: "0.68rem", color: colors[type] }}
-                      >
-                        {TYPE_LABELS[type]}
-                      </span>
-                    </div>
-                  ))}
-                  {/* Sub-colores custom */}
-                  {Object.entries(subColors).map(([label, color]) => (
-                    <div
-                      key={label}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: "50%",
-                          background: color,
-                          boxShadow: `0 0 6px ${color}`,
-                        }}
-                      />
-                      <span style={{ fontSize: "0.68rem", color: color }}>
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               <div style={{ display: "flex", gap: "1rem" }}>
                 <button
                   onClick={() => {
@@ -832,12 +956,12 @@ export default function GraphConfigPage() {
                     cursor: "pointer",
                     letterSpacing: "2px",
                   }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.background = "rgba(0,255,136,0.18)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.background = "rgba(0,255,136,0.08)";
-                  }}
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.background = "rgba(0,255,136,0.18)")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.background = "rgba(0,255,136,0.08)")
+                  }
                 >
                   // Generar y Guardar →
                 </button>
@@ -846,7 +970,7 @@ export default function GraphConfigPage() {
           </div>
         )}
 
-        {/* ════ PASO 3 — JSON ════ */}
+        {/* ════ PASO 3 ════ */}
         {step >= 3 && graphJson && (
           <div style={{ marginBottom: "3rem" }}>
             <StepHeader
@@ -875,7 +999,27 @@ export default function GraphConfigPage() {
                       letterSpacing: "1px",
                     }}
                   >
-                    ✓ Guardado en data/graph.json
+                    ✓ Guardado en GitHub — Vercel redesplegará en ~30 segundos
+                  </span>
+                </div>
+              )}
+              {saveError && (
+                <div
+                  style={{
+                    background: "rgba(255,51,102,0.06)",
+                    border: "1px solid #ff3366",
+                    padding: "0.8rem 1.2rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "#ff3366",
+                      fontSize: "0.75rem",
+                      letterSpacing: "1px",
+                    }}
+                  >
+                    ✕ Error: {saveError}
                   </span>
                 </div>
               )}
@@ -959,38 +1103,6 @@ export default function GraphConfigPage() {
                 >
                   {graphJson}
                 </pre>
-              </div>
-              <div
-                style={{
-                  ...card,
-                  marginTop: "1rem",
-                  borderColor: "rgba(0,212,255,0.2)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "0.62rem",
-                    color: "#4a6a7a",
-                    letterSpacing: "2px",
-                    marginBottom: "0.6rem",
-                  }}
-                >
-                  // PRÓXIMO PASO
-                </div>
-                <p
-                  style={{
-                    fontSize: "0.72rem",
-                    color: "#c8d8e8",
-                    margin: 0,
-                    lineHeight: 1.9,
-                  }}
-                >
-                  Guardado en{" "}
-                  <span style={{ color: "#00ff88" }}>data/graph.json</span>.
-                  <br />
-                  Cuando agregues write-ups, vuelve aquí →{" "}
-                  <span style={{ color: "#ffcc00" }}>Escanear → Generar</span>.
-                </p>
               </div>
             </div>
           </div>

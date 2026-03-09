@@ -1,6 +1,9 @@
 "use client";
 import { useState, useCallback, useRef } from "react";
 
+const GITHUB_USER = "z4k73122";
+const GITHUB_REPO = "z4k7";
+
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 
 function slugify(t) {
@@ -32,7 +35,6 @@ function parse(text) {
     summary = "",
     tags = [];
 
-  // 1. TAGS
   const tagMatches = text.match(/#([A-Za-z\u00C0-\u024F]\w+)/g) || [];
   tagMatches.forEach((t) => {
     const c = t.replace("#", "").trim();
@@ -41,7 +43,6 @@ function parse(text) {
   });
   tags = [...new Set(tags)];
 
-  // 2. SUMMARY
   const absM = text.match(
     />[\s]*\[!(?:ABSTRACT|abstract)\][^\n]*\n([\s\S]*?)(?=\n##|\n\n##|$)/i,
   );
@@ -53,18 +54,15 @@ function parse(text) {
       .trim()
       .replace(/\n/g, " ");
 
-  // 3. TOOLS — línea "herramientas: nmap, gobuster, sqlmap"
   let tools = [];
   const toolsMatch = text.match(/^herramientas\s*:\s*(.+)$/im);
-  if (toolsMatch) {
+  if (toolsMatch)
     tools = toolsMatch[1]
       .split(",")
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
-  }
 
   const detectedFlags = [];
-
   const idMap = [
     { keys: ["reconoc", "recon", "escaneo", "nmap", "detec"], id: "recon" },
     {
@@ -104,7 +102,6 @@ function parse(text) {
       id: "root",
     },
   ];
-
   const skipSections = [
     "resumen conceptual",
     "definición",
@@ -128,12 +125,10 @@ function parse(text) {
   ];
   const mitigSections = ["mitigaci", "mitigac", "defensa", "blue", "recomend"];
 
-  // ── BLOQUE por ## ──
   const lines = text.split("\n");
   let currentTitle = null,
     currentLines = [];
   const blocks = [];
-
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const headMatch = line.match(/^(#{1,3})\s+(.+)$/);
@@ -154,11 +149,8 @@ function parse(text) {
       title: cleanEmoji(currentTitle).trim(),
       lines: currentLines,
     });
-
-  // Si no hay ningún ## en el texto, meter todo como un bloque genérico
-  if (blocks.length === 0 && text.trim().length > 0) {
+  if (blocks.length === 0 && text.trim().length > 0)
     blocks.push({ title: "Paso sin título", lines: text.split("\n") });
-  }
 
   let stepNum = 1,
     flagCount = 0;
@@ -167,7 +159,6 @@ function parse(text) {
     const tl = block.title.toLowerCase();
     const body = block.lines.join("\n");
 
-    // Lecciones
     if (lessonSections.some((k) => tl.includes(k))) {
       block.lines.forEach((l) => {
         const bm = l.match(/^[-*]\s+(.+)$/);
@@ -178,8 +169,6 @@ function parse(text) {
       });
       continue;
     }
-
-    // Mitigación
     if (mitigSections.some((k) => tl.includes(k))) {
       mitigation = body
         .replace(/^[>\s]*\[!.*?\]\s*/gm, "")
@@ -189,8 +178,6 @@ function parse(text) {
         .trim();
       continue;
     }
-
-    // FLAGS
     if (tl.includes("flag")) {
       flagCount++;
       const flagId = `flag_${String(flagCount).padStart(2, "0")}`;
@@ -215,10 +202,7 @@ function parse(text) {
       });
       continue;
     }
-
-    // Skip secciones ignoradas
     if (skipSections.some((k) => tl.includes(k))) continue;
-    // Skip solo si el bloque está completamente vacío
     if (!body.trim()) continue;
 
     const def = idMap.find((s) => s.keys.some((k) => tl.includes(k)));
@@ -226,7 +210,6 @@ function parse(text) {
     const blockNum = String(stepNum).padStart(2, "0");
     stepNum++;
 
-    // Sub-pasos con ---
     const subBlocks = [];
     let subLines = [],
       inCodeSplit = false;
@@ -242,15 +225,10 @@ function parse(text) {
     for (let si = 0; si < subBlocks.length; si++) {
       const sLines = subBlocks[si];
       if (sLines.every((l) => l.trim() === "")) continue;
-
       const subStepId = subBlocks.length === 1 ? stepId : `${stepId}_${si + 1}`;
       const subTitle = si === 0 ? block.title : "";
       const subNum = si === 0 ? blockNum : "";
-
-      // content[] preserva el orden exacto del .md
-      // cada item: { kind: 'note'|'code'|'image'|'bullet'|'callout', ...data }
       const content = [];
-
       const CALLOUT_TYPE_MAP = {
         info: "info",
         warning: "warning",
@@ -269,7 +247,6 @@ function parse(text) {
         quote: "info",
         cite: "info",
       };
-
       let inCode = false,
         codeLang = "BASH",
         codeLines = [];
@@ -283,16 +260,14 @@ function parse(text) {
         if (text) content.push({ kind: "note", text });
         noteLines = [];
       };
-
       const flushCallout = () => {
-        if (currentCallout) {
+        if (currentCallout)
           content.push({
             kind: "callout",
             type: currentCallout.type,
             label: currentCallout.label,
             text: calloutLines.join(" ").replace(/\*\*/g, "").trim(),
           });
-        }
         inCallout = false;
         calloutLines = [];
         currentCallout = null;
@@ -300,8 +275,6 @@ function parse(text) {
 
       for (let i = 0; i < sLines.length; i++) {
         const l = sLines[i];
-
-        // ── Código ──
         const codeStart = l.match(/^```(\w*)\s*$/);
         if (codeStart && !inCode) {
           flushNote();
@@ -325,8 +298,6 @@ function parse(text) {
           codeLines.push(l);
           continue;
         }
-
-        // ── Callout inicio ──
         const callStart = l.match(/>\s*\[!([A-Za-z]+)\]\s*(.*)?$/i);
         if (callStart) {
           flushNote();
@@ -344,22 +315,18 @@ function parse(text) {
           if (l.startsWith(">")) {
             calloutLines.push(l.replace(/^>\s*/, "").trim());
             continue;
-          } else {
-            flushCallout();
-          } // línea sin ">" → callout terminó, seguir procesando
+          } else flushCallout();
         }
-
-        // ── Imagen: ![caption](assets/images/filename) ──
         const assetsImg = l.match(/!\[([^\]]*)\]\(assets\/images\/([^)]+)\)/i);
         if (assetsImg) {
           flushNote();
-          const caption = assetsImg[1].trim() || "Evidencia técnica";
-          const src = assetsImg[2].trim();
-          content.push({ kind: "image", src, caption });
+          content.push({
+            kind: "image",
+            src: assetsImg[2].trim(),
+            caption: assetsImg[1].trim() || "Evidencia técnica",
+          });
           continue;
         }
-
-        // ── Imagen URL externa: ![caption](https://...) ──
         const extImg = l.match(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/);
         if (extImg) {
           flushNote();
@@ -370,8 +337,6 @@ function parse(text) {
           });
           continue;
         }
-
-        // ── Bullet ──
         const bulletMatch = l.match(/^[-*]\s+(.+)$/);
         if (bulletMatch) {
           flushNote();
@@ -382,8 +347,6 @@ function parse(text) {
           if (c.length > 4) content.push({ kind: "bullet", text: c });
           continue;
         }
-
-        // ── Texto plano → note ──
         const cleanLine = l
           .replace(/\*{3}[^*]+\*{3}/g, "[flag]")
           .replace(/\*\*/g, "")
@@ -391,19 +354,13 @@ function parse(text) {
           .trim();
         if (cleanLine.length > 0) noteLines.push(cleanLine);
       }
-
-      // Flush finales
       if (inCallout) flushCallout();
       flushNote();
-
-      // Si no hay ningún content, agregar nota placeholder
       if (content.length === 0)
         content.push({ kind: "note", text: "Ver detalles del paso." });
-
       steps.push({ id: subStepId, num: subNum, title: subTitle, content });
     }
   }
-
   return { tags, summary, steps, lessons, mitigation, detectedFlags, tools };
 }
 
@@ -419,13 +376,9 @@ function generate(meta, data) {
   let out = `---\ntitle: "${meta.title}"\nplatform: "${meta.platform}"\nos: "${meta.os}"\ndifficulty: "${meta.diff}"\nip: "${meta.ip || "10.10.10.XXX"}"\nslug: "${slug}"\nauthor: "Z4k7"\ndate: "${meta.date || new Date().toISOString().split("T")[0]}"\nyear: "${year}"\nstatus: "pwned"\ntags:\n`;
   allTags.forEach((t) => (out += `  - "${t}"\n`));
   out += 'techniques:\n  - "Completar manualmente"\n';
-  // tools: extraídas de "herramientas: x, y, z" en el .md
   out += "tools:\n";
-  if (tools && tools.length > 0) {
-    tools.forEach((t) => (out += `  - "${t}"\n`));
-  } else {
-    out += `  - "Completar herramientas"\n`;
-  }
+  if (tools && tools.length > 0) tools.forEach((t) => (out += `  - "${t}"\n`));
+  else out += `  - "Completar herramientas"\n`;
   out += "flags_list:\n";
   if (df.length > 0) {
     df.forEach((f) => {
@@ -485,9 +438,191 @@ function generate(meta, data) {
   return out;
 }
 
-// ─── COMPONENT ────────────────────────────────────────────────────────────────
+// ─── TOKEN SCREEN ─────────────────────────────────────────────────────────────
 
-const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+function TokenScreen({ onValid }) {
+  const [token, setToken] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const validate = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github+json",
+          },
+        },
+      );
+      if (res.ok) {
+        onValid(token);
+      } else {
+        const e = await res.json();
+        setError(e.message || "Token inválido");
+      }
+    } catch (e) {
+      setError("Error de conexión");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        background: "#050a0e",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "'Share Tech Mono',monospace",
+      }}
+    >
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(0,255,136,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.02) 1px,transparent 1px)",
+          backgroundSize: "32px 32px",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "480px",
+          padding: "2rem",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "0.72rem",
+            color: "#00ff88",
+            letterSpacing: "3px",
+            marginBottom: "0.4rem",
+          }}
+        >
+          {"<z4k7_tools/>"}
+        </div>
+        <h1
+          style={{
+            fontSize: "1.6rem",
+            fontWeight: 700,
+            color: "#fff",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
+            marginBottom: "0.4rem",
+          }}
+        >
+          conversor
+        </h1>
+        <div
+          style={{
+            height: "1px",
+            background: "linear-gradient(to right,#1a3a4a,transparent)",
+            marginBottom: "2.5rem",
+          }}
+        />
+        <div
+          style={{
+            fontSize: "0.62rem",
+            color: "#4a6a7a",
+            letterSpacing: "2px",
+            marginBottom: "0.6rem",
+          }}
+        >
+          // GITHUB TOKEN
+        </div>
+        <div
+          style={{
+            fontSize: "0.68rem",
+            color: "#4a6a7a",
+            marginBottom: "1.2rem",
+            lineHeight: 1.8,
+          }}
+        >
+          Requerido para guardar el{" "}
+          <span style={{ color: "#00d4ff" }}>.md</span> en el repo.
+          <br />
+          github.com → Settings → Developer settings → Tokens (classic) →{" "}
+          <span style={{ color: "#00ff88" }}>repo ✓</span>
+        </div>
+        <input
+          type="password"
+          placeholder="ghp_..."
+          value={token}
+          onChange={(e) => {
+            setToken(e.target.value);
+            setError("");
+          }}
+          onKeyDown={(e) => e.key === "Enter" && token && validate()}
+          style={{
+            width: "100%",
+            fontFamily: "monospace",
+            fontSize: "0.75rem",
+            padding: "12px 14px",
+            background: "#060d14",
+            border: `1px solid ${error ? "#ff3366" : token ? "#00d4ff" : "#1a3a4a"}`,
+            color: "#c8d8e8",
+            outline: "none",
+            letterSpacing: "1px",
+            boxSizing: "border-box",
+            marginBottom: "0.8rem",
+          }}
+        />
+        {error && (
+          <div
+            style={{
+              fontSize: "0.65rem",
+              color: "#ff3366",
+              marginBottom: "0.8rem",
+            }}
+          >
+            ✕ {error}
+          </div>
+        )}
+        <button
+          onClick={validate}
+          disabled={!token || loading}
+          style={{
+            width: "100%",
+            fontFamily: "monospace",
+            fontSize: "0.78rem",
+            padding: "12px",
+            border: `1px solid ${!token ? "#1a3a4a" : "#00ff88"}`,
+            background: !token ? "transparent" : "rgba(0,255,136,0.08)",
+            color: !token ? "#1a3a4a" : "#00ff88",
+            cursor: !token || loading ? "not-allowed" : "pointer",
+            letterSpacing: "2px",
+          }}
+        >
+          {loading ? "// Validando..." : "// Validar token →"}
+        </button>
+        <div
+          style={{
+            marginTop: "1.5rem",
+            fontSize: "0.6rem",
+            color: "#1a3a4a",
+            textAlign: "center",
+          }}
+        >
+          El token no se guarda — solo se usa en esta sesión
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
+
+const today = new Date().toISOString().split("T")[0];
 const INITIAL_META = {
   title: "",
   slug: "",
@@ -499,6 +634,8 @@ const INITIAL_META = {
 };
 
 export default function ConverterPage() {
+  const [token, setToken] = useState("");
+  const [tokenOk, setTokenOk] = useState(false);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [meta, setMeta] = useState(INITIAL_META);
@@ -512,21 +649,29 @@ export default function ConverterPage() {
   const [previewData, setPreviewData] = useState(null);
   const toastTimer = useRef(null);
 
-  const updateMeta = (key, val) => {
+  if (!tokenOk)
+    return (
+      <TokenScreen
+        onValid={(t) => {
+          setToken(t);
+          setTokenOk(true);
+        }}
+      />
+    );
+
+  const updateMeta = (key, val) =>
     setMeta((prev) => {
       const next = { ...prev, [key]: val };
-      if (key === "title") next.slug = slugify(val); // siempre sincronizado
+      if (key === "title") next.slug = slugify(val);
       return next;
     });
-  };
-
   const showToast = () => {
     setToast(true);
     clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(false), 2500);
   };
 
-  const buildPreview = useCallback((data) => {
+  const buildPreview = (data) => {
     const chips = [];
     data.steps.forEach((s) => chips.push({ type: "step", ...s }));
     if (data.tags.length)
@@ -534,14 +679,11 @@ export default function ConverterPage() {
     if (data.lessons.length)
       chips.push({ type: "lessons", count: data.lessons.length });
     setPreview(chips);
-  }, []);
+  };
 
-  const convertir = useCallback(() => {
+  const convertir = () => {
     if (!input.trim()) {
-      setStatus({
-        type: "error",
-        msg: "// Error: pega tu nota de Obsidian en el panel izquierdo",
-      });
+      setStatus({ type: "error", msg: "// Error: pega tu nota de Obsidian" });
       return;
     }
     if (!meta.title) {
@@ -554,7 +696,6 @@ export default function ConverterPage() {
       setOutput(yaml);
       setPreviewData(data);
       buildPreview(data);
-
       const allContent = data.steps.flatMap((s) => s.content || []);
       const counts = {
         pasos: data.steps.filter((s) => s.type !== "flag").length,
@@ -584,9 +725,9 @@ export default function ConverterPage() {
     } catch (e) {
       setStatus({ type: "error", msg: `// Error: ${e.message}` });
     }
-  }, [input, meta, buildPreview]);
+  };
 
-  const copiar = useCallback(() => {
+  const copiar = () => {
     if (!output) {
       setStatus({ type: "error", msg: "// Primero convierte una nota" });
       return;
@@ -598,7 +739,7 @@ export default function ConverterPage() {
         msg: `// ✓ Copiado — pégalo en content/writeups/${meta.slug || "nombre"}.md`,
       });
     });
-  }, [output, meta.slug]);
+  };
 
   const limpiar = () => {
     setInput("");
@@ -622,6 +763,7 @@ export default function ConverterPage() {
         .header h1{font-size:2.2rem;font-weight:700;color:#fff;letter-spacing:4px}
         .header h1 span{color:var(--green)}
         .header p{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-top:.5rem}
+        .token-bar{display:flex;align-items:center;justify-content:space-between;background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.2);padding:8px 16px;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.68rem}
         .legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:2rem;padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border)}
         .legend-title{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:2px;width:100%;margin-bottom:.3rem}
         .leg-item{font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:3px 10px;border:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
@@ -656,7 +798,7 @@ export default function ConverterPage() {
         .chip{font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:3px 10px;border:1px solid var(--border);color:var(--muted);background:var(--bg2);display:flex;align-items:center;gap:.4rem}
         .chip.active{color:var(--green);border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.05)}
         .chip .n{color:var(--green);font-weight:700}
-        .btns{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem}
+        .btns{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem;flex-wrap:wrap}
         .btn{font-family:'Share Tech Mono',monospace;font-size:.78rem;letter-spacing:2px;padding:10px 30px;border:1px solid var(--green);background:transparent;color:var(--green);cursor:pointer;transition:all .2s;text-transform:uppercase}
         .btn:hover{background:var(--green);color:var(--bg)}
         .btn-cyan{border-color:var(--cyan);color:var(--cyan)}
@@ -679,6 +821,29 @@ export default function ConverterPage() {
           <p>
             // Convierte tus notas de Obsidian al formato .md del portafolio
           </p>
+        </div>
+
+        <div className="token-bar">
+          <span style={{ color: "#00ff88" }}>
+            ✓ token validado — GitHub API activa
+          </span>
+          <button
+            onClick={() => {
+              setTokenOk(false);
+              setToken("");
+            }}
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.65rem",
+              padding: "3px 10px",
+              border: "1px solid #1a3a4a",
+              background: "transparent",
+              color: "#4a6a7a",
+              cursor: "pointer",
+            }}
+          >
+            // cambiar token
+          </button>
         </div>
 
         <div className="legend">
@@ -829,7 +994,6 @@ export default function ConverterPage() {
                         msg: "// Primero convierte una nota para previsualizar",
                       });
                   }}
-                  title="Previsualizar resultado"
                   style={{
                     background: "transparent",
                     border: "1px solid var(--muted)",
@@ -843,18 +1007,8 @@ export default function ConverterPage() {
                     alignItems: "center",
                     gap: "0.4rem",
                   }}
-                  onMouseEnter={(e) => {
-                    if (output) {
-                      e.currentTarget.style.borderColor = "var(--cyan)";
-                      e.currentTarget.style.background = "rgba(0,212,255,0.08)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "var(--muted)";
-                    e.currentTarget.style.background = "transparent";
-                  }}
                 >
-                  &#128065; preview
+                  👁 preview
                 </button>
               </div>
             </div>
@@ -942,13 +1096,13 @@ export default function ConverterPage() {
         ✓ Copiado al portapapeles
       </div>
 
-      {/* ── MODAL PREVIEW ── */}
       {modal && output && (
         <PreviewModal
           output={output}
           slug={meta.slug}
           meta={meta}
           parsedData={previewData}
+          token={token}
           onClose={() => setModal(false)}
         />
       )}
@@ -956,7 +1110,7 @@ export default function ConverterPage() {
   );
 }
 
-// ─── PREVIEW MODAL ────────────────────────────────────────────────────────────
+// ─── CALLOUT COLORS ───────────────────────────────────────────────────────────
 
 const CALLOUT_COLORS = {
   info: {
@@ -991,9 +1145,9 @@ const CALLOUT_COLORS = {
   },
 };
 
-function PreviewModal({ output, slug, meta, parsedData, onClose }) {
-  const [saved, setSaved] = useState(false);
+// ─── PREVIEW MODAL ────────────────────────────────────────────────────────────
 
+function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
   if (!parsedData) return null;
   const { tags, tools, summary, steps, lessons, mitigation } = parsedData;
 
@@ -1041,7 +1195,6 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
         >
           ✕ cerrar
         </button>
-
         <div
           style={{
             fontFamily: "monospace",
@@ -1054,7 +1207,6 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
           // PREVIEW — así se verá en el portafolio
         </div>
 
-        {/* Badges */}
         <div
           style={{
             display: "flex",
@@ -1147,7 +1299,6 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
             ))}
           </div>
         )}
-
         {tools?.length > 0 && (
           <div
             style={{
@@ -1184,7 +1335,6 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
             ))}
           </div>
         )}
-
         {summary && (
           <div
             style={{
@@ -1429,28 +1579,7 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
                             objectFit: "contain",
                             border: "1px solid #1a3a4a",
                           }}
-                          onError={(e) => {
-                            e.target.style.display = "none";
-                            e.target.nextSibling.style.display = "flex";
-                          }}
                         />
-                        <div
-                          style={{
-                            display: "none",
-                            fontFamily: "monospace",
-                            fontSize: "0.7rem",
-                            color: "#4a6a7a",
-                            padding: "2rem",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "100%",
-                            textAlign: "center",
-                            background: "#0d1f2d",
-                            border: "1px dashed #1a3a4a",
-                          }}
-                        >
-                          📷 {item.src}
-                        </div>
                       </div>
                       {item.caption && (
                         <div
@@ -1586,7 +1715,6 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
             ))}
           </div>
         )}
-
         {mitigation && (
           <div
             style={{
@@ -1611,7 +1739,6 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
           </div>
         )}
 
-        {/* GUARDAR */}
         <div
           style={{
             marginTop: "2.5rem",
@@ -1622,9 +1749,8 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
           <SaveBlock
             output={output}
             slug={slug}
-            onSaved={() => {
-              setTimeout(() => onClose(), 1200);
-            }}
+            token={token}
+            onSaved={() => setTimeout(() => onClose(), 1200)}
           />
         </div>
       </div>
@@ -1634,27 +1760,23 @@ function PreviewModal({ output, slug, meta, parsedData, onClose }) {
 
 // ─── SAVE BLOCK ───────────────────────────────────────────────────────────────
 
-// Normaliza un segmento de ruta
 const safeSeg = (s) =>
   s
     .trim()
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9\-_]/g, "");
-
-// Convierte input "a/b/c" en array de segmentos limpios
 const parsePathInput = (raw) => raw.split("/").map(safeSeg).filter(Boolean);
 
-function SaveBlock({ output, slug, onSaved }) {
-  const [phase, setPhase] = useState("idle"); // idle | open | saving | done
-  const [pathInput, setPathInput] = useState(""); // lo que escribe el usuario
-  const [tree, setTree] = useState(null); // árbol completo de content/
+function SaveBlock({ output, slug, token, onSaved }) {
+  const [phase, setPhase] = useState("idle");
+  const [pathInput, setPathInput] = useState("");
+  const [tree, setTree] = useState(null);
   const [saveError, setSaveError] = useState("");
   const [savedPath, setSavedPath] = useState("");
   const [nameError, setNameError] = useState("");
   const S = { fontFamily: "monospace" };
 
-  // Carga árbol recursivo desde la API
   const loadTree = async () => {
     try {
       const res = await fetch("/api/writeups/--tree");
@@ -1673,29 +1795,20 @@ function SaveBlock({ output, slug, onSaved }) {
     setSaveError("");
   };
 
-  // Segmentos actuales del input
   const segs = parsePathInput(pathInput);
-
-  // Navega el árbol según los segmentos escritos y devuelve el nodo actual
+  const rawParts = pathInput.split("/");
+  const doneParts = rawParts.slice(0, -1).map(safeSeg).filter(Boolean);
+  const current = safeSeg(rawParts[rawParts.length - 1]);
   const getNode = (node, path) => {
     if (!node || path.length === 0) return node;
     return getNode(node[path[0]]?.children, path.slice(1));
   };
-
-  // Último segmento incompleto (lo que hay después del último /)
-  const rawParts = pathInput.split("/");
-  const doneParts = rawParts.slice(0, -1).map(safeSeg).filter(Boolean);
-  const current = safeSeg(rawParts[rawParts.length - 1]);
-  const doneNode = getNode(tree, doneParts); // nodo donde navegamos
-
-  // Hijos del nodo actual para mostrar en tree/lista
+  const doneNode = getNode(tree, doneParts);
   const siblings = doneNode ? Object.keys(doneNode) : [];
   const exactMatch = siblings.includes(current);
   const filtered = current
     ? siblings.filter((k) => k.startsWith(current))
     : siblings;
-
-  // Ruta destino final
   const destParts = current ? [...doneParts, current] : doneParts;
   const destPath = destParts.join("/");
 
@@ -1708,25 +1821,24 @@ function SaveBlock({ output, slug, onSaved }) {
     setPhase("saving");
     setSaveError("");
     try {
-      // 1) Verificar si el archivo ya existe en esa carpeta
+      // Verificar duplicado
       const checkRes = await fetch(
         `/api/writeups/${slug || "writeup"}?folder=${encodeURIComponent(destPath)}`,
       );
       const checkData = await checkRes.json();
       if (checkRes.ok && !checkData.error) {
-        // Archivo ya existe — avisar y no sobreescribir
         setSaveError(
-          `Ya existe "${slug || "writeup"}.md" en content/${destPath} — cambia el slug o elige otra carpeta`,
+          `Ya existe "${slug || "writeup"}.md" en content/${destPath}`,
         );
         setPhase("open");
         return;
       }
 
-      // 2) Guardar (crea carpetas si no existen + escribe el archivo)
+      // Guardar con token
       const res = await fetch(`/api/writeups/${slug || "writeup"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: output, folder: destPath }),
+        body: JSON.stringify({ content: output, folder: destPath, token }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al guardar");
@@ -1739,7 +1851,6 @@ function SaveBlock({ output, slug, onSaved }) {
     }
   };
 
-  // ── IDLE ─────────────────────────────────────────────────────────────────
   if (phase === "idle")
     return (
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -1764,12 +1875,11 @@ function SaveBlock({ output, slug, onSaved }) {
             e.currentTarget.style.color = "#00ff88";
           }}
         >
-          &#128190; GUARDAR .MD
+          💾 GUARDAR .MD
         </button>
       </div>
     );
 
-  // ── DONE ─────────────────────────────────────────────────────────────────
   if (phase === "done")
     return (
       <div
@@ -1788,11 +1898,11 @@ function SaveBlock({ output, slug, onSaved }) {
         ✓ Guardado en{" "}
         <span style={{ color: "#00d4ff", margin: "0 0.3rem" }}>
           {savedPath}
-        </span>
+        </span>{" "}
+        — Vercel redesplegará en ~30s
       </div>
     );
 
-  // ── OPEN ─────────────────────────────────────────────────────────────────
   return (
     <div
       style={{
@@ -1812,8 +1922,6 @@ function SaveBlock({ output, slug, onSaved }) {
       >
         // SELECCIONAR DESTINO
       </div>
-
-      {/* ── Input de ruta ── */}
       <div
         style={{
           ...S,
@@ -1850,9 +1958,7 @@ function SaveBlock({ output, slug, onSaved }) {
             setPathInput(e.target.value);
             setNameError("");
           }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && destPath) handleConfirm();
-          }}
+          onKeyDown={(e) => e.key === "Enter" && destPath && handleConfirm()}
           placeholder="htb/maquinas  ó  writeups  ó  ctf/linux/easy"
           style={{
             flex: 1,
@@ -1867,7 +1973,6 @@ function SaveBlock({ output, slug, onSaved }) {
         />
       </div>
 
-      {/* Feedback del input */}
       {destPath && (
         <div style={{ ...S, fontSize: "0.68rem", marginBottom: "0.8rem" }}>
           {exactMatch ? (
@@ -1896,7 +2001,6 @@ function SaveBlock({ output, slug, onSaved }) {
         </div>
       )}
 
-      {/* ── Sugerencias del segmento actual ── */}
       {filtered.length > 0 && (
         <div
           style={{
@@ -1906,33 +2010,28 @@ function SaveBlock({ output, slug, onSaved }) {
             marginBottom: "0.9rem",
           }}
         >
-          {filtered.map((k) => {
-            const fullPath = [...doneParts, k].join("/");
-            const isExact = k === current;
-            return (
-              <span
-                key={k}
-                onClick={() => {
-                  setPathInput([...rawParts.slice(0, -1), k].join("/") + "/");
-                }}
-                style={{
-                  ...S,
-                  fontSize: "0.68rem",
-                  padding: "3px 10px",
-                  border: `1px solid ${isExact ? "#00ff88" : "#1a3a4a"}`,
-                  color: isExact ? "#00ff88" : "#00d4ff",
-                  background: isExact ? "rgba(0,255,136,0.07)" : "#0d1f2d",
-                  cursor: "pointer",
-                }}
-              >
-                📁 {k}
-              </span>
-            );
-          })}
+          {filtered.map((k) => (
+            <span
+              key={k}
+              onClick={() =>
+                setPathInput([...rawParts.slice(0, -1), k].join("/") + "/")
+              }
+              style={{
+                ...S,
+                fontSize: "0.68rem",
+                padding: "3px 10px",
+                border: `1px solid ${k === current ? "#00ff88" : "#1a3a4a"}`,
+                color: k === current ? "#00ff88" : "#00d4ff",
+                background: k === current ? "rgba(0,255,136,0.07)" : "#0d1f2d",
+                cursor: "pointer",
+              }}
+            >
+              📁 {k}
+            </span>
+          ))}
         </div>
       )}
 
-      {/* ── Tree consola ── */}
       <div
         style={{
           background: "#020608",
@@ -1962,11 +2061,8 @@ function SaveBlock({ output, slug, onSaved }) {
           depth={0}
           focusPath={destParts}
           S={S}
-          onSelect={(path) => {
-            setPathInput(path + "/");
-          }}
+          onSelect={(path) => setPathInput(path + "/")}
         />
-        {/* Preview de nueva ruta en el tree */}
         {destPath && !exactMatch && (
           <div style={{ marginTop: "0.2rem" }}>
             <TreePreview parts={destParts} S={S} />
@@ -1974,7 +2070,6 @@ function SaveBlock({ output, slug, onSaved }) {
         )}
       </div>
 
-      {/* Ruta final */}
       {destPath && (
         <div
           style={{
@@ -1994,7 +2089,6 @@ function SaveBlock({ output, slug, onSaved }) {
           </span>
         </div>
       )}
-
       {saveError && (
         <div
           style={{
@@ -2011,7 +2105,6 @@ function SaveBlock({ output, slug, onSaved }) {
         </div>
       )}
 
-      {/* Acciones */}
       <div
         style={{ display: "flex", justifyContent: "flex-end", gap: "0.8rem" }}
       >
@@ -2085,7 +2178,8 @@ function SaveBlock({ output, slug, onSaved }) {
   );
 }
 
-// Render recursivo del árbol
+// ─── TREE COMPONENTS ──────────────────────────────────────────────────────────
+
 function TreeNode({
   node,
   prefix,
@@ -2100,7 +2194,6 @@ function TreeNode({
   const keys = Object.keys(node);
   const fullPath = pathSoFar ? `${pathSoFar}/${label}` : depth > 0 ? label : "";
   const isFocus = focusPath.join("/") === fullPath;
-
   return (
     <div>
       {depth > 0 && (
@@ -2165,7 +2258,6 @@ function TreeNode({
   );
 }
 
-// Preview de ruta nueva en el tree (punteada)
 function TreePreview({ parts, S }) {
   return (
     <div>
