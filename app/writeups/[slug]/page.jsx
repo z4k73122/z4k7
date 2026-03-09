@@ -7,7 +7,34 @@ const calloutColors = {
   warning: { border: "#ff8c00", bg: "rgba(255,140,0,0.05)", label: "#ff8c00" },
   danger: { border: "#ff3366", bg: "rgba(255,51,102,0.05)", label: "#ff3366" },
   default: { border: "#00ff88", bg: "rgba(0,255,136,0.04)", label: "#00ff88" },
+  tip: { border: "#a78bfa", bg: "rgba(167,139,250,0.05)", label: "#a78bfa" },
 };
+
+function renderInlineCode(text) {
+  if (!text) return text;
+  const parts = text.split(/`([^`]+)`/);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <code
+        key={i}
+        style={{
+          fontFamily: "'Fira Code', monospace",
+          fontSize: "0.82em",
+          background: "#0d1f2d",
+          border: "1px solid #1a3a4a",
+          color: "#00d4ff",
+          padding: "1px 6px",
+          borderRadius: "2px",
+          letterSpacing: "0.5px",
+        }}
+      >
+        {part}
+      </code>
+    ) : (
+      part
+    ),
+  );
+}
 
 export default function WriteupPage({ params }) {
   const { slug } = use(params);
@@ -69,21 +96,16 @@ export default function WriteupPage({ params }) {
       </div>
     );
 
-  // Pasos con título real (num no vacío)
   const titledSteps = (data.steps || []).filter((s) => s.num && s.num !== "");
   const lastN = titledSteps.length;
   const flagsNum = String(lastN + 1).padStart(2, "0");
   const lessonsNum = String(lastN + 2).padStart(2, "0");
 
-  // Flags dinámicas: flags_list primero, si no flags.user/root, si no vacío
-  const flagsList =
-    data.flags_list && data.flags_list.length > 0
-      ? data.flags_list
-      : data.flags
-        ? Object.entries(data.flags).map(([label, value]) => ({ label, value }))
-        : [];
+  const flagSteps = (data.steps || []).filter((s) => s.type === "flag");
+  const flagsList = flagSteps.flatMap((s) =>
+    (s.flag_items || []).map((f) => ({ label: f.label, value: f.value })),
+  );
 
-  // Nav sidebar dinámico
   const navItems = [
     ...titledSteps.map((s) => ({ id: s.id, num: s.num, label: s.title })),
     ...(flagsList.length > 0
@@ -296,8 +318,10 @@ export default function WriteupPage({ params }) {
           )}
         </aside>
 
-        {/* MAIN */}
-        <main style={{ padding: "3rem 4rem", maxWidth: "900px" }}>
+        {/* MAIN — FIX: margin: "0 auto" para centrar el contenido */}
+        <main
+          style={{ padding: "3rem 4rem", maxWidth: "900px", margin: "0 auto" }}
+        >
           <Link
             href="/#labs"
             style={{
@@ -369,7 +393,7 @@ export default function WriteupPage({ params }) {
             </div>
             <h1
               style={{
-                fontSize: "3.5rem",
+                fontSize: "2rem",
                 fontWeight: 700,
                 color: "#fff",
                 letterSpacing: "3px",
@@ -448,11 +472,9 @@ export default function WriteupPage({ params }) {
             )}
           </div>
 
-          {/* STEPS — formato content[] */}
+          {/* STEPS */}
           {(data.steps || []).map((step, idx) => {
             const hasTitle = step.num && step.num !== "";
-
-            // Detectar si el step usa formato nuevo (content[]) o viejo (notes, code, images...)
             const hasContent =
               Array.isArray(step.content) && step.content.length > 0;
 
@@ -586,7 +608,7 @@ export default function WriteupPage({ params }) {
                             whiteSpace: "pre-line",
                           }}
                         >
-                          {item.text}
+                          {renderInlineCode(item.text)}
                         </p>
                       );
                     if (item.kind === "code")
@@ -682,7 +704,7 @@ export default function WriteupPage({ params }) {
                           >
                             →
                           </span>{" "}
-                          {item.text}
+                          {renderInlineCode(item.text)}
                         </div>
                       );
                     if (item.kind === "callout") {
@@ -886,7 +908,7 @@ export default function WriteupPage({ params }) {
             );
           })}
 
-          {/* FLAGS — dinámico, itera flagsList */}
+          {/* FLAGS */}
           {flagsList.length > 0 && (
             <div
               id="flags"
@@ -979,7 +1001,6 @@ export default function WriteupPage({ params }) {
                 >
                   {data.title} — {data.platform} · {data.difficulty}
                 </p>
-                {/* Una card por flag — se adapta sola a N flags */}
                 <div
                   style={{
                     display: "flex",
@@ -1166,108 +1187,293 @@ export default function WriteupPage({ params }) {
 }
 
 function ImageBlock({ img, index }) {
-  const [expanded, setExpanded] = useState(false);
-  const toggle = (e) => {
-    e.stopPropagation();
-    setExpanded((prev) => !prev);
-  };
+  const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") setModal(false);
+    };
+    if (modal) window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [modal]);
+
   return (
-    <div style={{ border: "1px solid #1a3a4a", overflow: "hidden" }}>
-      <div
-        style={{
-          background: "#0d1f2d",
-          padding: "6px 16px",
-          borderBottom: "1px solid #1a3a4a",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span
-            style={{
-              color: "#00ff88",
-              fontFamily: "monospace",
-              fontSize: "0.68rem",
-            }}
-          >
-            ▸
-          </span>
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.68rem",
-              color: "#4a6a7a",
-            }}
-          >
-            // Evidencia técnica
-          </span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.65rem",
-              color: "#1a3a4a",
-            }}
-          >
-            img_{String(index + 1).padStart(2, "0")}
-          </span>
-          <button
-            onClick={toggle}
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.65rem",
-              color: "#00d4ff",
-              background: "transparent",
-              border: "1px solid #1a3a4a",
-              padding: "2px 8px",
-              cursor: "pointer",
-            }}
-          >
-            {expanded ? "⊟ colapsar" : "⊞ expandir"}
-          </button>
-        </div>
-      </div>
-      <div
-        style={{
-          background: "#020608",
-          padding: "1rem",
-          display: "flex",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        <img
-          src={img.src}
-          alt={img.caption || `evidencia ${index + 1}`}
-          onClick={toggle}
-          style={{
-            maxWidth: "100%",
-            height: "auto",
-            maxHeight: expanded ? "2000px" : "350px",
-            objectFit: "contain",
-            border: "1px solid #1a3a4a",
-            cursor: "pointer",
-            transition: "max-height 0.4s ease",
-            display: "block",
-          }}
-        />
-      </div>
-      {img.caption && (
+    <>
+      <div style={{ border: "1px solid #1a3a4a" }}>
+        {/* Header */}
         <div
           style={{
-            padding: "8px 16px",
-            fontFamily: "monospace",
-            fontSize: "0.72rem",
-            color: "#4a6a7a",
-            borderTop: "1px solid #1a3a4a",
             background: "#0d1f2d",
+            padding: "6px 16px",
+            borderBottom: "1px solid #1a3a4a",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          ↑ {img.caption}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span
+              style={{
+                color: "#00ff88",
+                fontFamily: "monospace",
+                fontSize: "0.68rem",
+              }}
+            >
+              ▸
+            </span>
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.68rem",
+                color: "#4a6a7a",
+              }}
+            >
+              // Evidencia técnica
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.65rem",
+                color: "#1a3a4a",
+              }}
+            >
+              img_{String(index + 1).padStart(2, "0")}
+            </span>
+            {/* Botón ojo */}
+            <button
+              onClick={() => setModal(true)}
+              title="Ver imagen completa"
+              style={{
+                background: "transparent",
+                border: "1px solid #1a3a4a",
+                padding: "4px 8px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                color: "#00d4ff",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#00d4ff";
+                e.currentTarget.style.background = "rgba(0,212,255,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#1a3a4a";
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              {/* Ojo SVG */}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <span style={{ fontFamily: "monospace", fontSize: "0.65rem" }}>
+                ver
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Preview imagen */}
+        <div
+          style={{
+            background: "#020608",
+            padding: "1rem",
+            display: "flex",
+            justifyContent: "center",
+            cursor: "pointer",
+            position: "relative",
+          }}
+          onClick={() => setModal(true)}
+        >
+          <img
+            src={img.src}
+            alt={img.caption || `evidencia ${index + 1}`}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "350px",
+              objectFit: "contain",
+              border: "1px solid #1a3a4a",
+              display: "block",
+            }}
+          />
+          {/* Overlay hover */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(0,0,0,0)",
+              transition: "background 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(0,212,255,0.08)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(0,0,0,0)";
+            }}
+          >
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#00d4ff"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ opacity: 0.6 }}
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+        </div>
+
+        {img.caption && (
+          <div
+            style={{
+              padding: "8px 16px",
+              fontFamily: "monospace",
+              fontSize: "0.72rem",
+              color: "#4a6a7a",
+              borderTop: "1px solid #1a3a4a",
+              background: "#0d1f2d",
+            }}
+          >
+            ↑ {img.caption}
+          </div>
+        )}
+      </div>
+
+      {/* MODAL */}
+      {modal && (
+        <div
+          onClick={() => setModal(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            background: "rgba(2,6,8,0.92)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "2rem",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          {/* Barra superior modal */}
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "1200px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "1rem",
+              padding: "0 0.5rem",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.72rem",
+                color: "#4a6a7a",
+              }}
+            >
+              // img_{String(index + 1).padStart(2, "0")} —{" "}
+              {img.caption || "evidencia técnica"}
+            </span>
+            <button
+              onClick={() => setModal(false)}
+              style={{
+                background: "transparent",
+                border: "1px solid #1a3a4a",
+                color: "#ff3366",
+                fontFamily: "monospace",
+                fontSize: "0.8rem",
+                padding: "4px 12px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#ff3366";
+                e.currentTarget.style.background = "rgba(255,51,102,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#1a3a4a";
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+              cerrar
+            </button>
+          </div>
+
+          {/* Imagen completa */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "1200px",
+              maxHeight: "85vh",
+              overflow: "auto",
+              border: "1px solid #1a3a4a",
+              background: "#020608",
+              padding: "1rem",
+            }}
+          >
+            <img
+              src={img.src}
+              alt={img.caption || `evidencia ${index + 1}`}
+              style={{
+                maxWidth: "100%",
+                height: "auto",
+                display: "block",
+              }}
+            />
+          </div>
+
+          <p
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.68rem",
+              color: "#1a3a4a",
+              marginTop: "0.8rem",
+            }}
+          >
+            click fuera para cerrar · ESC
+          </p>
         </div>
       )}
-    </div>
+    </>
   );
 }

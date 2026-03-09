@@ -55,11 +55,11 @@ function parse(text) {
       .replace(/\n/g, " ");
 
   let tools = [];
-  const toolsMatch = text.match(/^herramientas\s*:\s*(.+)$/im);
+  const toolsMatch = text.match(/^\*{0,2}herramientas\*{0,2}\s*:\s*(.+)$/im);
   if (toolsMatch)
     tools = toolsMatch[1]
       .split(",")
-      .map((t) => t.trim())
+      .map((t) => t.replace(/\*+/g, "").trim())
       .filter((t) => t.length > 0);
 
   let techniques = [];
@@ -67,7 +67,7 @@ function parse(text) {
   if (techMatch)
     techniques = techMatch[1]
       .split(",")
-      .map((t) => t.trim())
+      .map((t) => t.replace(/\*+/g, "").trim())
       .filter((t) => t.length > 0);
 
   const detectedFlags = [];
@@ -362,7 +362,6 @@ function parse(text) {
         const cleanLine = l
           .replace(/\*{3}[^*]+\*{3}/g, "[flag]")
           .replace(/\*\*/g, "")
-          .replace(/`([^`]+)`/g, "$1")
           .trim();
         if (cleanLine.length > 0) noteLines.push(cleanLine);
       }
@@ -789,7 +788,7 @@ export default function ConverterPage() {
         .header p{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-top:.5rem}
         .token-bar{display:flex;align-items:center;justify-content:space-between;background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.2);padding:8px 16px;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.68rem}
         .legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:2rem;padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border)}
-        .legend-title{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:2px;width:100%;margin-bottom:.3rem}
+        .legend-title{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--green);letter-spacing:2px;width:100%;margin-bottom:.5rem;border-bottom:1px solid var(--border);padding-bottom:.4rem}
         .leg-item{font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:3px 10px;border:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
         .leg-item.green{color:var(--green);background:rgba(0,255,136,0.05);border-color:rgba(0,255,136,0.3)}
         .leg-item.cyan{color:var(--cyan);background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.3)}
@@ -900,7 +899,16 @@ export default function ConverterPage() {
             <b>---</b> Separador de sub-pasos
           </div>
           <div className="leg-item cyan">
-            <b>herramientas:</b> nmap, gobuster → tools:
+            <code style={{ fontFamily: "monospace", color: "#00d4ff" }}>
+              **Herramientas:**
+            </code>{" "}
+            nmap, gobuster → tools:
+          </div>
+          <div className="leg-item green">
+            <code style={{ fontFamily: "monospace", color: "#00ff88" }}>
+              **Técnicas:**
+            </code>{" "}
+            SQLi, XSS → techniques:
           </div>
         </div>
 
@@ -1168,6 +1176,34 @@ const CALLOUT_COLORS = {
     icon: "💡",
   },
 };
+
+// ─── INLINE CODE RENDERER ────────────────────────────────────────────────────
+
+function renderInlineCode(text) {
+  if (!text) return text;
+  const parts = text.split(/`([^`]+)`/);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <code
+        key={i}
+        style={{
+          fontFamily: "'Fira Code', monospace",
+          fontSize: "0.82em",
+          background: "#0d1f2d",
+          border: "1px solid #1a3a4a",
+          color: "#00d4ff",
+          padding: "1px 6px",
+          borderRadius: "2px",
+          letterSpacing: "0.5px",
+        }}
+      >
+        {part}
+      </code>
+    ) : (
+      part
+    ),
+  );
+}
 
 // ─── PREVIEW MODAL ────────────────────────────────────────────────────────────
 
@@ -1504,7 +1540,7 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
                         marginBottom: "0.8rem",
                       }}
                     >
-                      {item.text}
+                      {renderInlineCode(item.text)}
                     </p>
                   );
                 if (item.kind === "code")
@@ -1643,7 +1679,7 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
                       >
                         →
                       </span>{" "}
-                      {item.text}
+                      {renderInlineCode(item.text)}
                     </div>
                   );
                 if (item.kind === "callout") {
