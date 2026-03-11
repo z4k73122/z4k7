@@ -943,7 +943,7 @@ export default function ConverterPage() {
             <b>### Flag</b> Flags inline → flag_items:
           </div>
           <div className="leg-item orange">
-            <b>***label***:valor</b> Par credencial
+            <b>***label***:**valor**</b> Par credencial
           </div>
           <div className="leg-item yellow">
             <b>---</b> Separa flags / sub-pasos
