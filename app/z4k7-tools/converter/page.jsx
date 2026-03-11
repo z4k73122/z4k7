@@ -213,25 +213,22 @@ function parse(text) {
       flagCount++;
       const flagId = `flag_${String(flagCount).padStart(2, "0")}`;
       const flagItems = [];
-      let flagLines = [],
-        postLines = [],
-        separatorFound = false;
+      const postLines = [];
 
+      // Las flags son SOLO líneas con ***label***:valor
+      // Todo lo demás (notas, código, bullets) es contenido post-flag
+      // Detecta: ***label***:**valor** o ***label***:valor (** opcionales en valor)
+      const fReg = /^\s*\*{3}([^*]+)\*{3}:\s*\*{0,2}([^*\n]+?)\*{0,2}\s*$/;
       for (const l of block.lines) {
-        if (!separatorFound && l.trim() === "---") {
-          separatorFound = true;
-          continue;
+        const fm = fReg.exec(l);
+        if (fm) {
+          const label = fm[1].trim();
+          const value = fm[2].trim();
+          flagItems.push({ label, value });
+          detectedFlags.push({ label, value });
+        } else {
+          postLines.push(l);
         }
-        if (separatorFound) postLines.push(l);
-        else flagLines.push(l);
-      }
-
-      const flagBody = flagLines.join("\n");
-      const fReg = /\*{3}([^*]+)\*{3}:\s*([^\n]+)/g;
-      let fm;
-      while ((fm = fReg.exec(flagBody)) !== null) {
-        flagItems.push({ label: fm[1].trim(), value: fm[2].trim() });
-        detectedFlags.push({ label: fm[1].trim(), value: fm[2].trim() });
       }
 
       steps.push({
@@ -321,6 +318,30 @@ function parse(text) {
             tableLines.push(l);
             continue;
           } else if (tableLines.length > 0) flushTable();
+
+          const assetsImg = l.match(
+            /!\[([^\]]*)\]\([^)]*?(assets\/images\/[^)]+)\)/i,
+          );
+          if (assetsImg) {
+            flushNote();
+            content.push({
+              kind: "image",
+              src: assetsImg[2].trim(),
+              caption: assetsImg[1].trim() || "Evidencia técnica",
+            });
+            continue;
+          }
+
+          const extImg = l.match(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/);
+          if (extImg) {
+            flushNote();
+            content.push({
+              kind: "image",
+              src: extImg[2],
+              caption: extImg[1] || "Evidencia técnica",
+            });
+            continue;
+          }
 
           const bulletMatch = l.match(/^[-*]\s+(.+)$/);
           if (bulletMatch) {
@@ -698,15 +719,14 @@ function TokenScreen({ onValid }) {
     <div className="token-screen">
       <div className="token-screen-bg" />
       <div className="token-screen-inner">
-        <div className="token-screen-tag">
-          &lt;<span style={{ color: "#00d4ff" }}>Z4k7</span>_tools/&gt;
-        </div>
+        <div className="token-screen-tag">{"<z4k7_tools/>"}</div>
         <h1>conversor</h1>
         <div className="token-screen-divider" />
         <div className="token-screen-label">// GITHUB TOKEN</div>
         <div className="token-screen-hint">
           Requerido para guardar el <span>".md"</span> en el repo.
           <br />
+          github.com → Settings → Developer settings → Tokens (classic) →{" "}
           <span className="green">repo ✓</span>
         </div>
         <input
