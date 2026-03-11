@@ -10,7 +10,6 @@ const legendLabels = {
   platform: "Plataforma",
   tag: "Tag",
 };
-
 const TYPE_SIZE = {
   machine: 19,
   platform: 20,
@@ -20,7 +19,6 @@ const TYPE_SIZE = {
   tool: 13,
   tag: 11,
 };
-
 const DEFAULT_COLORS = {
   machine: "#00d4ff",
   platform: "#ff8c00",
@@ -30,8 +28,6 @@ const DEFAULT_COLORS = {
   tool: "#00ffcc",
   tag: "#00ff88",
 };
-
-// Orden de animación
 const ANIM_ORDER = [
   "os",
   "machine",
@@ -62,10 +58,19 @@ export default function Graph() {
   const [activeFilters, setActive] = useState({ type: "all", value: null });
   const [openSection, setOpen] = useState(null);
   const [animating, setAnimating] = useState(false);
-  const [animStep, setAnimStep] = useState(null); // label del grupo actual
+  const [animStep, setAnimStep] = useState(null);
   const [showLinks, setShowLinks] = useState(true);
+  const [showLegend, setShowLegend] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // ── Fetch datos ───────────────────────────────────────────
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   useEffect(() => {
     fetch("/api/graph")
       .then((r) => r.json())
@@ -78,7 +83,6 @@ export default function Graph() {
 
   const gColors = graphData?.colors || DEFAULT_COLORS;
   const subColors = graphData?.subColors || {};
-
   const nodeColor = (n) => {
     if (!n) return "#4a6a7a";
     if (n.color) return n.color;
@@ -183,24 +187,18 @@ export default function Graph() {
     return false;
   }
 
-  // ── Inicializar grafo ─────────────────────────────────────
   useEffect(() => {
     if (!graphData) return;
     async function init() {
       const d3 = await import("d3");
       const container = svgRef.current?.parentElement;
       if (!container) return;
-
       const W = container.clientWidth;
-      const nodeCount = graphData.nodes.length;
-      const H = Math.max(520, Math.min(1000, nodeCount * 2.5));
-
+      const H = Math.max(400, Math.min(1000, graphData.nodes.length * 2.5));
       const svg = d3.select(svgRef.current).attr("width", W).attr("height", H);
       svg.selectAll("*").remove();
-
       const g = svg.append("g");
       gRef.current = g;
-
       svg.call(
         d3
           .zoom()
@@ -217,7 +215,6 @@ export default function Graph() {
         .filter((l) => l.source !== l.target)
         .filter((l) => nodeIds.has(l.source) && nodeIds.has(l.target))
         .map((l) => ({ ...l }));
-
       allNodes.current = nodes;
       allLinks.current = links;
 
@@ -246,7 +243,6 @@ export default function Graph() {
           "collision",
           d3.forceCollide().radius((d) => (d.size || 12) + 8),
         );
-
       simRef.current = sim;
 
       const link = g
@@ -372,7 +368,6 @@ export default function Graph() {
     init();
   }, [graphData]);
 
-  // ── Filtros ───────────────────────────────────────────────
   useEffect(() => {
     const node = nodeRef.current;
     const link = linkRef.current;
@@ -397,7 +392,6 @@ export default function Graph() {
     );
   }, [activeFilters]);
 
-  // ── Toggle links ──────────────────────────────────────────
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
@@ -407,31 +401,21 @@ export default function Graph() {
     });
   }, [showLinks]);
 
-  // ── ANIMACIÓN HISTÓRICA ───────────────────────────────────
   const runAnimation = useCallback(async () => {
     const node = nodeRef.current;
     const link = linkRef.current;
     if (!node || !link || !graphData) return;
-
     setAnimating(true);
-
-    // Ocultar todo
     node.selectAll("circle").attr("opacity", 0);
     node.selectAll("text").attr("opacity", 0);
     link.attr("stroke-opacity", 0);
-
     const delay = (ms) => new Promise((r) => setTimeout(r, ms));
     const nodes = allNodes.current;
     const links = allLinks.current;
-
     for (const groupType of ANIM_ORDER) {
       const groupNodes = nodes.filter((n) => n.type === groupType);
-      if (groupNodes.length === 0) continue;
-
-      const label = legendLabels[groupType] || groupType;
-      setAnimStep(label);
-
-      // Aparecer nodos del grupo uno a uno
+      if (!groupNodes.length) continue;
+      setAnimStep(legendLabels[groupType] || groupType);
       for (const n of groupNodes) {
         node
           .filter((d) => d.id === n.id)
@@ -449,8 +433,6 @@ export default function Graph() {
           .attr("opacity", 0.85);
         await delay(groupNodes.length > 30 ? 15 : 40);
       }
-
-      // Aparecer links del grupo
       const groupLinks = links.filter((l) => {
         const src =
           typeof l.source === "object"
@@ -462,7 +444,6 @@ export default function Graph() {
             : nodes.find((n) => n.id === l.target);
         return src?.type === groupType || tgt?.type === groupType;
       });
-
       for (const l of groupLinks) {
         link
           .filter((d) => d === l)
@@ -471,10 +452,8 @@ export default function Graph() {
           .attr("stroke-opacity", l.rel === "related" ? 0.12 : 0.3);
         await delay(groupLinks.length > 100 ? 5 : 20);
       }
-
       await delay(300);
     }
-
     setAnimating(false);
     setAnimStep(null);
   }, [graphData]);
@@ -489,54 +468,156 @@ export default function Graph() {
   const totalLinks =
     graphData?.links?.filter((l) => l.source !== l.target).length || 0;
 
-  return (
-    <section
-      id="graph"
-      style={{ position: "relative", zIndex: 1, padding: "5rem 4rem" }}
-    >
-      {/* Header */}
-      <div
+  const FilterList = () => (
+    <>
+      <button
+        onClick={() => setActive({ type: "all", value: null })}
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "2rem",
+          width: "100%",
+          fontFamily: "monospace",
+          fontSize: "0.7rem",
+          padding: "4px 10px",
+          cursor: "pointer",
+          background: activeFilters.type === "all" ? "#00d4ff" : "transparent",
+          border: `1px solid ${activeFilters.type === "all" ? "#00d4ff" : "#1a3a4a"}`,
+          color: activeFilters.type === "all" ? "#050a0e" : "#4a6a7a",
+          fontWeight: activeFilters.type === "all" ? 700 : 400,
+          marginBottom: "0.5rem",
+          textAlign: "left",
         }}
       >
+        Todos
+      </button>
+      {filterGroups.map((group) => (
+        <div key={group.id} style={{ marginBottom: "0.4rem" }}>
+          <button
+            onClick={() => setOpen(openSection === group.id ? null : group.id)}
+            style={{
+              width: "100%",
+              fontFamily: "monospace",
+              fontSize: "0.65rem",
+              padding: "4px 10px",
+              cursor: "pointer",
+              background: "transparent",
+              border: "1px solid #1a3a4a",
+              color: gColors[group.id] || "#4a6a7a",
+              textAlign: "left",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              letterSpacing: "1px",
+            }}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.borderColor =
+                gColors[group.id] || "#4a6a7a")
+            }
+            onMouseOut={(e) => (e.currentTarget.style.borderColor = "#1a3a4a")}
+          >
+            <span>{group.label}</span>
+            <span
+              style={{
+                fontSize: "0.6rem",
+                display: "inline-block",
+                transition: "transform 0.2s",
+                transform:
+                  openSection === group.id ? "rotate(90deg)" : "rotate(0deg)",
+              }}
+            >
+              ▶
+            </span>
+          </button>
+          {openSection === group.id && (
+            <div
+              style={{
+                background: "#060d14",
+                border: "1px solid #1a3a4a",
+                borderTop: "none",
+              }}
+            >
+              {group.values.map((val) => {
+                const isActive =
+                  activeFilters.type === group.id &&
+                  activeFilters.value === val;
+                const nodeForVal = graphData.nodes.find(
+                  (n) => n.label === val && n.type === group.id,
+                );
+                const valColor =
+                  nodeForVal?.color ||
+                  subColors[val] ||
+                  gColors[group.id] ||
+                  "#4a6a7a";
+                return (
+                  <button
+                    key={val}
+                    onClick={() => setFilter(group.id, val)}
+                    style={{
+                      width: "100%",
+                      fontFamily: "monospace",
+                      fontSize: "0.65rem",
+                      padding: "3px 14px",
+                      cursor: "pointer",
+                      background: isActive ? valColor + "22" : "transparent",
+                      border: "none",
+                      borderLeft: `2px solid ${isActive ? valColor : "transparent"}`,
+                      color: isActive ? valColor : "#4a6a7a",
+                      textAlign: "left",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.color = valColor;
+                      e.currentTarget.style.borderLeftColor = valColor;
+                    }}
+                    onMouseOut={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.color = "#4a6a7a";
+                        e.currentTarget.style.borderLeftColor = "transparent";
+                      }
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: "50%",
+                        background: valColor,
+                        flexShrink: 0,
+                      }}
+                    />
+                    {val}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </>
+  );
+
+  return (
+    <section id="graph" className="graph-section">
+      <div className="graph-header">
         <span
           style={{
             fontFamily: "monospace",
             color: "#00ff88",
             fontSize: "0.85rem",
+            flexShrink: 0,
           }}
         >
           03.
         </span>
-        <h2
-          style={{
-            fontSize: "2rem",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-          }}
-        >
-          Knowledge Graph
-        </h2>
-        <div
-          style={{
-            flex: 1,
-            height: "1px",
-            background: "linear-gradient(to right,#1a3a4a,transparent)",
-            marginLeft: "1rem",
-          }}
-        />
+        <h2 className="graph-title">Knowledge Graph</h2>
+        <div className="graph-divider" />
         {!loading && (
           <span
             style={{
               fontFamily: "monospace",
               fontSize: "0.65rem",
               color: "#4a6a7a",
+              flexShrink: 0,
             }}
           >
             {totalNodes} nodos · {totalLinks} links
@@ -555,6 +636,109 @@ export default function Graph() {
         // Mapa interactivo de conexiones entre máquinas, técnicas y
         herramientas
       </p>
+
+      {/* Controles móvil */}
+      {!loading && graphData?.nodes?.length > 0 && (
+        <>
+          <div className="graph-mobile-controls">
+            <button
+              className={`graph-mobile-btn ${animating ? "active" : ""}`}
+              onClick={runAnimation}
+              disabled={animating}
+            >
+              {animating ? `⟳ ${animStep}...` : "▶ Animar"}
+            </button>
+            <button
+              className={`graph-mobile-btn ${showLinks ? "active" : ""}`}
+              onClick={() => setShowLinks((s) => !s)}
+            >
+              {showLinks ? "⋯ Ocultar links" : "⋯ Mostrar links"}
+            </button>
+            <button
+              className={`graph-mobile-btn ${showLegend ? "active" : ""}`}
+              onClick={() => {
+                setShowLegend((s) => !s);
+                setShowFilters(false);
+              }}
+            >
+              ◉ Leyenda
+            </button>
+            <button
+              className={`graph-mobile-btn ${showFilters ? "active" : ""}`}
+              onClick={() => {
+                setShowFilters((s) => !s);
+                setShowLegend(false);
+              }}
+            >
+              ⊞ Filtros {activeFilters.type !== "all" ? "●" : ""}
+            </button>
+          </div>
+
+          {showLegend && (
+            <div className="graph-mobile-panel">
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.62rem",
+                  color: "#4a6a7a",
+                  letterSpacing: "2px",
+                  marginBottom: "0.6rem",
+                }}
+              >
+                // Tipos
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
+                {Object.entries(legendLabels).map(([type, label]) => (
+                  <div
+                    key={type}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: gColors[type] || "#4a6a7a",
+                        boxShadow: `0 0 5px ${gColors[type] || "#4a6a7a"}`,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "0.68rem",
+                        color: "#c8d8e8",
+                      }}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {showFilters && (
+            <div className="graph-mobile-panel">
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.62rem",
+                  color: "#4a6a7a",
+                  letterSpacing: "2px",
+                  marginBottom: "0.6rem",
+                }}
+              >
+                // Filtrar
+              </div>
+              <FilterList />
+            </div>
+          )}
+        </>
+      )}
 
       {loading && (
         <div
@@ -593,7 +777,6 @@ export default function Graph() {
               color: "#4a6a7a",
               fontSize: "0.85rem",
               letterSpacing: "2px",
-              marginBottom: "1rem",
             }}
           >
             // No hay write-ups aún
@@ -610,19 +793,8 @@ export default function Graph() {
             overflow: "hidden",
           }}
         >
-          {/* ── BOTONES SUPERIORES ── */}
-          <div
-            style={{
-              position: "absolute",
-              top: "1rem",
-              left: "50%",
-              transform: "translateX(-50%)",
-              zIndex: 20,
-              display: "flex",
-              gap: "0.6rem",
-            }}
-          >
-            {/* Animación */}
+          {/* Botones superiores desktop */}
+          <div className="graph-top-btns">
             <button
               onClick={runAnimation}
               disabled={animating}
@@ -663,8 +835,6 @@ export default function Graph() {
                 ? `Animando: ${animStep}...`
                 : "Iniciar animación del grafo"}
             </button>
-
-            {/* Toggle links */}
             <button
               onClick={() => setShowLinks((s) => !s)}
               style={{
@@ -696,19 +866,8 @@ export default function Graph() {
             </button>
           </div>
 
-          {/* Leyenda */}
-          <div
-            style={{
-              position: "absolute",
-              top: "1rem",
-              left: "1rem",
-              zIndex: 10,
-              background: "rgba(5,10,14,0.95)",
-              border: "1px solid #1a3a4a",
-              padding: "0.8rem 1rem",
-              minWidth: "130px",
-            }}
-          >
+          {/* Leyenda desktop */}
+          <div className="graph-legend">
             <div
               style={{
                 fontFamily: "monospace",
@@ -779,21 +938,8 @@ export default function Graph() {
             </div>
           </div>
 
-          {/* Filtros */}
-          <div
-            style={{
-              position: "absolute",
-              top: "1rem",
-              right: "1rem",
-              zIndex: 10,
-              background: "rgba(5,10,14,0.95)",
-              border: "1px solid #1a3a4a",
-              padding: "0.8rem 1rem",
-              minWidth: "160px",
-              maxHeight: "480px",
-              overflowY: "auto",
-            }}
-          >
+          {/* Filtros desktop */}
+          <div className="graph-filter-panel">
             <div
               style={{
                 fontFamily: "monospace",
@@ -805,142 +951,7 @@ export default function Graph() {
             >
               // Filtrar
             </div>
-
-            <button
-              onClick={() => setActive({ type: "all", value: null })}
-              style={{
-                width: "100%",
-                fontFamily: "monospace",
-                fontSize: "0.7rem",
-                padding: "4px 10px",
-                cursor: "pointer",
-                background:
-                  activeFilters.type === "all" ? "#00d4ff" : "transparent",
-                border: `1px solid ${activeFilters.type === "all" ? "#00d4ff" : "#1a3a4a"}`,
-                color: activeFilters.type === "all" ? "#050a0e" : "#4a6a7a",
-                fontWeight: activeFilters.type === "all" ? 700 : 400,
-                marginBottom: "0.5rem",
-                textAlign: "left",
-              }}
-            >
-              Todos
-            </button>
-
-            {filterGroups.map((group) => (
-              <div key={group.id} style={{ marginBottom: "0.4rem" }}>
-                <button
-                  onClick={() =>
-                    setOpen(openSection === group.id ? null : group.id)
-                  }
-                  style={{
-                    width: "100%",
-                    fontFamily: "monospace",
-                    fontSize: "0.65rem",
-                    padding: "4px 10px",
-                    cursor: "pointer",
-                    background: "transparent",
-                    border: "1px solid #1a3a4a",
-                    color: gColors[group.id] || "#4a6a7a",
-                    textAlign: "left",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    letterSpacing: "1px",
-                  }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.borderColor =
-                      gColors[group.id] || "#4a6a7a")
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.borderColor = "#1a3a4a")
-                  }
-                >
-                  <span>{group.label}</span>
-                  <span
-                    style={{
-                      fontSize: "0.6rem",
-                      transition: "transform 0.2s",
-                      display: "inline-block",
-                      transform:
-                        openSection === group.id
-                          ? "rotate(90deg)"
-                          : "rotate(0deg)",
-                    }}
-                  >
-                    ▶
-                  </span>
-                </button>
-
-                {openSection === group.id && (
-                  <div
-                    style={{
-                      background: "#060d14",
-                      border: "1px solid #1a3a4a",
-                      borderTop: "none",
-                    }}
-                  >
-                    {group.values.map((val) => {
-                      const isActive =
-                        activeFilters.type === group.id &&
-                        activeFilters.value === val;
-                      const nodeForVal = graphData.nodes.find(
-                        (n) => n.label === val && n.type === group.id,
-                      );
-                      const valColor =
-                        nodeForVal?.color ||
-                        subColors[val] ||
-                        gColors[group.id] ||
-                        "#4a6a7a";
-                      return (
-                        <button
-                          key={val}
-                          onClick={() => setFilter(group.id, val)}
-                          style={{
-                            width: "100%",
-                            fontFamily: "monospace",
-                            fontSize: "0.65rem",
-                            padding: "3px 14px",
-                            cursor: "pointer",
-                            background: isActive
-                              ? valColor + "22"
-                              : "transparent",
-                            border: "none",
-                            borderLeft: `2px solid ${isActive ? valColor : "transparent"}`,
-                            color: isActive ? valColor : "#4a6a7a",
-                            textAlign: "left",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.5rem",
-                          }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.color = valColor;
-                            e.currentTarget.style.borderLeftColor = valColor;
-                          }}
-                          onMouseOut={(e) => {
-                            if (!isActive) {
-                              e.currentTarget.style.color = "#4a6a7a";
-                              e.currentTarget.style.borderLeftColor =
-                                "transparent";
-                            }
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: 5,
-                              height: 5,
-                              borderRadius: "50%",
-                              background: valColor,
-                              flexShrink: 0,
-                            }}
-                          />
-                          {val}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            ))}
+            <FilterList />
           </div>
 
           <svg ref={svgRef} style={{ width: "100%", display: "block" }} />
@@ -955,20 +966,23 @@ export default function Graph() {
               borderTop: "1px solid #1a3a4a",
             }}
           >
-            scroll → zoom &nbsp;·&nbsp; drag → mover &nbsp;·&nbsp; click →
-            conexiones &nbsp;·&nbsp; doble click → fijar
+            {isMobile
+              ? "pinch → zoom · drag → mover · tap → conexiones"
+              : "scroll → zoom · drag → mover · click → conexiones · doble click → fijar"}
           </div>
         </div>
       )}
 
-      {/* Tooltip */}
       {tooltip.visible && tooltip.node && (
         <div
           style={{
             position: "fixed",
             zIndex: 2000,
             pointerEvents: "none",
-            left: Math.min(tooltip.x + 14, window.innerWidth - 220),
+            left: Math.min(
+              tooltip.x + 14,
+              (typeof window !== "undefined" ? window.innerWidth : 800) - 220,
+            ),
             top: tooltip.y - 10,
             background: "rgba(10,21,32,0.97)",
             border: `1px solid ${nodeColor(tooltip.node)}44`,

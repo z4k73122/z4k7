@@ -8,7 +8,6 @@ function CertCard({ lab }) {
   const [hovered, setHovered] = useState(false);
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [showAllTags, setShowAllTags] = useState(false);
-
   const visibleTags = showAllTags ? lab.tags : lab.tags.slice(0, 6);
 
   return (
@@ -17,6 +16,7 @@ function CertCard({ lab }) {
         <span className={`lab-platform ${lab.platformClass}`}>
           {lab.platform}
         </span>
+
         {lab.platform === "Próximamente" ? (
           <span
             style={{
@@ -24,15 +24,12 @@ function CertCard({ lab }) {
               fontSize: "0.72rem",
               letterSpacing: "1px",
               padding: "3px 10px",
-              textDecoration: "none",
               display: "flex",
               alignItems: "center",
               gap: "5px",
-              border: `1px solid ${hovered ? "#00d4ff" : "#1a3a4a"}`,
-              color: hovered ? "#00d4ff" : "#4a6a7a",
-              background: hovered ? "rgba(0,212,255,0.08)" : "transparent",
-              transition: "all 0.2s",
-              cursor: lab.credlyUrl ? "pointer" : "default",
+              border: "1px solid #1a3a4a",
+              color: "#4a6a7a",
+              background: "transparent",
             }}
           >
             <svg
@@ -40,7 +37,6 @@ function CertCard({ lab }) {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-clock-history"
               viewBox="0 0 16 16"
             >
               <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z" />
@@ -55,30 +51,17 @@ function CertCard({ lab }) {
             rel="noopener noreferrer"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            className="cert-verify-btn"
             style={{
-              fontFamily: "monospace",
-              fontSize: "0.72rem",
-              letterSpacing: "1px",
-              padding: "3px 10px",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
               border: `1px solid ${hovered ? "#00d4ff" : "#1a3a4a"}`,
               color: hovered ? "#00d4ff" : "#4a6a7a",
               background: hovered ? "rgba(0,212,255,0.08)" : "transparent",
-              transition: "all 0.2s",
               cursor: lab.credlyUrl ? "pointer" : "default",
             }}
           >
             {hovered && lab.credlyUrl && (
               <svg
-                style={{
-                  width: "16px",
-                  height: "16px",
-                  color: "#00d4ff",
-                  flexShrink: 0,
-                }}
+                style={{ width: "16px", height: "16px", flexShrink: 0 }}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -94,31 +77,10 @@ function CertCard({ lab }) {
         )}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "1.2rem",
-          alignItems: "flex-start",
-          marginTop: "0.5rem",
-        }}
-      >
+      <div className="cert-body">
         {lab.img &&
           (lab.platform === "coursera-c" ? (
-            <div
-              style={{
-                width: "80px",
-                height: "80px",
-                flexShrink: 0,
-                marginTop: "4px",
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: "2px solid #1a3a4a",
-                background: "#0a1520",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="cert-img-circle">
               <img
                 src={lab.img}
                 alt=""
@@ -126,32 +88,20 @@ function CertCard({ lab }) {
               />
             </div>
           ) : (
-            <img
-              src={lab.img}
-              alt=""
-              style={{
-                width: "80px",
-                height: "80px",
-                objectFit: "contain",
-                flexShrink: 0,
-                marginTop: "4px",
-                mixBlendMode: "screen",
-              }}
-            />
+            <img src={lab.img} alt="" className="cert-img-plain" />
           ))}
 
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div className="lab-title">{lab.title}</div>
 
-          {/* Descripción con ver más */}
           <div>
             <div
               className="lab-desc"
               style={{
-                display: "-webkit-box",
                 WebkitLineClamp: showFullDesc ? 100 : 4,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
+                display: "-webkit-box",
               }}
             >
               {lab.desc}
@@ -159,24 +109,14 @@ function CertCard({ lab }) {
             {lab.desc.length > 200 && (
               <button
                 onClick={() => setShowFullDesc(!showFullDesc)}
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.68rem",
-                  color: showFullDesc ? "#4a6a7a" : "#00d4ff",
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "2px 0",
-                  marginTop: "2px",
-                  letterSpacing: "1px",
-                }}
+                className="cert-toggle-btn"
+                style={{ color: showFullDesc ? "#4a6a7a" : "#00d4ff" }}
               >
                 {showFullDesc ? "- ver menos" : "+ ver más"}
               </button>
             )}
           </div>
 
-          {/* Tags con ver más */}
           <div className="lab-tags" style={{ marginTop: "0.5rem" }}>
             {visibleTags.map((tag, i) => (
               <span key={i} className="lab-tag">
@@ -186,16 +126,7 @@ function CertCard({ lab }) {
             {!showAllTags && lab.tags.length > 6 && (
               <button
                 onClick={() => setShowAllTags(true)}
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.65rem",
-                  color: "#00d4ff",
-                  background: "rgba(0,212,255,0.07)",
-                  border: "1px solid rgba(0,212,255,0.2)",
-                  padding: "2px 8px",
-                  cursor: "pointer",
-                  letterSpacing: "1px",
-                }}
+                className="cert-tags-btn cert-tags-btn--more"
               >
                 +{lab.tags.length - 6} más
               </button>
@@ -203,16 +134,7 @@ function CertCard({ lab }) {
             {showAllTags && lab.tags.length > 6 && (
               <button
                 onClick={() => setShowAllTags(false)}
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.65rem",
-                  color: "#4a6a7a",
-                  background: "rgba(74,106,122,0.07)",
-                  border: "1px solid #1a3a4a",
-                  padding: "2px 8px",
-                  cursor: "pointer",
-                  letterSpacing: "1px",
-                }}
+                className="cert-tags-btn cert-tags-btn--less"
               >
                 ver menos
               </button>
@@ -230,46 +152,20 @@ export default function Certs() {
   const visible = certs.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
   return (
-    <section
-      id="certs"
-      style={{ position: "relative", zIndex: 1, padding: "5rem 4rem" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "3rem",
-        }}
-      >
+    <section id="certs" className="certs-section">
+      <div className="certs-header">
         <span
           style={{
             fontFamily: "monospace",
             color: "#00ff88",
             fontSize: "0.85rem",
+            flexShrink: 0,
           }}
         >
           04.
         </span>
-        <h2
-          style={{
-            fontSize: "2rem",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-          }}
-        >
-          Certificaciones
-        </h2>
-        <div
-          style={{
-            flex: 1,
-            height: "1px",
-            background: "linear-gradient(to right, #1a3a4a, transparent)",
-            marginLeft: "1rem",
-          }}
-        />
+        <h2 className="certs-title">Certificaciones</h2>
+        <div className="certs-divider" />
       </div>
 
       <div className="certs-grid">
@@ -279,15 +175,7 @@ export default function Certs() {
       </div>
 
       {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "1rem",
-            marginTop: "2rem",
-          }}
-        >
+        <div className="certs-pagination">
           <button
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
@@ -295,7 +183,7 @@ export default function Certs() {
               fontFamily: "monospace",
               fontSize: "0.8rem",
               letterSpacing: "2px",
-              padding: "6px 20px",
+              padding: "6px 16px",
               background: "transparent",
               border: `1px solid ${page === 0 ? "#1a3a4a" : "#00d4ff"}`,
               color: page === 0 ? "#1a3a4a" : "#00d4ff",
@@ -304,7 +192,6 @@ export default function Certs() {
           >
             ← PREV
           </button>
-
           {Array.from({ length: totalPages }).map((_, i) => (
             <button
               key={i}
@@ -312,7 +199,7 @@ export default function Certs() {
               style={{
                 fontFamily: "monospace",
                 fontSize: "0.8rem",
-                width: "36px",
+                width: "32px",
                 height: "30px",
                 background: page === i ? "#00d4ff" : "transparent",
                 border: `1px solid ${page === i ? "#00d4ff" : "#1a3a4a"}`,
@@ -324,7 +211,6 @@ export default function Certs() {
               {i + 1}
             </button>
           ))}
-
           <button
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={page === totalPages - 1}
@@ -332,7 +218,7 @@ export default function Certs() {
               fontFamily: "monospace",
               fontSize: "0.8rem",
               letterSpacing: "2px",
-              padding: "6px 20px",
+              padding: "6px 16px",
               background: "transparent",
               border: `1px solid ${page === totalPages - 1 ? "#1a3a4a" : "#00d4ff"}`,
               color: page === totalPages - 1 ? "#1a3a4a" : "#00d4ff",
@@ -344,15 +230,7 @@ export default function Certs() {
         </div>
       )}
 
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: "1rem",
-          fontFamily: "monospace",
-          fontSize: "0.72rem",
-          color: "#4a6a7a",
-        }}
-      >
+      <div className="certs-counter">
         mostrando {page * PER_PAGE + 1}–
         {Math.min((page + 1) * PER_PAGE, certs.length)} de {certs.length} certs
       </div>

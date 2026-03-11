@@ -6,9 +6,9 @@ const PER_PAGE = 8;
 
 const DIFFICULTY_COLORS = {
   Easy: "#00ff88",
-  Medium: "#ffcc00",
-  Hard: "#ff8c00",
-  Insane: "#ff3366",
+  Medium: "#f97316",
+  Hard: "#ef4444",
+  Insane: "#7f1d1d",
 };
 
 const STATUS_COLORS = {
@@ -16,6 +16,45 @@ const STATUS_COLORS = {
   rooted: "#00ff88",
   unknown: "#4a6a7a",
 };
+
+// Etiquetas rotativas para los placeholders
+const PLACEHOLDER_TAGS = [
+  ["Web App Pentesting", "Buffer Overflow"],
+  ["Active Directory", "Privilege Escalation"],
+  ["SQLi", "XSS", "SSRF"],
+  ["CTF", "Reverse Engineering"],
+  ["Network Pentesting", "Lateral Movement"],
+  ["Forensics", "OSINT"],
+  ["Binary Exploitation", "ROP Chains"],
+  ["Cloud Security", "AWS Misconfig"],
+];
+
+function PlaceholderCard({ index }) {
+  const tags = PLACEHOLDER_TAGS[index % PLACEHOLDER_TAGS.length];
+  return (
+    <div
+      className="lab-card"
+      style={{ borderStyle: "dashed", opacity: 0.45, cursor: "default" }}
+    >
+      <div className="lab-header">
+        <span className="lab-platform soon">Próximamente</span>
+      </div>
+      <div className="lab-title" style={{ color: "#4a6a7a" }}>
+        Write-up en progreso...
+      </div>
+      <div className="lab-desc" style={{ color: "#2a4a5a" }}>
+        Nuevos laboratorios siendo documentados. Vuelve pronto.
+      </div>
+      <div className="lab-tags">
+        {tags.map((t, i) => (
+          <span key={i} className="lab-tag">
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function LabCard({ lab }) {
   const diffColor = DIFFICULTY_COLORS[lab.difficulty] || "#4a6a7a";
@@ -34,7 +73,6 @@ function LabCard({ lab }) {
 
       <div className="lab-title">{lab.title}</div>
 
-      {/* OS + Status */}
       <div
         style={{
           display: "flex",
@@ -91,32 +129,7 @@ function LabCard({ lab }) {
       </div>
 
       {!lab.soon && lab.slug && (
-        <Link
-          href={`/writeups/${lab.slug}`}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
-            marginTop: "0.8rem",
-            fontFamily: "monospace",
-            fontSize: "0.72rem",
-            letterSpacing: "1px",
-            padding: "6px 14px",
-            textDecoration: "none",
-            color: "#00ff88",
-            border: "1px solid #00ff88",
-            background: "transparent",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#00ff88";
-            e.currentTarget.style.color = "#050a0e";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.color = "#00ff88";
-          }}
-        >
+        <Link href={`/writeups/${lab.slug}`} className="lab-writeup-btn">
           {">"} Ver Write-up
         </Link>
       )}
@@ -144,7 +157,6 @@ export default function Labs() {
       .catch(() => setLoading(false));
   }, []);
 
-  // Filtros dinámicos
   const platforms = [
     "all",
     ...new Set(labs.map((l) => l.platform).filter(Boolean)),
@@ -170,6 +182,9 @@ export default function Labs() {
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
   const visible = filtered.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
+  // Cuántos placeholders necesitamos para completar la página actual
+  const placeholderCount = Math.max(0, PER_PAGE - visible.length);
+
   const setF = (key, val) => {
     setFilter((f) => ({ ...f, [key]: val }));
     setPage(0);
@@ -189,58 +204,27 @@ export default function Labs() {
   });
 
   return (
-    <section
-      id="labs"
-      style={{
-        position: "relative",
-        zIndex: 1,
-        padding: "5rem 4rem",
-        background: "#0a1520",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "2rem",
-        }}
-      >
+    <section id="labs" className="labs-section">
+      <div className="labs-header">
         <span
           style={{
             fontFamily: "monospace",
             color: "#00ff88",
             fontSize: "0.85rem",
+            flexShrink: 0,
           }}
         >
           02.
         </span>
-        <h2
-          style={{
-            fontSize: "2rem",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-          }}
-        >
-          Laboratorios & Write-ups
-        </h2>
-        <div
-          style={{
-            flex: 1,
-            height: "1px",
-            background: "linear-gradient(to right,#1a3a4a,transparent)",
-            marginLeft: "1rem",
-          }}
-        />
+        <h2 className="labs-title">Laboratorios & Write-ups</h2>
+        <div className="labs-divider" />
         {!loading && (
           <span
             style={{
               fontFamily: "monospace",
               fontSize: "0.65rem",
               color: "#4a6a7a",
+              flexShrink: 0,
             }}
           >
             {filtered.length} labs
@@ -248,36 +232,11 @@ export default function Labs() {
         )}
       </div>
 
-      {/* Filtros */}
+      {/* ── Filtros ── */}
       {!loading && labs.length > 0 && (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1.5rem",
-            marginBottom: "2rem",
-          }}
-        >
-          {/* Plataforma */}
-          <div
-            style={{
-              display: "flex",
-              gap: "0.4rem",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "monospace",
-                fontSize: "0.6rem",
-                color: "#4a6a7a",
-                letterSpacing: "2px",
-                marginRight: "0.3rem",
-              }}
-            >
-              PLATAFORMA
-            </span>
+        <div className="labs-filters">
+          <div className="filter-group">
+            <span className="filter-label">PLATAFORMA</span>
             {platforms.map((p) => (
               <button
                 key={p}
@@ -288,27 +247,8 @@ export default function Labs() {
               </button>
             ))}
           </div>
-
-          {/* Dificultad */}
-          <div
-            style={{
-              display: "flex",
-              gap: "0.4rem",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "monospace",
-                fontSize: "0.6rem",
-                color: "#4a6a7a",
-                letterSpacing: "2px",
-                marginRight: "0.3rem",
-              }}
-            >
-              DIFICULTAD
-            </span>
+          <div className="filter-group">
+            <span className="filter-label">DIFICULTAD</span>
             {difficulties.map((d) => (
               <button
                 key={d}
@@ -331,28 +271,9 @@ export default function Labs() {
               </button>
             ))}
           </div>
-
-          {/* OS */}
           {oses.length > 2 && (
-            <div
-              style={{
-                display: "flex",
-                gap: "0.4rem",
-                flexWrap: "wrap",
-                alignItems: "center",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.6rem",
-                  color: "#4a6a7a",
-                  letterSpacing: "2px",
-                  marginRight: "0.3rem",
-                }}
-              >
-                OS
-              </span>
+            <div className="filter-group">
+              <span className="filter-label">OS</span>
               {oses.map((o) => (
                 <button
                   key={o}
@@ -367,16 +288,9 @@ export default function Labs() {
         </div>
       )}
 
-      {/* Loading */}
+      {/* ── Loading ── */}
       {loading && (
-        <div
-          style={{
-            background: "#050a0e",
-            border: "1px solid #1a3a4a",
-            padding: "4rem",
-            textAlign: "center",
-          }}
-        >
+        <div className="labs-empty">
           <p
             style={{
               fontFamily: "monospace",
@@ -390,16 +304,9 @@ export default function Labs() {
         </div>
       )}
 
-      {/* Sin labs */}
+      {/* ── Sin write-ups ── */}
       {!loading && labs.length === 0 && (
-        <div
-          style={{
-            background: "#050a0e",
-            border: "1px solid #1a3a4a",
-            padding: "4rem",
-            textAlign: "center",
-          }}
-        >
+        <div className="labs-empty">
           <p
             style={{
               fontFamily: "monospace",
@@ -413,16 +320,23 @@ export default function Labs() {
         </div>
       )}
 
-      {/* Grid */}
-      {!loading && visible.length > 0 && (
-        <div className="labs-grid">
-          {visible.map((lab, i) => (
-            <LabCard key={i} lab={lab} />
-          ))}
-        </div>
-      )}
+      {/* ── Grid ── */}
+      {!loading &&
+        (visible.length > 0 || placeholderCount > 0) &&
+        filtered.length > 0 && (
+          <div className="labs-grid">
+            {/* Labs reales */}
+            {visible.map((lab, i) => (
+              <LabCard key={i} lab={lab} />
+            ))}
+            {/* Placeholders para completar la página */}
+            {Array.from({ length: placeholderCount }).map((_, i) => (
+              <PlaceholderCard key={`ph-${i}`} index={visible.length + i} />
+            ))}
+          </div>
+        )}
 
-      {/* Sin resultados con filtro */}
+      {/* ── Sin resultados con filtro activo ── */}
       {!loading && labs.length > 0 && filtered.length === 0 && (
         <div
           style={{
@@ -436,17 +350,9 @@ export default function Labs() {
         </div>
       )}
 
-      {/* Paginación */}
+      {/* ── Paginación ── */}
       {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "1rem",
-            marginTop: "2rem",
-          }}
-        >
+        <div className="labs-pagination">
           <button
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
@@ -454,7 +360,7 @@ export default function Labs() {
               fontFamily: "monospace",
               fontSize: "0.8rem",
               letterSpacing: "2px",
-              padding: "6px 20px",
+              padding: "6px 16px",
               background: "transparent",
               border: `1px solid ${page === 0 ? "#1a3a4a" : "#00d4ff"}`,
               color: page === 0 ? "#1a3a4a" : "#00d4ff",
@@ -470,7 +376,7 @@ export default function Labs() {
               style={{
                 fontFamily: "monospace",
                 fontSize: "0.8rem",
-                width: "36px",
+                width: "32px",
                 height: "30px",
                 background: page === i ? "#00d4ff" : "transparent",
                 border: `1px solid ${page === i ? "#00d4ff" : "#1a3a4a"}`,
@@ -489,7 +395,7 @@ export default function Labs() {
               fontFamily: "monospace",
               fontSize: "0.8rem",
               letterSpacing: "2px",
-              padding: "6px 20px",
+              padding: "6px 16px",
               background: "transparent",
               border: `1px solid ${page === totalPages - 1 ? "#1a3a4a" : "#00d4ff"}`,
               color: page === totalPages - 1 ? "#1a3a4a" : "#00d4ff",
@@ -501,17 +407,9 @@ export default function Labs() {
         </div>
       )}
 
-      {/* Contador */}
+      {/* ── Contador ── */}
       {!loading && filtered.length > 0 && (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "1rem",
-            fontFamily: "monospace",
-            fontSize: "0.72rem",
-            color: "#4a6a7a",
-          }}
-        >
+        <div className="labs-counter">
           mostrando {page * PER_PAGE + 1}–
           {Math.min((page + 1) * PER_PAGE, filtered.length)} de{" "}
           {filtered.length} labs

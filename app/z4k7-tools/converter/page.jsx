@@ -1,5 +1,6 @@
 "use client";
-import { useState, useCallback, useRef } from "react";
+import { useState, useRef } from "react";
+import "../../convertidor.css"; // ajusta la ruta según tu estructura
 
 const GITHUB_USER = "z4k73122";
 const GITHUB_REPO = "z4k7";
@@ -137,6 +138,7 @@ function parse(text) {
   let currentTitle = null,
     currentLines = [];
   const blocks = [];
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const headMatch = line.match(/^(#{1,3})\s+(.+)$/);
@@ -177,25 +179,61 @@ function parse(text) {
       });
       continue;
     }
+
     if (mitigSections.some((k) => tl.includes(k))) {
-      mitigation = body
-        .replace(/^[>\s]*\[!.*?\]\s*/gm, "")
-        .replace(/^[>\s\-*]+/gm, "")
-        .replace(/\*\*/g, "")
-        .replace(/\n+/g, " ")
-        .trim();
+      const mitigItems = [];
+      for (const l of block.lines) {
+        if (/^[>\s]*\[!.*?\]/.test(l)) continue;
+        const bulletMatch = l.match(/^[-*]\s+(.+)$/);
+        if (bulletMatch) {
+          const text = bulletMatch[1].replace(/\*\*/g, "").trim();
+          if (text.length > 2) mitigItems.push(text);
+        } else {
+          const clean = l
+            .replace(/^[>\s]+/, "")
+            .replace(/\*\*/g, "")
+            .trim();
+          if (clean.length > 2) mitigItems.push(clean);
+        }
+      }
+      mitigation =
+        mitigItems.length > 0
+          ? mitigItems
+          : block.lines
+              .join(" ")
+              .replace(/^[>\s]*\[!.*?\]\s*/gm, "")
+              .replace(/^[>\s\-*]+/gm, "")
+              .replace(/\*\*/g, "")
+              .replace(/\n+/g, " ")
+              .trim();
       continue;
     }
+
     if (tl.includes("flag")) {
       flagCount++;
       const flagId = `flag_${String(flagCount).padStart(2, "0")}`;
       const flagItems = [];
+      let flagLines = [],
+        postLines = [],
+        separatorFound = false;
+
+      for (const l of block.lines) {
+        if (!separatorFound && l.trim() === "---") {
+          separatorFound = true;
+          continue;
+        }
+        if (separatorFound) postLines.push(l);
+        else flagLines.push(l);
+      }
+
+      const flagBody = flagLines.join("\n");
       const fReg = /\*{3}([^*]+)\*{3}:\s*([^\n]+)/g;
       let fm;
-      while ((fm = fReg.exec(body)) !== null) {
+      while ((fm = fReg.exec(flagBody)) !== null) {
         flagItems.push({ label: fm[1].trim(), value: fm[2].trim() });
         detectedFlags.push({ label: fm[1].trim(), value: fm[2].trim() });
       }
+
       steps.push({
         id: flagId,
         num: "",
@@ -208,8 +246,112 @@ function parse(text) {
         bullets: [],
         callouts: [],
       });
+
+      if (postLines.length > 0 && postLines.some((l) => l.trim())) {
+        const content = [];
+        let inCode = false,
+          codeLang = "BASH",
+          codeLines = [];
+        let noteLines = [],
+          tableLines = [];
+
+        const flushNote = () => {
+          const text = [...new Set(noteLines)].join("\n").trim();
+          if (text) content.push({ kind: "note", text });
+          noteLines = [];
+        };
+
+        const flushTable = () => {
+          if (tableLines.length < 2) {
+            tableLines.forEach((l) => {
+              const clean = l.replace(/\*\*/g, "").trim();
+              if (clean.length > 0) noteLines.push(clean);
+            });
+            tableLines = [];
+            return;
+          }
+          const headers = tableLines[0]
+            .split("|")
+            .map((h) => h.trim())
+            .filter((h) => h.length > 0);
+          const rows = tableLines
+            .slice(2)
+            .map((row) =>
+              row
+                .split("|")
+                .map((cell) => cell.trim())
+                .filter((cell) => cell.length > 0),
+            )
+            .filter((row) => row.length > 0);
+          if (headers.length > 0 && rows.length > 0)
+            content.push({ kind: "table", headers, rows });
+          tableLines = [];
+        };
+
+        for (const l of postLines) {
+          const codeStart = l.match(/^```(\w*)\s*$/);
+          if (codeStart && !inCode) {
+            flushNote();
+            inCode = true;
+            codeLang = (codeStart[1] || "bash").toUpperCase();
+            codeLines = [];
+            continue;
+          }
+          if (inCode && l.trim() === "```") {
+            inCode = false;
+            if (codeLines.length > 0)
+              content.push({
+                kind: "code",
+                lang: codeLang,
+                code: codeLines.join("\n").trim(),
+              });
+            codeLines = [];
+            continue;
+          }
+          if (inCode) {
+            codeLines.push(l);
+            continue;
+          }
+
+          const isTableLine =
+            l.trim().startsWith("|") && l.trim().endsWith("|");
+          const isSeparatorLine = /^\|[\s\-|:]+\|$/.test(l.trim());
+          if (isTableLine || isSeparatorLine) {
+            flushNote();
+            tableLines.push(l);
+            continue;
+          } else if (tableLines.length > 0) flushTable();
+
+          const bulletMatch = l.match(/^[-*]\s+(.+)$/);
+          if (bulletMatch) {
+            flushNote();
+            const c = bulletMatch[1]
+              .replace(/\*\*/g, "")
+              .replace(/`([^`]+)`/g, "$1")
+              .trim();
+            if (c.length > 4) content.push({ kind: "bullet", text: c });
+            continue;
+          }
+
+          const cleanLine = l
+            .replace(/\*{3}[^*]+\*{3}/g, "[flag]")
+            .replace(/\*\*/g, "")
+            .trim();
+          if (cleanLine.length > 0) noteLines.push(cleanLine);
+        }
+        if (tableLines.length > 0) flushTable();
+        flushNote();
+        if (content.length > 0)
+          steps.push({
+            id: `${flagId}_post`,
+            num: "",
+            title: "Post Flag",
+            content,
+          });
+      }
       continue;
     }
+
     if (skipSections.some((k) => tl.includes(k))) continue;
     if (!body.trim()) continue;
 
@@ -261,13 +403,15 @@ function parse(text) {
       let inCallout = false,
         calloutLines = [],
         currentCallout = null;
-      let noteLines = [];
+      let noteLines = [],
+        tableLines = [];
 
       const flushNote = () => {
         const text = [...new Set(noteLines)].join("\n").trim();
         if (text) content.push({ kind: "note", text });
         noteLines = [];
       };
+
       const flushCallout = () => {
         if (currentCallout)
           content.push({
@@ -279,6 +423,33 @@ function parse(text) {
         inCallout = false;
         calloutLines = [];
         currentCallout = null;
+      };
+
+      const flushTable = () => {
+        if (tableLines.length < 2) {
+          tableLines.forEach((l) => {
+            const clean = l.replace(/\*\*/g, "").trim();
+            if (clean.length > 0) noteLines.push(clean);
+          });
+          tableLines = [];
+          return;
+        }
+        const headers = tableLines[0]
+          .split("|")
+          .map((h) => h.trim())
+          .filter((h) => h.length > 0);
+        const rows = tableLines
+          .slice(2)
+          .map((row) =>
+            row
+              .split("|")
+              .map((cell) => cell.trim())
+              .filter((cell) => cell.length > 0),
+          )
+          .filter((row) => row.length > 0);
+        if (headers.length > 0 && rows.length > 0)
+          content.push({ kind: "table", headers, rows });
+        tableLines = [];
       };
 
       for (let i = 0; i < sLines.length; i++) {
@@ -306,6 +477,7 @@ function parse(text) {
           codeLines.push(l);
           continue;
         }
+
         const callStart = l.match(/>\s*\[!([A-Za-z]+)\]\s*(.*)?$/i);
         if (callStart) {
           flushNote();
@@ -325,20 +497,28 @@ function parse(text) {
             continue;
           } else flushCallout();
         }
-        // Imagen Obsidian: extrae ruta desde assets/images/ en adelante (con ../ y %20)
+
+        const isTableLine = l.trim().startsWith("|") && l.trim().endsWith("|");
+        const isSeparatorLine = /^\|[\s\-|:]+\|$/.test(l.trim());
+        if (isTableLine || isSeparatorLine) {
+          flushNote();
+          tableLines.push(l);
+          continue;
+        } else if (tableLines.length > 0) flushTable();
+
         const assetsImg = l.match(
           /!\[([^\]]*)\]\([^)]*?(assets\/images\/[^)]+)\)/i,
         );
         if (assetsImg) {
           flushNote();
-          const src = assetsImg[2].trim();
           content.push({
             kind: "image",
-            src,
+            src: assetsImg[2].trim(),
             caption: assetsImg[1].trim() || "Evidencia técnica",
           });
           continue;
         }
+
         const extImg = l.match(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/);
         if (extImg) {
           flushNote();
@@ -349,6 +529,7 @@ function parse(text) {
           });
           continue;
         }
+
         const bulletMatch = l.match(/^[-*]\s+(.+)$/);
         if (bulletMatch) {
           flushNote();
@@ -359,19 +540,23 @@ function parse(text) {
           if (c.length > 4) content.push({ kind: "bullet", text: c });
           continue;
         }
+
         const cleanLine = l
           .replace(/\*{3}[^*]+\*{3}/g, "[flag]")
           .replace(/\*\*/g, "")
           .trim();
         if (cleanLine.length > 0) noteLines.push(cleanLine);
       }
+
       if (inCallout) flushCallout();
+      if (tableLines.length > 0) flushTable();
       flushNote();
       if (content.length === 0)
         content.push({ kind: "note", text: "Ver detalles del paso." });
       steps.push({ id: subStepId, num: subNum, title: subTitle, content });
     }
   }
+
   return {
     tags,
     summary,
@@ -412,13 +597,11 @@ function generate(meta, data) {
     out += `  - label: "user"\n    value: "hash_aqui"\n`;
     out += `  - label: "root"\n    value: "hash_aqui"\n`;
   }
-  out += `summary: "${(summary || "Descripción del vector de ataque.").replace(/"/g, "'")}"\n`;
-  out += "steps:\n";
+  out += `summary: "${(summary || "Descripción del vector de ataque.").replace(/"/g, "'")}"\nsteps:\n`;
 
   steps.forEach((step) => {
     if (step.type === "flag") {
-      out += `\n  - id: "${step.id}"\n    type: "flag"\n`;
-      out += `    flag_items:\n`;
+      out += `\n  - id: "${step.id}"\n    type: "flag"\n    flag_items:\n`;
       (step.flagItems || []).forEach((f) => {
         out += `      - label: "${f.label}"\n        value: "${f.value}"\n`;
       });
@@ -433,31 +616,48 @@ function generate(meta, data) {
         out += `      - kind: "note"\n        text: |\n`;
         item.text.split("\n").forEach((l) => (out += `          ${l}\n`));
       } else if (item.kind === "code") {
-        out += `      - kind: "code"\n`;
-        out += `        lang: "${item.lang}"\n`;
-        out += `        code: |\n`;
+        out += `      - kind: "code"\n        lang: "${item.lang}"\n        code: |\n`;
         item.code.split("\n").forEach((l) => (out += `          ${l}\n`));
       } else if (item.kind === "image") {
-        out += `      - kind: "image"\n`;
-        out += `        src: "${item.src}"\n`;
-        out += `        caption: "${item.caption.replace(/"/g, "'")}"\n`;
+        out += `      - kind: "image"\n        src: "${item.src}"\n        caption: "${item.caption.replace(/"/g, "'")}"\n`;
       } else if (item.kind === "bullet") {
-        out += `      - kind: "bullet"\n`;
-        out += `        text: "${item.text.replace(/"/g, "'")}"\n`;
+        out += `      - kind: "bullet"\n        text: "${item.text.replace(/"/g, "'")}"\n`;
       } else if (item.kind === "callout") {
-        out += `      - kind: "callout"\n`;
-        out += `        type: "${item.type}"\n`;
-        out += `        label: "${item.label.replace(/"/g, "'")}"\n`;
-        out += `        text: "${item.text.replace(/"/g, "'")}"\n`;
+        out += `      - kind: "callout"\n        type: "${item.type}"\n        label: "${item.label.replace(/"/g, "'")}"\n        text: "${item.text.replace(/"/g, "'")}"\n`;
+      } else if (item.kind === "table") {
+        out += `      - kind: "table"\n        headers:\n`;
+        item.headers.forEach(
+          (h) => (out += `          - "${h.replace(/"/g, "'")}"\n`),
+        );
+        out += `        rows:\n`;
+        item.rows.forEach((row) => {
+          out += `          - [${row.map((c) => `"${c.replace(/"/g, "'")}"`).join(", ")}]\n`;
+        });
       }
     });
   });
 
   out += `\nlessons:\n`;
   if (lessons.length > 0)
-    lessons.forEach((l) => (out += `  - "${l.replace(/"/g, "'")}"\n`));
+    lessons.forEach((l) => {
+      const escaped = l.replace(/'/g, "''");
+      out += `  - '${escaped}'\n`;
+    });
   else out += `  - "Completar lecciones aprendidas"\n`;
-  out += `mitigation: "${(mitigation || "Completar mitigaciones recomendadas.").replace(/"/g, "'")}"\n---\n`;
+
+  if (Array.isArray(mitigation) && mitigation.length > 0) {
+    out += `mitigation:\n`;
+    mitigation.forEach((item) => {
+      const escaped = item.replace(/'/g, "''");
+      out += `  - '${escaped}'\n`;
+    });
+  } else {
+    const mitigText =
+      (mitigation && !Array.isArray(mitigation) ? mitigation : "") ||
+      "Completar mitigaciones recomendadas.";
+    out += `mitigation: '${mitigText.replace(/'/g, "''")}'\n`;
+  }
+  out += `---\n`;
   return out;
 }
 
@@ -487,7 +687,7 @@ function TokenScreen({ onValid }) {
         const e = await res.json();
         setError(e.message || "Token inválido");
       }
-    } catch (e) {
+    } catch {
       setError("Error de conexión");
     } finally {
       setLoading(false);
@@ -495,90 +695,23 @@ function TokenScreen({ onValid }) {
   };
 
   return (
-    <div
-      style={{
-        background: "#050a0e",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "'Share Tech Mono',monospace",
-      }}
-    >
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(rgba(0,255,136,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.02) 1px,transparent 1px)",
-          backgroundSize: "32px 32px",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          width: "100%",
-          maxWidth: "480px",
-          padding: "2rem",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "0.72rem",
-            color: "#00ff88",
-            letterSpacing: "3px",
-            marginBottom: "0.4rem",
-          }}
-        >
-          {"<z4k7_tools/>"}
+    <div className="token-screen">
+      <div className="token-screen-bg" />
+      <div className="token-screen-inner">
+        <div className="token-screen-tag">
+          &lt;<span style={{ color: "#00d4ff" }}>Z4k7</span>_tools/&gt;
         </div>
-        <h1
-          style={{
-            fontSize: "1.6rem",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "3px",
-            textTransform: "uppercase",
-            marginBottom: "0.4rem",
-          }}
-        >
-          conversor
-        </h1>
-        <div
-          style={{
-            height: "1px",
-            background: "linear-gradient(to right,#1a3a4a,transparent)",
-            marginBottom: "2.5rem",
-          }}
-        />
-        <div
-          style={{
-            fontSize: "0.62rem",
-            color: "#4a6a7a",
-            letterSpacing: "2px",
-            marginBottom: "0.6rem",
-          }}
-        >
-          // GITHUB TOKEN
-        </div>
-        <div
-          style={{
-            fontSize: "0.68rem",
-            color: "#4a6a7a",
-            marginBottom: "1.2rem",
-            lineHeight: 1.8,
-          }}
-        >
-          Requerido para guardar el{" "}
-          <span style={{ color: "#00d4ff" }}>.md</span> en el repo.
+        <h1>conversor</h1>
+        <div className="token-screen-divider" />
+        <div className="token-screen-label">// GITHUB TOKEN</div>
+        <div className="token-screen-hint">
+          Requerido para guardar el <span>".md"</span> en el repo.
           <br />
-          github.com → Settings → Developer settings → Tokens (classic) →{" "}
-          <span style={{ color: "#00ff88" }}>repo ✓</span>
+          <span className="green">repo ✓</span>
         </div>
         <input
           type="password"
+          className={`token-input${error ? " has-error" : token ? " has-value" : ""}`}
           placeholder="ghp_..."
           value={token}
           onChange={(e) => {
@@ -586,56 +719,16 @@ function TokenScreen({ onValid }) {
             setError("");
           }}
           onKeyDown={(e) => e.key === "Enter" && token && validate()}
-          style={{
-            width: "100%",
-            fontFamily: "monospace",
-            fontSize: "0.75rem",
-            padding: "12px 14px",
-            background: "#060d14",
-            border: `1px solid ${error ? "#ff3366" : token ? "#00d4ff" : "#1a3a4a"}`,
-            color: "#c8d8e8",
-            outline: "none",
-            letterSpacing: "1px",
-            boxSizing: "border-box",
-            marginBottom: "0.8rem",
-          }}
         />
-        {error && (
-          <div
-            style={{
-              fontSize: "0.65rem",
-              color: "#ff3366",
-              marginBottom: "0.8rem",
-            }}
-          >
-            ✕ {error}
-          </div>
-        )}
+        {error && <div className="token-error">✕ {error}</div>}
         <button
           onClick={validate}
           disabled={!token || loading}
-          style={{
-            width: "100%",
-            fontFamily: "monospace",
-            fontSize: "0.78rem",
-            padding: "12px",
-            border: `1px solid ${!token ? "#1a3a4a" : "#00ff88"}`,
-            background: !token ? "transparent" : "rgba(0,255,136,0.08)",
-            color: !token ? "#1a3a4a" : "#00ff88",
-            cursor: !token || loading ? "not-allowed" : "pointer",
-            letterSpacing: "2px",
-          }}
+          className={`token-submit ${!token || loading ? "disabled" : "ready"}`}
         >
           {loading ? "// Validando..." : "// Validar token →"}
         </button>
-        <div
-          style={{
-            marginTop: "1.5rem",
-            fontSize: "0.6rem",
-            color: "#1a3a4a",
-            textAlign: "center",
-          }}
-        >
+        <div className="token-screen-note">
           El token no se guarda — solo se usa en esta sesión
         </div>
       </div>
@@ -688,6 +781,7 @@ export default function ConverterPage() {
       if (key === "title") next.slug = slugify(val);
       return next;
     });
+
   const showToast = () => {
     setToast(true);
     clearTimeout(toastTimer.current);
@@ -731,6 +825,7 @@ export default function ConverterPage() {
         images: allContent.filter((c) => c.kind === "image").length,
         codes: allContent.filter((c) => c.kind === "code").length,
         bullets: allContent.filter((c) => c.kind === "bullet").length,
+        tables: allContent.filter((c) => c.kind === "table").length,
         lessons: data.lessons.length,
       };
       const parts = [
@@ -742,6 +837,7 @@ export default function ConverterPage() {
         counts.images && `${counts.images} imgs`,
         counts.codes && `${counts.codes} code`,
         counts.bullets && `${counts.bullets} bullets`,
+        counts.tables && `${counts.tables} tablas`,
         counts.lessons && `${counts.lessons} lecciones`,
       ].filter(Boolean);
       setStatus({ type: "ok", msg: `// ✓ ${parts.join("  |  ")}` });
@@ -774,68 +870,8 @@ export default function ConverterPage() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap');
-        :root{--bg:#050a0e;--bg2:#0a1520;--bg3:#0d1f2d;--green:#00ff88;--cyan:#00d4ff;--red:#ff3366;--orange:#ff8c00;--yellow:#ffcc00;--text:#c8d8e8;--muted:#4a6a7a;--border:#1a3a4a}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;min-height:100vh}
-        body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.02) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
-        .wrap{max-width:1500px;margin:0 auto;padding:2rem;position:relative;z-index:1}
-        .header{text-align:center;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
-        .header-tag{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:3px;margin-bottom:.8rem}
-        .header h1{font-size:2.2rem;font-weight:700;color:#fff;letter-spacing:4px}
-        .header h1 span{color:var(--green)}
-        .header p{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-top:.5rem}
-        .token-bar{display:flex;align-items:center;justify-content:space-between;background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.2);padding:8px 16px;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.68rem}
-        .legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:2rem;padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border)}
-        .legend-title{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--green);letter-spacing:2px;width:100%;margin-bottom:.5rem;border-bottom:1px solid var(--border);padding-bottom:.4rem}
-        .leg-item{font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:3px 10px;border:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
-        .leg-item.green{color:var(--green);background:rgba(0,255,136,0.05);border-color:rgba(0,255,136,0.3)}
-        .leg-item.cyan{color:var(--cyan);background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.3)}
-        .leg-item.orange{color:var(--orange);background:rgba(255,140,0,0.05);border-color:rgba(255,140,0,0.3)}
-        .leg-item.yellow{color:var(--yellow);background:rgba(255,204,0,0.05);border-color:rgba(255,204,0,0.3)}
-        .leg-item.red{color:var(--red);background:rgba(255,51,102,0.05);border-color:rgba(255,51,102,0.3)}
-        .meta-box{background:var(--bg2);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem}
-        .box-label{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}
-        .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-        .field{display:flex;flex-direction:column;gap:.4rem}
-        .field label{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted)}
-        .field input,.field select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:7px 10px;font-family:'Share Tech Mono',monospace;font-size:.75rem;outline:none;transition:border-color .2s}
-        .field input:focus,.field select:focus{border-color:var(--green)}
-        .field select option{background:var(--bg2)}
-        .editors{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
-        .panel{border:1px solid var(--border);overflow:hidden}
-        .panel-head{background:var(--bg3);padding:9px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-        .panel-name{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--green);display:flex;align-items:center;gap:.5rem}
-        .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-        .panel-sub{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted)}
-        textarea{width:100%;height:520px;background:var(--bg);color:var(--text);border:none;padding:1.2rem;font-family:'Fira Code',monospace;font-size:.78rem;line-height:1.75;resize:vertical;outline:none}
-        .output-ta{background:#020608;color:var(--green)}
-        textarea::placeholder{color:var(--muted);font-size:.72rem}
-        .status{font-family:'Share Tech Mono',monospace;font-size:.72rem;padding:8px 16px;border:1px solid var(--border);color:var(--muted);margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;background:var(--bg2)}
-        .status.ok{border-color:var(--green);color:var(--green)}
-        .status.error{border-color:var(--red);color:var(--red)}
-        .status.warn{border-color:var(--orange);color:var(--orange)}
-        .preview{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.2rem}
-        .chip{font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:3px 10px;border:1px solid var(--border);color:var(--muted);background:var(--bg2);display:flex;align-items:center;gap:.4rem}
-        .chip.active{color:var(--green);border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.05)}
-        .chip .n{color:var(--green);font-weight:700}
-        .btns{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem;flex-wrap:wrap}
-        .btn{font-family:'Share Tech Mono',monospace;font-size:.78rem;letter-spacing:2px;padding:10px 30px;border:1px solid var(--green);background:transparent;color:var(--green);cursor:pointer;transition:all .2s;text-transform:uppercase}
-        .btn:hover{background:var(--green);color:var(--bg)}
-        .btn-cyan{border-color:var(--cyan);color:var(--cyan)}
-        .btn-cyan:hover{background:var(--cyan);color:var(--bg)}
-        .btn-muted{border-color:var(--muted);color:var(--muted)}
-        .btn-muted:hover{background:var(--muted);color:var(--bg)}
-        .toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg3);border:1px solid var(--green);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:.75rem;padding:10px 20px;z-index:999;opacity:0;transform:translateY(20px);transition:all .3s;pointer-events:none}
-        .toast.show{opacity:1;transform:translateY(0)}
-        .footer{text-align:center;padding-top:2rem;border-top:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--muted)}
-        .footer span{color:var(--green)}
-        @media(max-width:900px){.editors{grid-template-columns:1fr}.meta-grid{grid-template-columns:repeat(2,1fr)}}
-      `}</style>
-
       <div className="wrap">
+        {/* ── Header ── */}
         <div className="header">
           <div className="header-tag">// Z4K7 · TOOLS · CONVERSOR</div>
           <h1>
@@ -846,29 +882,23 @@ export default function ConverterPage() {
           </p>
         </div>
 
+        {/* ── Token bar ── */}
         <div className="token-bar">
-          <span style={{ color: "#00ff88" }}>
+          <span className="token-bar-status">
             ✓ token validado — GitHub API activa
           </span>
           <button
+            className="token-btn"
             onClick={() => {
               setTokenOk(false);
               setToken("");
-            }}
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.65rem",
-              padding: "3px 10px",
-              border: "1px solid #1a3a4a",
-              background: "transparent",
-              color: "#4a6a7a",
-              cursor: "pointer",
             }}
           >
             // cambiar token
           </button>
         </div>
 
+        {/* ── Leyenda ── */}
         <div className="legend">
           <div className="legend-title">// Reglas de conversión:</div>
           <div className="leg-item green">
@@ -896,22 +926,26 @@ export default function ConverterPage() {
             <b>***label***:valor</b> Par credencial
           </div>
           <div className="leg-item yellow">
-            <b>---</b> Separador de sub-pasos
+            <b>---</b> Separa flags / sub-pasos
           </div>
           <div className="leg-item cyan">
-            <code style={{ fontFamily: "monospace", color: "#00d4ff" }}>
+            <b>| col | col |</b> Tablas → table:
+          </div>
+          <div className="leg-item green">
+            <code style={{ fontFamily: "monospace", color: "#00ff88" }}>
               **Herramientas:**
             </code>{" "}
             nmap, gobuster → tools:
           </div>
-          <div className="leg-item green">
-            <code style={{ fontFamily: "monospace", color: "#00ff88" }}>
+          <div className="leg-item orange">
+            <code style={{ fontFamily: "monospace", color: "#ff8c00" }}>
               **Técnicas:**
             </code>{" "}
             SQLi, XSS → techniques:
           </div>
         </div>
 
+        {/* ── Meta ── */}
         <div className="meta-box">
           <div className="box-label">// 01. Metadatos</div>
           <div className="meta-grid">
@@ -994,11 +1028,12 @@ export default function ConverterPage() {
           </div>
         </div>
 
+        {/* ── Editores ── */}
         <div className="editors">
           <div className="panel">
             <div className="panel-head">
               <div className="panel-name">
-                <div className="dot"></div> INPUT — Nota de Obsidian
+                <div className="dot" /> INPUT — Nota de Obsidian
               </div>
               <span className="panel-sub">pega tu .md aquí</span>
             </div>
@@ -1011,13 +1046,14 @@ export default function ConverterPage() {
           <div className="panel">
             <div className="panel-head">
               <div className="panel-name">
-                <div className="dot"></div> OUTPUT — .md para portafolio
+                <div className="dot" /> OUTPUT — .md para portafolio
               </div>
               <div
                 style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}
               >
                 <span className="panel-sub">content/writeups/slug.md</span>
                 <button
+                  className={`preview-btn ${output ? "active" : "disabled"}`}
                   onClick={() => {
                     if (output) setModal(true);
                     else
@@ -1025,19 +1061,6 @@ export default function ConverterPage() {
                         type: "warn",
                         msg: "// Primero convierte una nota para previsualizar",
                       });
-                  }}
-                  style={{
-                    background: "transparent",
-                    border: "1px solid var(--muted)",
-                    color: output ? "var(--cyan)" : "var(--muted)",
-                    padding: "3px 10px",
-                    fontFamily: "monospace",
-                    fontSize: "0.8rem",
-                    cursor: output ? "pointer" : "not-allowed",
-                    transition: "all 0.2s",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
                   }}
                 >
                   👁 preview
@@ -1053,10 +1076,12 @@ export default function ConverterPage() {
           </div>
         </div>
 
+        {/* ── Status ── */}
         <div className={`status${status.type ? " " + status.type : ""}`}>
           {status.msg}
         </div>
 
+        {/* ── Preview chips ── */}
         {preview.length > 0 && (
           <div className="preview">
             {preview.map((chip, i) => {
@@ -1101,12 +1126,19 @@ export default function ConverterPage() {
                       items
                     </span>
                   )}
+                  {chip.content?.filter((c) => c.kind === "table").length >
+                    0 && (
+                    <span style={{ color: "var(--cyan)" }}>
+                      {chip.content.filter((c) => c.kind === "table").length}tbl
+                    </span>
+                  )}
                 </div>
               );
             })}
           </div>
         )}
 
+        {/* ── Botones ── */}
         <div className="btns">
           <button className="btn" onClick={convertir}>
             ⚡ CONVERTIR
@@ -1177,7 +1209,7 @@ const CALLOUT_COLORS = {
   },
 };
 
-// ─── INLINE CODE RENDERER ────────────────────────────────────────────────────
+// ─── INLINE CODE RENDERER ─────────────────────────────────────────────────────
 
 function renderInlineCode(text) {
   if (!text) return text;
@@ -1255,6 +1287,7 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
         >
           ✕ cerrar
         </button>
+
         <div
           style={{
             fontFamily: "monospace",
@@ -1359,6 +1392,7 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
             ))}
           </div>
         )}
+
         {tools?.length > 0 && (
           <div
             style={{
@@ -1395,6 +1429,7 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
             ))}
           </div>
         )}
+
         {summary && (
           <div
             style={{
@@ -1678,7 +1713,7 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
                         }}
                       >
                         →
-                      </span>{" "}
+                      </span>
                       {renderInlineCode(item.text)}
                     </div>
                   );
@@ -1713,6 +1748,97 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
                     </div>
                   );
                 }
+                if (item.kind === "table")
+                  return (
+                    <div
+                      key={ci}
+                      style={{
+                        margin: "1rem 0",
+                        border: "1px solid #1a3a4a",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#0d1f2d",
+                          padding: "5px 12px",
+                          borderBottom: "1px solid #1a3a4a",
+                          fontFamily: "monospace",
+                          fontSize: "0.65rem",
+                          color: "#4a6a7a",
+                        }}
+                      >
+                        ▸ // tabla de datos
+                      </div>
+                      <div style={{ overflowX: "auto" }}>
+                        <table
+                          style={{
+                            width: "100%",
+                            borderCollapse: "collapse",
+                            fontFamily: "'Fira Code', monospace",
+                            fontSize: "0.78rem",
+                          }}
+                        >
+                          <thead>
+                            <tr>
+                              {item.headers.map((h, hi) => (
+                                <th
+                                  key={hi}
+                                  style={{
+                                    background: "#020608",
+                                    color: "#00d4ff",
+                                    padding: "8px 14px",
+                                    textAlign: "left",
+                                    borderBottom: "1px solid #1a3a4a",
+                                    borderRight:
+                                      hi < item.headers.length - 1
+                                        ? "1px solid #1a3a4a"
+                                        : "none",
+                                    letterSpacing: "1px",
+                                    fontSize: "0.7rem",
+                                    whiteSpace: "nowrap",
+                                  }}
+                                >
+                                  {h}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {item.rows.map((row, ri) => (
+                              <tr
+                                key={ri}
+                                style={{
+                                  background:
+                                    ri % 2 === 0
+                                      ? "#020608"
+                                      : "rgba(0,212,255,0.03)",
+                                }}
+                              >
+                                {row.map((cell, ci2) => (
+                                  <td
+                                    key={ci2}
+                                    style={{
+                                      padding: "7px 14px",
+                                      borderBottom: "1px solid #0d1f2d",
+                                      borderRight:
+                                        ci2 < row.length - 1
+                                          ? "1px solid #0d1f2d"
+                                          : "none",
+                                      color: ci2 === 0 ? "#00ff88" : "#c8d8e8",
+                                      whiteSpace: "nowrap",
+                                    }}
+                                  >
+                                    {renderInlineCode(cell)}
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
                 return null;
               })}
             </div>
@@ -1769,12 +1895,13 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
                   }}
                 >
                   →
-                </span>{" "}
-                {l}
+                </span>
+                <span style={{ color: "#c8d8e8" }}>{renderInlineCode(l)}</span>
               </div>
             ))}
           </div>
         )}
+
         {mitigation && (
           <div
             style={{
@@ -1790,12 +1917,43 @@ function PreviewModal({ output, slug, meta, parsedData, token, onClose }) {
                 fontSize: "0.65rem",
                 color: "#00d4ff",
                 letterSpacing: "2px",
-                marginBottom: "0.3rem",
+                marginBottom: "0.5rem",
               }}
             >
               // Mitigaciones recomendadas
             </div>
-            <p style={{ color: "#c8d8e8", margin: 0 }}>{mitigation}</p>
+            {Array.isArray(mitigation) ? (
+              mitigation.map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    gap: "0.6rem",
+                    padding: "0.4rem 0.6rem",
+                    marginBottom: "0.3rem",
+                    background: "rgba(0,212,255,0.04)",
+                    border: "1px solid rgba(0,212,255,0.15)",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "#00d4ff",
+                      fontFamily: "monospace",
+                      flexShrink: 0,
+                    }}
+                  >
+                    →
+                  </span>
+                  <span style={{ color: "#c8d8e8" }}>
+                    {renderInlineCode(item)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p style={{ color: "#c8d8e8", margin: 0 }}>
+                {renderInlineCode(mitigation)}
+              </p>
+            )}
           </div>
         )}
 
@@ -1881,7 +2039,6 @@ function SaveBlock({ output, slug, token, onSaved }) {
     setPhase("saving");
     setSaveError("");
     try {
-      // Verificar duplicado
       const checkRes = await fetch(
         `/api/writeups/${slug || "writeup"}?folder=${encodeURIComponent(destPath)}`,
       );
@@ -1893,8 +2050,6 @@ function SaveBlock({ output, slug, token, onSaved }) {
         setPhase("open");
         return;
       }
-
-      // Guardar con token
       const res = await fetch(`/api/writeups/${slug || "writeup"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

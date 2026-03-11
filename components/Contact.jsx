@@ -56,148 +56,85 @@ function ContactBtn({ link }) {
 
 export default function Contact() {
   return (
-    <>
-      <section
-        id="contact"
-        style={{
-          position: "relative",
-          zIndex: 1,
-          padding: "5rem 4rem",
-        }}
-      >
-        <div
+    <section id="contact" className="contact-section">
+      <div className="contact-header">
+        <span
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "1rem",
-            marginBottom: "3rem",
+            fontFamily: "monospace",
+            color: "#00ff88",
+            fontSize: "0.85rem",
+            flexShrink: 0,
           }}
         >
-          <span
-            style={{
-              fontFamily: "monospace",
-              color: "#00ff88",
-              fontSize: "0.85rem",
-            }}
-          >
-            05.
-          </span>
-          <h2
-            style={{
-              fontSize: "2rem",
-              fontWeight: 700,
-              color: "#fff",
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-            }}
-          >
-            Contacto
-          </h2>
-          <div
-            style={{
-              flex: 1,
-              height: "1px",
-              background: "linear-gradient(to right, #1a3a4a, transparent)",
-              marginLeft: "1rem",
-            }}
-          />
-        </div>
+          05.
+        </span>
+        <h2 className="contact-title">Contacto</h2>
+        <div className="contact-divider" />
+      </div>
 
-        {/* Caja central */}
-        <div
+      <div className="contact-box">
+        <h3
           style={{
-            maxWidth: "640px",
-            margin: "0 auto",
-            borderTop: "1px solid",
-            borderImage:
-              "linear-gradient(to right, transparent, #00ff88, transparent) 1",
-            borderLeft: "1px solid #1a3a4a",
-            borderRight: "1px solid #1a3a4a",
-            borderBottom: "1px solid #1a3a4a",
-            padding: "3rem 2rem",
-            textAlign: "center",
-            background: "#0a1520",
+            fontSize: "1.8rem",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: "1rem",
           }}
         >
-          <h3
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: 700,
-              color: "#fff",
-              marginBottom: "1rem",
-            }}
-          >
-            ¿Hablamos?
-          </h3>
-          <p
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.82rem",
-              color: "#4a6a7a",
-              marginBottom: "0.5rem",
-              lineHeight: 1.7,
-            }}
-          >
-            Abierto a oportunidades en ciberseguridad, pentesting y
-            administración de seguridad cloud.
-          </p>
-          <p
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.82rem",
-              color: "#4a6a7a",
-              marginBottom: "2rem",
-            }}
-          >
-            // Contacta vía LinkedIn o GitHub
-          </p>
-
-          {/* Botones 2x2 */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "1rem",
-            }}
-          >
-            {links.map((link, i) => (
-              <ContactBtn key={i} link={link} />
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div
+          ¿Hablamos?
+        </h3>
+        <p
           style={{
-            marginTop: "4rem",
-            paddingTop: "1.5rem",
-            borderTop: "1px solid #1a3a4a",
-            textAlign: "center",
+            fontFamily: "monospace",
+            fontSize: "0.82rem",
+            color: "#4a6a7a",
+            marginBottom: "0.5rem",
+            lineHeight: 1.7,
           }}
         >
-          <p
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.78rem",
-              color: "#4a6a7a",
-              marginBottom: "0.4rem",
-            }}
-          >
-            Built by{" "}
-            <span style={{ color: "#00ff88", fontWeight: 700 }}>Z4k7</span> ·
-            Cybersecurity Portfolio · 2026
-          </p>
-          <p
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.72rem",
-              color: "#1a3a4a",
-            }}
-          >
-            [ stay curious · keep hacking · think like an attacker ]
-          </p>
+          Abierto a oportunidades en ciberseguridad, pentesting y administración
+          de seguridad cloud.
+        </p>
+        <p
+          style={{
+            fontFamily: "monospace",
+            fontSize: "0.82rem",
+            color: "#4a6a7a",
+            marginBottom: "2rem",
+          }}
+        >
+          // Contacta vía LinkedIn o GitHub
+        </p>
+        <div className="contact-btns">
+          {links.map((link, i) => (
+            <ContactBtn key={i} link={link} />
+          ))}
         </div>
-      </section>
-    </>
+      </div>
+
+      <div className="contact-footer">
+        <p
+          style={{
+            fontFamily: "monospace",
+            fontSize: "0.78rem",
+            color: "#4a6a7a",
+            marginBottom: "0.4rem",
+          }}
+        >
+          Built by{" "}
+          <span style={{ color: "#00ff88", fontWeight: 700 }}>Z4k7</span> ·
+          Cybersecurity Portfolio · 2026
+        </p>
+        <p
+          style={{
+            fontFamily: "monospace",
+            fontSize: "0.72rem",
+            color: "#1a3a4a",
+          }}
+        >
+          [ stay curious · keep hacking · think like an attacker ]
+        </p>
+      </div>
+    </section>
   );
 }

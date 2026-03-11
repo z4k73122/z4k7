@@ -1,14 +1,5 @@
 "use client";
 
-const borderColors = {
-  "red-accent": "#ff3366",
-  "cyan-accent": "#00d4ff",
-  "green-accent": "#00ff88",
-  "purple-accent": "#b06aff",
-  "yellow-accent": "#ffcc00",
-  "orange-accent": "#ff8c00",
-};
-
 const cards = [
   {
     colorClass: "red-accent",
@@ -114,48 +105,21 @@ function SkillCard({ card }) {
 
 export default function Skills() {
   return (
-    <section
-      id="skills"
-      style={{ position: "relative", zIndex: 1, padding: "5rem 4rem" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "3rem",
-        }}
-      >
+    <section id="skills" className="skills-section">
+      <div className="skills-header">
         <span
           style={{
             fontFamily: "monospace",
             color: "#00ff88",
             fontSize: "0.85rem",
+            flexShrink: 0,
           }}
         >
           01.
         </span>
-        <h2
-          style={{
-            fontSize: "2rem",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-          }}
-        >
-          Áreas de especialización
-        </h2>
-        <div
-          style={{
-            flex: 1,
-            height: "1px",
-            background: "linear-gradient(to right, #1a3a4a, transparent)",
-            marginLeft: "1rem",
-          }}
-        />
+        <h2 className="skills-title">Áreas de especialización</h2>
+        <div className="skills-divider" />
       </div>
-
       <div className="skills-grid">
         {cards.map((card, i) => (
           <SkillCard key={i} card={card} />
