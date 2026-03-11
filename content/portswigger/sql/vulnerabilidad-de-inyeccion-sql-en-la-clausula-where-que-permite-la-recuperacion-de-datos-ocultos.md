@@ -1,0 +1,98 @@
+---
+title: "Vulnerabilidad de inyección SQL en la cláusula WHERE que permite la recuperación de datos ocultos"
+platform: "PortSwigger"
+os: "Windows"
+difficulty: "Easy"
+ip: "10.10.10.XXX"
+slug: "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos"
+author: "Z4k7"
+date: "2026-03-06"
+year: "2026"
+status: "pwned"
+tags:
+  - "SQLI"
+techniques:
+  - "SQLI"
+tools:
+  - "Burpsuite"
+flags_list:
+  - label: "user"
+    value: "hash_aqui"
+  - label: "root"
+    value: "hash_aqui"
+summary: "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación web construye consultas SQL dinámicas con datos proporcionados por el usuario sin aplicar validaciones ni sanitización. Esto permite manipular la lógica de la consulta, accediendo a información no autorizada o alterando el flujo normal de la aplicación.   En este caso, el filtro de categorías de productos es vulnerable porque concatena directamente el valor de entrada en la cláusula WHERE."
+steps:
+
+  - id: "exploit"
+    num: "01"
+    title: "Objetivo"
+    content:
+      - kind: "note"
+        text: |
+          Este laboratorio contiene una vulnerabilidad de inyección SQL en el filtro de categorías de productos. Cuando el usuario selecciona una categoría, la aplicación ejecuta una consulta SQL como la siguiente:
+      - kind: "code"
+        lang: "SQL"
+        code: |
+          SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+      - kind: "note"
+        text: |
+          Para resolver el laboratorio, realice un ataque de inyección SQL que haga que la aplicación muestre uno o más productos no lanzados.
+
+  - id: "recon"
+    num: "02"
+    title: "Reconocimiento"
+    content:
+      - kind: "note"
+        text: |
+          Se prueba la inyección con el carácter `'` para verificar errores de sintaxis
+          Esto confirma que la entrada se concatena directamente en la consulta.
+      - kind: "image"
+        src: "assets/images/Vulnerabilidad%20de%20inyección%20SQL%20en%20la%20cláusula%20WHERE%20que%20permite%20la%20recuperación%20de%20datos%20ocultos/file-20260309153214203.jpg"
+        caption: "Evidencia técnica"
+      - kind: "callout"
+        type: "info"
+        label: "Evidencia Técnica"
+        text: "La aplicación devuelve un error SQL, lo que confirma que la entrada del usuario afecta directamente la consulta."
+
+  - id: "exploit_1"
+    num: "03"
+    title: "Explotación"
+    content:
+      - kind: "note"
+        text: |
+          Se utiliza el operador de comentario `--` para anular la condición `released = 1`:
+          `Gifts' --`
+      - kind: "image"
+        src: "assets/images/Vulnerabilidad%20de%20inyección%20SQL%20en%20la%20cláusula%20WHERE%20que%20permite%20la%20recuperación%20de%20datos%20ocultos/file-20260309153247543.jpg"
+        caption: "Evidencia técnica"
+      - kind: "callout"
+        type: "info"
+        label: "Evidencia Técnica"
+        text: "La consulta ignora la condición de productos lanzados, mostrando resultados adicionales."
+
+  - id: "exploit_2"
+    num: ""
+    content:
+      - kind: "note"
+        text: |
+          Posteriormente, se aplica un OR lógico para forzar la inclusión de todos los registros:
+          `Gifts' OR 1=1 --`
+      - kind: "image"
+        src: "assets/images/Vulnerabilidad%20de%20inyección%20SQL%20en%20la%20cláusula%20WHERE%20que%20permite%20la%20recuperación%20de%20datos%20ocultos/file-20260309153317608.jpg"
+        caption: "Evidencia técnica"
+      - kind: "callout"
+        type: "info"
+        label: "Evidencia Técnica"
+        text: "La consulta devuelve todas las categorías y productos, incluyendo los no lanzados."
+
+lessons:
+  - 'Errores SQL visibles en la interfaz.'
+  - 'Respuestas inesperadas al usar `''` o `--`.'
+  - 'Resultados excesivos al aplicar `OR 1=1`.'
+mitigation:
+  - 'Implementar consultas parametrizadas (Prepared Statements).'
+  - 'Validar y sanitizar entradas de usuario.'
+  - 'Restringir mensajes de error detallados.'
+  - 'Aplicar principio de mínimo privilegio en la base de datos.'
+  - 'Monitorear patrones de consulta anómalos (ej. `OR 1=1`, `--`).'
+---
