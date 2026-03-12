@@ -1,6 +1,6 @@
 ---
 title: "SQL injection UNION attack, retrieving multiple values in a single columnSQL injection UNION attack, retrieving multiple values in a single column"
-platform: "HackTheBox"
+platform: "PortSwigger"
 os: "Linux"
 difficulty: "Medium"
 ip: "10.10.10.XXX"
