@@ -228,7 +228,7 @@ steps:
           - ["Orácle", "'foo'\", "\", "'bar'"]
           - ["Microsoft", "'foo'+'bar'"]
           - ["PostgreSQL", "'foo'\", "\", "'bar'"]
-          - ["MySQL", "'foo' 'bar'Tenga en cuenta el espacio entre las dos cadenas==<br>CONCAT('foo','bar')"]
+          - ["MySQL", "'foo' 'bar'Tenga en cuenta el espacio entre las dos cadenas<br>CONCAT('foo','bar')"]
       - kind: "note"
         text: |
           La tabla anterior son las opciones que se utilizan para concatenar dependiendo del motor de BD que se usa
