@@ -1,6 +1,6 @@
 ---
 title: "Inyección SQL ciega con errores condicionales"
-platform: "HackTheBox"
+platform: "PortSwigger"
 os: "Linux"
 difficulty: "Insane"
 ip: "10.10.10.XXX"
