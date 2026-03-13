@@ -202,12 +202,14 @@ export default function Graph() {
       const svg = d3.select(svgRef.current).attr("width", W).attr("height", H);
       svg.selectAll("*").remove();
 
-      // ── Glow filter (Obsidian style) ──────────────────────────────────
+      // ── Glow filter — solo para nodos grandes (Obsidian style, sin lag) ─
       const defs = svg.append("defs");
-      const filter = defs.append("filter").attr("id", "glow");
+      const filter = defs.append("filter").attr("id", "glow")
+        .attr("x", "-40%").attr("y", "-40%")
+        .attr("width", "180%").attr("height", "180%");
       filter
         .append("feGaussianBlur")
-        .attr("stdDeviation", "3.5")
+        .attr("stdDeviation", "2.5")
         .attr("result", "coloredBlur");
       const feMerge = filter.append("feMerge");
       feMerge.append("feMergeNode").attr("in", "coloredBlur");
@@ -224,16 +226,19 @@ export default function Graph() {
 
       const nodeIds = new Set(graphData.nodes.map((n) => n.id));
 
-      // ── Dynamic size based on connection count (Obsidian style) ───────
+      // ── Tamaño dinámico por grado (más conexiones = más grande) ────────
+      const degreeMap = {};
+      graphData.links.forEach((l) => {
+        degreeMap[l.source] = (degreeMap[l.source] || 0) + 1;
+        degreeMap[l.target] = (degreeMap[l.target] || 0) + 1;
+      });
+      const maxDegree = Math.max(1, ...Object.values(degreeMap));
+
       const nodes = graphData.nodes.map((n) => {
-        const connectionCount = graphData.links.filter(
-          (l) => l.source === n.id || l.target === n.id,
-        ).length;
-        const baseSize = n.size || TYPE_SIZE[n.type] || 8;
-        return {
-          ...n,
-          size: Math.max(6, Math.min(42, baseSize + connectionCount * 1.5)),
-        };
+        const deg = degreeMap[n.id] || 0;
+        // Radio: mínimo 5, máximo 42, proporcional al grado
+        const size = 5 + (deg / maxDegree) * 37;
+        return { ...n, size: Math.max(5, Math.min(42, size)), deg };
       });
 
       const links = graphData.links
@@ -243,31 +248,40 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── Simulation with more separation (Obsidian style) ──────────────
+      // ── Simulación optimizada para fluidez ────────────────────────────
       const sim = d3
         .forceSimulation(nodes)
+        // velocityDecay alto = frena rápido = más fluido visualmente
+        .velocityDecay(0.4)
+        .alphaDecay(0.025)
         .force(
           "link",
           d3
             .forceLink(links)
             .id((d) => d.id)
             .distance((l) => {
-              const t = typeof l.target === "object" ? l.target.type : "";
-              if (t === "platform" || t === "os") return 250;
-              if (t === "difficulty") return 200;
-              if (t === "technique" || t === "tool") return 160;
-              if (l.rel === "related") return 120;
-              return 150;
-            }),
+              const src = typeof l.source === "object" ? l.source : nodes.find(n => n.id === l.source);
+              const tgt = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
+              // Distancia basada en tamaño de los nodos extremos
+              return (src?.size || 10) + (tgt?.size || 10) + 60;
+            })
+            .strength(0.3),
         )
         .force(
           "charge",
-          d3.forceManyBody().strength((d) => -(d.size || 12) * 40),
+          // Barnes-Hut por defecto en d3 — O(n log n), no O(n²)
+          d3.forceManyBody()
+            .strength((d) => -(d.size || 10) * 30)
+            .distanceMax(400)   // limitar radio de repulsión = gran ganancia de velocidad
+            .theta(0.9),        // menos precisión, mucho más rápido
         )
-        .force("center", d3.forceCenter(W / 2, H / 2))
+        .force("center", d3.forceCenter(W / 2, H / 2).strength(0.05))
         .force(
           "collision",
-          d3.forceCollide().radius((d) => (d.size || 12) + 20),
+          d3.forceCollide()
+            .radius((d) => (d.size || 10) + 8)
+            .strength(0.7)
+            .iterations(1),   // 1 iteración = suficiente y mucho más rápido
         );
       simRef.current = sim;
 
@@ -319,14 +333,14 @@ export default function Graph() {
             }),
         );
 
-      // ── Circles with glow (Obsidian style) ───────────────────────────
+      // ── Circles con glow solo en nodos grandes (Obsidian, sin lag) ─────
       node
         .append("circle")
         .attr("r", (d) => d.size)
         .attr("fill", (d) => nodeColor(d) + "15")
         .attr("stroke", (d) => nodeColor(d))
-        .attr("stroke-width", (d) => (d.type === "machine" ? 2.5 : 1.5))
-        .attr("filter", "url(#glow)")
+        .attr("stroke-width", (d) => d.size > 20 ? 2.5 : 1.2)
+        .attr("filter", (d) => d.size > 18 ? "url(#glow)" : null)
         .style("cursor", "pointer")
         .on("mouseover", (e, d) =>
           setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }),
@@ -379,8 +393,8 @@ export default function Graph() {
         node.selectAll("circle").attr("opacity", 1);
         node.selectAll("text").attr("opacity", 0.85);
         link
-          .attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.2))
-          .attr("stroke-width", (d) => (d.rel === "related" ? 0.5 : 0.8));
+          .attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.18))
+          .attr("stroke-width", (d) => (d.rel === "related" ? 0.5 : 0.7));
       });
 
       sim.on("tick", () => {
@@ -405,7 +419,7 @@ export default function Graph() {
     if (activeFilters.type === "all") {
       node.selectAll("circle").attr("opacity", 1);
       node.selectAll("text").attr("opacity", 0.85);
-      link.attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.2));
+      link.attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.18));
       return;
     }
     node
@@ -427,7 +441,7 @@ export default function Graph() {
     if (!link) return;
     link.attr("stroke-opacity", (d) => {
       if (!showLinks) return 0;
-      return d.rel === "related" ? 0.08 : 0.2;
+      return d.rel === "related" ? 0.08 : 0.18;
     });
   }, [showLinks]);
 
