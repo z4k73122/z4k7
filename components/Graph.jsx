@@ -201,38 +201,104 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── Fuerza orbital personalizada ──────────────────────────────────
-      // Atrae cada nodo a su anillo de grado. Si tiene 0 conexiones → periferia.
-      // Si acumula conexiones → sube de anillo automáticamente en el siguiente render.
-      const forceOrbital = () => {
+      // ── FRACTAL ORBITAL ───────────────────────────────────────────────
+      // Cada nodo orbita su HUB PADRE (el vecino más conectado), no el centro.
+      // Los hubs primarios orbitan el centro global.
+      // Es como un sistema solar: sol → planetas → lunas → satélites.
+
+      // Construir mapa id→nodo
+      const nodeById = {};
+      nodes.forEach((n) => (nodeById[n.id] = n));
+
+      // Para cada nodo, encontrar su "padre" = el vecino con mayor grado
+      const parentOf = {};
+      // Primero construimos adyacencia por id (antes de que d3 resuelva objetos)
+      const adjRaw = {};
+      graphData.links.forEach((l) => {
+        if (!adjRaw[l.source]) adjRaw[l.source] = [];
+        if (!adjRaw[l.target]) adjRaw[l.target] = [];
+        adjRaw[l.source].push(l.target);
+        adjRaw[l.target].push(l.source);
+      });
+
+      nodes.forEach((n) => {
+        if (n.layer === 0) {
+          parentOf[n.id] = null; // hub primario: padre = centro global
+          return;
+        }
+        const neighbors = adjRaw[n.id] || [];
+        let bestParent = null;
+        let bestDeg    = -1;
+        neighbors.forEach((nid) => {
+          const nb = nodeById[nid];
+          if (nb && nb.deg > bestDeg && nb.deg > n.deg) {
+            bestDeg    = nb.deg;
+            bestParent = nid;
+          }
+        });
+        parentOf[n.id] = bestParent; // null si no hay vecino más grande
+      });
+
+      // Radio orbital según la diferencia de grado entre hijo y padre
+      // Más diferencia → órbita más pequeña (satélite pegado al hub)
+      // Menos diferencia → órbita más amplia (nodos de grado similar se separan)
+      const orbitRadius = (child, parent) => {
+        if (!parent) return 0;
+        const pr = parent.size;
+        const cr = child.size;
+        // Radio = tamaño del padre * factor + tamaño del hijo + separación mínima
+        return pr * 2.2 + cr + 35;
+      };
+
+      // Fuerza fractal: atrae cada nodo a un anillo alrededor de su padre
+      const forceFractal = () => {
         let ns;
         const force = (alpha) => {
           ns.forEach((n) => {
-            const dx   = W / 2 - n.x;
-            const dy   = H / 2 - n.y;
-            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const tR   = layerR[n.layer] || 0;
-            if (tR === 0) {
-              // hub primario: gravedad al centro
-              n.vx += dx * 0.12 * alpha;
-              n.vy += dy * 0.12 * alpha;
-            } else {
-              // orbital: fuerza fuerte hacia su radio de anillo
-              const pull = ((dist - tR) / dist) * 0.09 * alpha;
-              n.vx += dx * pull;
-              n.vy += dy * pull;
+            const pid = parentOf[n.id];
+
+            if (!pid) {
+              // Hub primario → atracción al centro global
+              const dx   = W / 2 - n.x;
+              const dy   = H / 2 - n.y;
+              n.vx += dx * 0.10 * alpha;
+              n.vy += dy * 0.10 * alpha;
+              return;
             }
+
+            const parent = nodeById[pid];
+            if (!parent) return;
+
+            // Posición del padre (ya actualizada en este tick)
+            const px = parent.x;
+            const py = parent.y;
+
+            const dx   = n.x - px;
+            const dy   = n.y - py;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            const tR   = orbitRadius(n, parent);
+
+            // Si está muy lejos del radio ideal → atraer
+            // Si está muy cerca → repeler
+            const diff = dist - tR;
+            const pull = (diff / dist) * 0.11 * alpha;
+            n.vx -= dx * pull;
+            n.vy -= dy * pull;
+
+            // También el padre recibe un pequeño empuje opuesto (Newton 3)
+            parent.vx += dx * pull * 0.15;
+            parent.vy += dy * pull * 0.15;
           });
         };
         force.initialize = (nds) => { ns = nds; };
         return force;
       };
 
-      // ── Simulación fluida ─────────────────────────────────────────────
+      // ── Simulación con física fractal ─────────────────────────────────
       const sim = d3
         .forceSimulation(nodes)
-        .velocityDecay(0.55)
-        .alphaDecay(0.015)
+        .velocityDecay(0.52)
+        .alphaDecay(0.013)
         .force(
           "link",
           d3.forceLink(links)
@@ -240,22 +306,22 @@ export default function Graph() {
             .distance((l) => {
               const src = typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source);
               const tgt = typeof l.target === "object" ? l.target : nodes.find((n) => n.id === l.target);
-              return (src?.size || 10) + (tgt?.size || 10) + 60;
+              return (src?.size || 10) + (tgt?.size || 10) + 55;
             })
-            .strength(0.04), // muy débil — la fuerza orbital manda
+            .strength(0.03), // casi sin fuerza — el fractal manda
         )
         .force(
           "charge",
           d3.forceManyBody()
-            .strength((d) => -(d.size || 10) * 40) // más repulsión
+            .strength((d) => -(d.size || 10) * 35)
             .theta(0.9),
         )
-        .force("orbital", forceOrbital())
+        .force("fractal", forceFractal())
         .force(
           "collision",
           d3.forceCollide()
-            .radius((d) => (d.size || 10) + 10)
-            .strength(0.9)
+            .radius((d) => (d.size || 10) + 9)
+            .strength(0.85)
             .iterations(2),
         );
       simRef.current = sim;
