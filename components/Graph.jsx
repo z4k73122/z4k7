@@ -336,7 +336,7 @@ export default function Graph() {
 
       node
         .append("text")
-        .text((d) => d.label)
+        .text((d) => d.label?.length > 15 ? d.label.slice(0, 15): d.label)
         .attr("dy", (d) => d.size + 12)
         .attr("text-anchor", "middle")
         .attr("fill", (d) => nodeColor(d))
