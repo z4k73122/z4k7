@@ -127,9 +127,7 @@ export default function Graph() {
 
       const nodeIds = new Set(graphData.nodes.map((n) => n.id));
 
-      // ── Grado real: determina tamaño, capa y posición orbital ─────────
-      // Cualquier nodo (tag, técnica, plataforma) con muchas conexiones
-      // sube automáticamente a hub primario. No hay jerarquía fija por tipo.
+      // ── Grado real → radio del nodo ──────────────────────────────────
       const degreeMap = {};
       graphData.links.forEach((l) => {
         degreeMap[l.source] = (degreeMap[l.source] || 0) + 1;
@@ -137,59 +135,20 @@ export default function Graph() {
       });
       const maxDegree = Math.max(1, ...Object.values(degreeMap));
 
-      // ── Radio exponencial: la diferencia hub/hoja es muy visual ──────
+      // Radio estilo Observable: rango estrecho 3–18px, diferencia sutil
       const degToSize = (deg) => {
-        const norm   = deg / maxDegree;
-        const curved = Math.pow(norm, 0.45); // potencia < 1: hubs crecen mucho más
-        return Math.max(4, Math.min(54, 4 + curved * 50));
+        const norm = deg / maxDegree;
+        return 3 + Math.pow(norm, 0.55) * 15;
       };
-
-      // ── Capas orbitales por grado, NO por tipo ────────────────────────
-      // Un tag "web" con 80 conexiones → capa 0 (hub central)
-      // Una máquina con 3 conexiones  → capa 3 (hoja periférica)
-      const sortedByDeg = [...graphData.nodes]
-        .sort((a, b) => (degreeMap[b.id] || 0) - (degreeMap[a.id] || 0));
-
-      const getLayer = (rank) => {
-        if (rank < 5)  return 0; // hubs primarios   — centro
-        if (rank < 22) return 1; // hubs secundarios — 1er anillo
-        if (rank < 65) return 2; // nodos medios     — 2do anillo
-        return 3;                // hojas            — periferia
-      };
-
-      const layerR = [0, W * 0.22, W * 0.46, W * 0.72];
-
-      // ── Posición orbital inicial ──────────────────────────────────────
-      const initPos = {};
-      sortedByDeg.forEach((n, rank) => {
-        const layer = getLayer(rank);
-        const orbR  = layerR[layer];
-        const peers = sortedByDeg.filter((_, i) => getLayer(i) === layer);
-        const idx   = peers.findIndex((p) => p.id === n.id);
-        const total = peers.length;
-        const ang   =
-          (idx / total) * Math.PI * 2 +
-          (Math.random() - 0.5) * (Math.PI * 2 / Math.max(total, 1)) * 0.3;
-        const rJit  = orbR > 0 ? (Math.random() - 0.5) * 28 : 0;
-        initPos[n.id] = {
-          x: W / 2 + Math.cos(ang) * (orbR + rJit),
-          y: H / 2 + Math.sin(ang) * (orbR + rJit),
-          layer,
-          rank,
-        };
-      });
 
       const nodes = graphData.nodes.map((n) => {
         const deg = degreeMap[n.id] || 0;
-        const pos = initPos[n.id] || { x: W / 2, y: H / 2, layer: 3, rank: 999 };
         return {
           ...n,
-          size:  degToSize(deg),
+          size: degToSize(deg),
           deg,
-          x:     pos.x,
-          y:     pos.y,
-          layer: pos.layer,
-          rank:  pos.rank,
+          x: W / 2 + (Math.random() - 0.5) * W * 0.6,
+          y: H / 2 + (Math.random() - 0.5) * H * 0.6,
         };
       });
 
@@ -201,104 +160,11 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── FRACTAL ORBITAL ───────────────────────────────────────────────
-      // Cada nodo orbita su HUB PADRE (el vecino más conectado), no el centro.
-      // Los hubs primarios orbitan el centro global.
-      // Es como un sistema solar: sol → planetas → lunas → satélites.
-
-      // Construir mapa id→nodo
-      const nodeById = {};
-      nodes.forEach((n) => (nodeById[n.id] = n));
-
-      // Para cada nodo, encontrar su "padre" = el vecino con mayor grado
-      const parentOf = {};
-      // Primero construimos adyacencia por id (antes de que d3 resuelva objetos)
-      const adjRaw = {};
-      graphData.links.forEach((l) => {
-        if (!adjRaw[l.source]) adjRaw[l.source] = [];
-        if (!adjRaw[l.target]) adjRaw[l.target] = [];
-        adjRaw[l.source].push(l.target);
-        adjRaw[l.target].push(l.source);
-      });
-
-      nodes.forEach((n) => {
-        if (n.layer === 0) {
-          parentOf[n.id] = null; // hub primario: padre = centro global
-          return;
-        }
-        const neighbors = adjRaw[n.id] || [];
-        let bestParent = null;
-        let bestDeg    = -1;
-        neighbors.forEach((nid) => {
-          const nb = nodeById[nid];
-          if (nb && nb.deg > bestDeg && nb.deg > n.deg) {
-            bestDeg    = nb.deg;
-            bestParent = nid;
-          }
-        });
-        parentOf[n.id] = bestParent; // null si no hay vecino más grande
-      });
-
-      // Radio orbital según la diferencia de grado entre hijo y padre
-      // Más diferencia → órbita más pequeña (satélite pegado al hub)
-      // Menos diferencia → órbita más amplia (nodos de grado similar se separan)
-      const orbitRadius = (child, parent) => {
-        if (!parent) return 0;
-        const pr = parent.size;
-        const cr = child.size;
-        // Radio = tamaño del padre * factor + tamaño del hijo + separación mínima
-        return pr * 2.2 + cr + 35;
-      };
-
-      // Fuerza fractal: atrae cada nodo a un anillo alrededor de su padre
-      const forceFractal = () => {
-        let ns;
-        const force = (alpha) => {
-          ns.forEach((n) => {
-            const pid = parentOf[n.id];
-
-            if (!pid) {
-              // Hub primario → atracción al centro global
-              const dx   = W / 2 - n.x;
-              const dy   = H / 2 - n.y;
-              n.vx += dx * 0.10 * alpha;
-              n.vy += dy * 0.10 * alpha;
-              return;
-            }
-
-            const parent = nodeById[pid];
-            if (!parent) return;
-
-            // Posición del padre (ya actualizada en este tick)
-            const px = parent.x;
-            const py = parent.y;
-
-            const dx   = n.x - px;
-            const dy   = n.y - py;
-            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-            const tR   = orbitRadius(n, parent);
-
-            // Si está muy lejos del radio ideal → atraer
-            // Si está muy cerca → repeler
-            const diff = dist - tR;
-            const pull = (diff / dist) * 0.11 * alpha;
-            n.vx -= dx * pull;
-            n.vy -= dy * pull;
-
-            // También el padre recibe un pequeño empuje opuesto (Newton 3)
-            parent.vx += dx * pull * 0.15;
-            parent.vy += dy * pull * 0.15;
-          });
-        };
-        force.initialize = (nds) => { ns = nds; };
-        return force;
-      };
-
-      // ── Simulación con física fractal ─────────────────────────────────
+      // ── Simulación disjoint force-directed (estilo Observable) ────────
+      // Sin fuerzas orbitales — los clusters se forman solos por conexiones reales.
+      // forceX/Y suaves mantienen todo visible sin colapsar al centro.
       const sim = d3
         .forceSimulation(nodes)
-        .velocityDecay(0.52)
-        .alphaDecay(0.013)
         .force(
           "link",
           d3.forceLink(links)
@@ -306,71 +172,53 @@ export default function Graph() {
             .distance((l) => {
               const src = typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source);
               const tgt = typeof l.target === "object" ? l.target : nodes.find((n) => n.id === l.target);
-              return (src?.size || 10) + (tgt?.size || 10) + 55;
+              return (src?.size || 5) + (tgt?.size || 5) + 55;
             })
-            .strength(0.03), // casi sin fuerza — el fractal manda
+            .strength(0.4),
         )
         .force(
           "charge",
           d3.forceManyBody()
-            .strength((d) => -(d.size || 10) * 35)
+            .strength((d) => -(d.size || 5) * (d.size || 5) * 8)
             .theta(0.9),
         )
-        .force("fractal", forceFractal())
+        .force("x", d3.forceX(W / 2).strength(0.02))
+        .force("y", d3.forceY(H / 2).strength(0.02))
         .force(
           "collision",
           d3.forceCollide()
-            .radius((d) => (d.size || 10) + 9)
-            .strength(0.85)
-            .iterations(2),
+            .radius((d) => (d.size || 5) + 14)
+            .iterations(3),
         );
       simRef.current = sim;
 
       // ── Links ─────────────────────────────────────────────────────────
       const link = g
         .append("g").attr("class", "links")
+        .attr("stroke", "#ffffff")
+        .attr("stroke-opacity", 0.12)
+        .attr("stroke-width", 0.5)
         .selectAll("line").data(links).join("line")
-        .attr("stroke", (d) => {
-          if (d.rel === "related") return "#ffffff";
-          const src = typeof d.source === "object"
-            ? d.source
-            : nodes.find((n) => n.id === d.source);
-          return nodeColor(src);
-        })
-        .attr("stroke-opacity", (d) => d.rel === "related" ? 0.07 : 0.18)
-        .attr("stroke-width",   (d) => d.rel === "related" ? 0.5  : 0.7)
         .attr("stroke-dasharray", (d) => d.rel === "related" ? "3,3" : "none");
 
-      // ── Grupos de nodo ────────────────────────────────────────────────
+      // ── Nodos como círculos directos (sin group) ──────────────────────
       const node = g
         .append("g").attr("class", "nodes")
-        .selectAll("g").data(nodes).join("g")
+        .selectAll("circle").data(nodes).join("circle")
+        .attr("r",              (d) => d.size)
+        .attr("fill",           (d) => nodeColor(d))
+        .attr("fill-opacity",   0.85)
+        .attr("stroke",         (d) => nodeColor(d))
+        .attr("stroke-width",   (d) => d.size > 10 ? 1.5 : 0.8)
+        .attr("stroke-opacity", 0.5)
+        .attr("filter",         (d) => d.size > 12 ? "url(#glow)" : null)
+        .style("cursor", "pointer")
         .call(
           d3.drag()
             .on("start", (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
             .on("drag",  (e, d) => { d.fx = e.x; d.fy = e.y; })
             .on("end",   (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.pinned) { d.fx = null; d.fy = null; } }),
-        );
-
-      // Anillo exterior decorativo — solo hubs primarios grandes
-      node
-        .append("circle")
-        .attr("class", "node-outer-ring")
-        .attr("r",            (d) => d.size + 7)
-        .attr("fill",         "none")
-        .attr("stroke",       (d) => nodeColor(d) + "25")
-        .attr("stroke-width", 1.2)
-        .attr("display",      (d) => d.size > 32 ? null : "none");
-
-      // Círculo principal
-      node
-        .append("circle")
-        .attr("r",            (d) => d.size)
-        .attr("fill",         (d) => nodeColor(d) + "14")
-        .attr("stroke",       (d) => nodeColor(d))
-        .attr("stroke-width", (d) => d.size > 30 ? 2.5 : d.size > 16 ? 1.8 : 1.0)
-        .attr("filter",       (d) => d.size > 14 ? "url(#glow)" : null)
-        .style("cursor", "pointer")
+        )
         .on("mouseover", (e, d) => setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }))
         .on("mousemove", (e)    => setTooltip((t) => ({ ...t, x: e.clientX, y: e.clientY })))
         .on("mouseout",  ()     => setTooltip((t) => ({ ...t, visible: false })))
@@ -381,11 +229,15 @@ export default function Graph() {
             if (l.source.id === d.id) conn.add(l.target.id);
             if (l.target.id === d.id) conn.add(l.source.id);
           });
-          node.selectAll("circle").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.05);
-          node.selectAll("text").attr("opacity",   (n) => conn.has(n.id) ? 1 : 0.02);
+          node
+            .attr("fill-opacity",   (n) => conn.has(n.id) ? 1    : 0.06)
+            .attr("stroke-opacity", (n) => conn.has(n.id) ? 0.9  : 0.04);
           link
-            .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
-            .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2   : 0.5);
+            .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9  : 0.02)
+            .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 1.5  : 0.5)
+            .attr("stroke",         (l) => l.source.id === d.id || l.target.id === d.id
+              ? nodeColor(typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source))
+              : "#ffffff");
         })
         .on("dblclick", (e, d) => {
           e.stopPropagation();
@@ -394,31 +246,30 @@ export default function Graph() {
           d.fy = d.pinned ? d.y : null;
         });
 
-      // Labels — tamaño de fuente escala con el nodo
-      node
-        .append("text")
+      // Labels — solo en hubs (nodos grandes)
+      const label = g
+        .append("g").attr("class", "labels")
+        .attr("pointer-events", "none")
+        .selectAll("text").data(nodes.filter((n) => n.size > 9)).join("text")
         .text((d) => truncateLabel(d.label))
-        .attr("dy",           (d) => d.size + 13)
         .attr("text-anchor",  "middle")
+        .attr("dy",           (d) => d.size + 11)
         .attr("fill",         (d) => nodeColor(d))
         .attr("font-family",  "monospace")
-        .attr("font-size",    (d) => d.size > 32 ? "12px" : d.size > 16 ? "10px" : "9px")
-        .attr("pointer-events", "none")
-        .attr("opacity", 0.85);
+        .attr("font-size",    (d) => d.size > 14 ? "11px" : "9px")
+        .attr("opacity",      0.75);
 
       svg.on("click", () => {
-        node.selectAll("circle").attr("opacity", 1);
-        node.selectAll("text").attr("opacity", 0.85);
-        link
-          .attr("stroke-opacity", (d) => d.rel === "related" ? 0.07 : 0.18)
-          .attr("stroke-width",   (d) => d.rel === "related" ? 0.5  : 0.7);
+        node.attr("fill-opacity", 0.85).attr("stroke-opacity", 0.5);
+        link.attr("stroke-opacity", 0.12).attr("stroke-width", 0.5).attr("stroke", "#ffffff");
       });
 
       sim.on("tick", () => {
         link
           .attr("x1", (d) => d.source.x).attr("y1", (d) => d.source.y)
           .attr("x2", (d) => d.target.x).attr("y2", (d) => d.target.y);
-        node.attr("transform", (d) => `translate(${d.x},${d.y})`);
+        node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+        label.attr("x", (d) => d.x).attr("y", (d) => d.y);
       });
 
       nodeRef.current = node;
@@ -433,25 +284,22 @@ export default function Graph() {
     const link = linkRef.current;
     if (!node || !link) return;
     if (activeFilters.type === "all") {
-      node.selectAll("circle").attr("opacity", 1);
-      node.selectAll("text").attr("opacity", 0.85);
-      link.attr("stroke-opacity", (d) => d.rel === "related" ? 0.07 : 0.18);
+      node.attr("fill-opacity", 0.85).attr("stroke-opacity", 0.5);
+      link.attr("stroke-opacity", 0.12);
       return;
     }
-    node.selectAll("circle").attr("opacity", (d) => nodeMatchesFilter(d, activeFilters) ? 1 : 0.04);
-    node.selectAll("text").attr("opacity",   (d) => nodeMatchesFilter(d, activeFilters) ? 1 : 0.02);
+    node
+      .attr("fill-opacity",   (d) => nodeMatchesFilter(d, activeFilters) ? 0.85 : 0.04)
+      .attr("stroke-opacity", (d) => nodeMatchesFilter(d, activeFilters) ? 0.5  : 0.03);
     link.attr("stroke-opacity", (l) =>
-      nodeMatchesFilter(l.source, activeFilters) || nodeMatchesFilter(l.target, activeFilters) ? 0.7 : 0.02,
+      nodeMatchesFilter(l.source, activeFilters) || nodeMatchesFilter(l.target, activeFilters) ? 0.6 : 0.02,
     );
   }, [activeFilters]);
 
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
-    link.attr("stroke-opacity", (d) => {
-      if (!showLinks) return 0;
-      return d.rel === "related" ? 0.07 : 0.18;
-    });
+    link.attr("stroke-opacity", showLinks ? 0.12 : 0);
   }, [showLinks]);
 
   // ── Animación de entrada por tipo ────────────────────────────────────
@@ -460,8 +308,7 @@ export default function Graph() {
     const link = linkRef.current;
     if (!node || !link || !graphData) return;
     setAnimating(true);
-    node.selectAll("circle").attr("opacity", 0);
-    node.selectAll("text").attr("opacity", 0);
+    node.attr("fill-opacity", 0).attr("stroke-opacity", 0);
     link.attr("stroke-opacity", 0);
     const delay = (ms) => new Promise((r) => setTimeout(r, ms));
     const nodes = allNodes.current;
@@ -471,10 +318,9 @@ export default function Graph() {
       if (!groupNodes.length) continue;
       setAnimStep(legendLabels[groupType] || groupType);
       for (const n of groupNodes) {
-        node.filter((d) => d.id === n.id).selectAll("circle")
-          .attr("opacity", 0).transition().duration(300).attr("opacity", 1);
-        node.filter((d) => d.id === n.id).selectAll("text")
-          .attr("opacity", 0).transition().duration(300).attr("opacity", 0.85);
+        node.filter((d) => d.id === n.id)
+          .attr("fill-opacity", 0).transition().duration(300).attr("fill-opacity", 0.85)
+          .attr("stroke-opacity", 0).transition().duration(300).attr("stroke-opacity", 0.5);
         await delay(groupNodes.length > 30 ? 12 : 35);
       }
       const groupLinks = links.filter((l) => {
