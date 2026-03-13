@@ -202,15 +202,12 @@ export default function Graph() {
       const svg = d3.select(svgRef.current).attr("width", W).attr("height", H);
       svg.selectAll("*").remove();
 
-      // ── Glow filter — solo para nodos grandes (Obsidian style, sin lag) ─
+      // ── Glow filter — solo nodos grandes ─────────────────────────────
       const defs = svg.append("defs");
       const filter = defs.append("filter").attr("id", "glow")
-        .attr("x", "-40%").attr("y", "-40%")
-        .attr("width", "180%").attr("height", "180%");
-      filter
-        .append("feGaussianBlur")
-        .attr("stdDeviation", "2.5")
-        .attr("result", "coloredBlur");
+        .attr("x", "-50%").attr("y", "-50%")
+        .attr("width", "200%").attr("height", "200%");
+      filter.append("feGaussianBlur").attr("stdDeviation", "3").attr("result", "coloredBlur");
       const feMerge = filter.append("feMerge");
       feMerge.append("feMergeNode").attr("in", "coloredBlur");
       feMerge.append("feMergeNode").attr("in", "SourceGraphic");
@@ -218,15 +215,13 @@ export default function Graph() {
       const g = svg.append("g");
       gRef.current = g;
       svg.call(
-        d3
-          .zoom()
-          .scaleExtent([0.05, 4])
+        d3.zoom().scaleExtent([0.05, 4])
           .on("zoom", (e) => g.attr("transform", e.transform)),
       );
 
       const nodeIds = new Set(graphData.nodes.map((n) => n.id));
 
-      // ── Tamaño dinámico por grado (más conexiones = más grande) ────────
+      // ── Grado por nodo (O(n) single pass) ────────────────────────────
       const degreeMap = {};
       graphData.links.forEach((l) => {
         degreeMap[l.source] = (degreeMap[l.source] || 0) + 1;
@@ -234,11 +229,49 @@ export default function Graph() {
       });
       const maxDegree = Math.max(1, ...Object.values(degreeMap));
 
+      // ── Radio exponencial: hubs se ven MUCHO más grandes ─────────────
+      const degToSize = (deg) => {
+        const norm = deg / maxDegree;
+        const curved = Math.pow(norm, 0.5); // curva raíz: diferencia más dramática
+        return Math.max(5, Math.min(52, 5 + curved * 47));
+      };
+
+      // ── Posición orbital inicial por rango de grado ───────────────────
+      // Capas concéntricas: los hubs al centro, hojas en la periferia
+      const sortedByDeg = [...graphData.nodes]
+        .sort((a, b) => (degreeMap[b.id] || 0) - (degreeMap[a.id] || 0));
+
+      const getLayer = (rank) => {
+        if (rank < 4)  return 0; // hubs centrales
+        if (rank < 18) return 1; // primer anillo
+        if (rank < 55) return 2; // segundo anillo
+        return 3;                // periferia
+      };
+      const layerR = [0, W * 0.18, W * 0.36, W * 0.56];
+
+      const initPos = {};
+      sortedByDeg.forEach((n, rank) => {
+        const layer = getLayer(rank);
+        const orbR  = layerR[layer];
+        const peers = sortedByDeg.filter((_, i) => getLayer(i) === layer);
+        const posInLayer = peers.findIndex((p) => p.id === n.id);
+        const total = peers.length;
+        const baseAngle = (posInLayer / total) * Math.PI * 2;
+        const jitter = (Math.random() - 0.5) * (Math.PI * 2 / Math.max(total, 1)) * 0.35;
+        const rJitter = orbR > 0 ? (Math.random() - 0.5) * 35 : 0;
+        initPos[n.id] = {
+          x: W / 2 + Math.cos(baseAngle + jitter) * (orbR + rJitter),
+          y: H / 2 + Math.sin(baseAngle + jitter) * (orbR + rJitter),
+          layer,
+          rank,
+        };
+      });
+
       const nodes = graphData.nodes.map((n) => {
-        const deg = degreeMap[n.id] || 0;
-        // Radio: mínimo 5, máximo 42, proporcional al grado
-        const size = 5 + (deg / maxDegree) * 37;
-        return { ...n, size: Math.max(5, Math.min(42, size)), deg };
+        const deg  = degreeMap[n.id] || 0;
+        const size = degToSize(deg);
+        const pos  = initPos[n.id] || { x: W / 2, y: H / 2, layer: 3, rank: 999 };
+        return { ...n, size, deg, x: pos.x, y: pos.y, layer: pos.layer, rank: pos.rank };
       });
 
       const links = graphData.links
@@ -248,40 +281,58 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── Simulación optimizada para fluidez ────────────────────────────
+      // ── Fuerza orbital personalizada: mantiene anillos concéntricos ──
+      const forceOrbital = () => {
+        let ns;
+        const force = (alpha) => {
+          ns.forEach((n) => {
+            const dx = W / 2 - n.x;
+            const dy = H / 2 - n.y;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            const targetR = layerR[n.layer] || 0;
+            if (targetR === 0) {
+              // hub: atracción fuerte al centro
+              n.vx += dx * 0.08 * alpha;
+              n.vy += dy * 0.08 * alpha;
+            } else {
+              // nodo orbital: atraído a su anillo
+              const pull = ((dist - targetR) / dist) * 0.035 * alpha;
+              n.vx += dx * pull;
+              n.vy += dy * pull;
+            }
+          });
+        };
+        force.initialize = (nds) => { ns = nds; };
+        return force;
+      };
+
+      // ── Simulación con estructura orbital ────────────────────────────
       const sim = d3
         .forceSimulation(nodes)
-        // velocityDecay alto = frena rápido = más fluido visualmente
-        .velocityDecay(0.4)
-        .alphaDecay(0.025)
+        .velocityDecay(0.42)
+        .alphaDecay(0.018)
         .force(
           "link",
-          d3
-            .forceLink(links)
+          d3.forceLink(links)
             .id((d) => d.id)
             .distance((l) => {
-              const src = typeof l.source === "object" ? l.source : nodes.find(n => n.id === l.source);
-              const tgt = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
-              // Distancia basada en tamaño de los nodos extremos
-              return (src?.size || 10) + (tgt?.size || 10) + 60;
+              const src = typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source);
+              const tgt = typeof l.target === "object" ? l.target : nodes.find((n) => n.id === l.target);
+              return (src?.size || 10) + (tgt?.size || 10) + 50;
             })
-            .strength(0.3),
+            .strength(0.25),
         )
         .force(
           "charge",
-          // Barnes-Hut por defecto en d3 — O(n log n), no O(n²)
           d3.forceManyBody()
-            .strength((d) => -(d.size || 10) * 30)
-            .distanceMax(400)   // limitar radio de repulsión = gran ganancia de velocidad
-            .theta(0.9),        // menos precisión, mucho más rápido
+            .strength((d) => -(d.size || 10) * 28)
+            .distanceMax(380)
+            .theta(0.9),
         )
-        .force("center", d3.forceCenter(W / 2, H / 2).strength(0.05))
+        .force("orbital", forceOrbital())
         .force(
           "collision",
-          d3.forceCollide()
-            .radius((d) => (d.size || 10) + 8)
-            .strength(0.7)
-            .iterations(1),   // 1 iteración = suficiente y mucho más rápido
+          d3.forceCollide().radius((d) => (d.size || 10) + 7).strength(0.75).iterations(1),
         );
       simRef.current = sim;
 
@@ -333,14 +384,23 @@ export default function Graph() {
             }),
         );
 
-      // ── Circles con glow solo en nodos grandes (Obsidian, sin lag) ─────
+      // ── Circles: glow en hubs, doble anillo decorativo en top hubs ──────
+      node
+        .append("circle")
+        .attr("class", "node-outer-ring")
+        .attr("r", (d) => d.size + 6)
+        .attr("fill", "none")
+        .attr("stroke", (d) => nodeColor(d) + "28")
+        .attr("stroke-width", 1)
+        .attr("display", (d) => d.size > 30 ? null : "none");
+
       node
         .append("circle")
         .attr("r", (d) => d.size)
         .attr("fill", (d) => nodeColor(d) + "15")
         .attr("stroke", (d) => nodeColor(d))
-        .attr("stroke-width", (d) => d.size > 20 ? 2.5 : 1.2)
-        .attr("filter", (d) => d.size > 18 ? "url(#glow)" : null)
+        .attr("stroke-width", (d) => d.size > 28 ? 2.5 : d.size > 16 ? 1.8 : 1.1)
+        .attr("filter", (d) => d.size > 16 ? "url(#glow)" : null)
         .style("cursor", "pointer")
         .on("mouseover", (e, d) =>
           setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }),
@@ -358,8 +418,7 @@ export default function Graph() {
           });
           node
             .selectAll("circle")
-            .attr("opacity", (n) => (conn.has(n.id) ? 1 : 0.06));
-          node
+            .attr("opacity", (n) => (conn.has(n.id) ? 1 : 0.06));          node
             .selectAll("text")
             .attr("opacity", (n) => (conn.has(n.id) ? 1 : 0.03));
           link
@@ -377,15 +436,15 @@ export default function Graph() {
           d.fy = d.pinned ? d.y : null;
         });
 
-      // ── Labels truncated to 15 chars ──────────────────────────────────
+      // ── Labels: escalan con el tamaño del nodo, truncados a 15 chars ───
       node
         .append("text")
         .text((d) => truncateLabel(d.label))
-        .attr("dy", (d) => d.size + 12)
+        .attr("dy", (d) => d.size + 13)
         .attr("text-anchor", "middle")
         .attr("fill", (d) => nodeColor(d))
         .attr("font-family", "monospace")
-        .attr("font-size", (d) => (d.type === "machine" ? "11px" : "9px"))
+        .attr("font-size", (d) => d.size > 30 ? "12px" : d.size > 16 ? "10px" : "9px")
         .attr("pointer-events", "none")
         .attr("opacity", 0.85);
 
