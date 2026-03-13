@@ -1,0 +1,1867 @@
+{
+  "nodes": [
+    {
+      "id": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "label": "Ataque de inyección SQL, consultando el tipo y versión de la base de datos en MySQL y Microsoft",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación web conca...",
+      "slug": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft"
+    },
+    {
+      "id": "plat_PortSwigger",
+      "label": "PortSwigger",
+      "type": "platform",
+      "size": 20
+    },
+    {
+      "id": "os_Windows",
+      "label": "Windows",
+      "type": "os",
+      "size": 16
+    },
+    {
+      "id": "diff_Medium",
+      "label": "Medium",
+      "type": "difficulty",
+      "size": 13
+    },
+    {
+      "id": "tech_sqli",
+      "label": "SQLi",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_unionattack",
+      "label": "UnionAttack",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tool_burpsuite",
+      "label": "Burpsuite",
+      "type": "tool",
+      "size": 13
+    },
+    {
+      "id": "tag_sqli",
+      "label": "SQLi",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_unionattack",
+      "label": "UnionAttack",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "label": "Ataque de inyección SQL, listando el contenido de bases de datos en bases de datos que no son Oracle",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "La vulnerabilidad explotada corresponde a una inyección SQL (SQLi) en el filtro ...",
+      "slug": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle"
+    },
+    {
+      "id": "tech_database",
+      "label": "Database",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_database",
+      "label": "Database",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "label": "Ataque de inyección SQL, listando el contenido de la base de datos en Oracle",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "Este laboratorio explota una vulnerabilidad de inyección SQL (SQLi) en una aplic...",
+      "slug": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle"
+    },
+    {
+      "id": "tech_oracledb",
+      "label": "OracleDB",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_oracledb",
+      "label": "OracleDB",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "label": "Ataque UNION de inyección SQL, búsqueda de una columna que contiene texto",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación web const...",
+      "slug": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto"
+    },
+    {
+      "id": "diff_Easy",
+      "label": "Easy",
+      "type": "difficulty",
+      "size": 13
+    },
+    {
+      "id": "tech_waf",
+      "label": "WAF",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_waf",
+      "label": "WAF",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "label": "Ataque UNION de inyección SQL, determinando el número de columnas devueltas por la consulta",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection ocurre cuando una aplicación web construye co...",
+      "slug": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta"
+    },
+    {
+      "id": "tech_union",
+      "label": "Union",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_union",
+      "label": "Union",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "label": "Ataque UNION de inyección SQL, recuperando datos de otras tablas",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de inyección SQL (SQLi) ocurre cuando una aplicación web const...",
+      "slug": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas"
+    },
+    {
+      "id": "inyeccion-sql-ciega-con-errores-condicionales",
+      "label": "Inyección SQL ciega con errores condicionales",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Linux",
+      "difficulty": "Insane",
+      "status": "pwned",
+      "desc": "La inyección SQL ciega basada en errores ocurre cuando una aplicación web ejecut...",
+      "slug": "inyeccion-sql-ciega-con-errores-condicionales"
+    },
+    {
+      "id": "os_Linux",
+      "label": "Linux",
+      "type": "os",
+      "size": 16
+    },
+    {
+      "id": "diff_Insane",
+      "label": "Insane",
+      "type": "difficulty",
+      "size": 13
+    },
+    {
+      "id": "tech_blindsqli",
+      "label": "BlindSQLi",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_cookie",
+      "label": "cookie",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_concatenar",
+      "label": "Concatenar",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tool_turbo_intruder",
+      "label": "Turbo-Intruder",
+      "type": "tool",
+      "size": 13
+    },
+    {
+      "id": "tool_python",
+      "label": "Python",
+      "type": "tool",
+      "size": 13
+    },
+    {
+      "id": "tag_blindsqli",
+      "label": "BlindSQLi",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_cookie",
+      "label": "cookie",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_concatenar",
+      "label": "Concatenar",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_oracle",
+      "label": "Oracle",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_payload",
+      "label": "Payload",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "label": "Inyección SQL ciega con respuestas condicionales",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Linux",
+      "difficulty": "Insane",
+      "status": "pwned",
+      "desc": "La SQL Injection ciega basada en respuestas condicionales ocurre cuando una apli...",
+      "slug": "inyeccion-sql-ciega-con-respuestas-condicionales"
+    },
+    {
+      "id": "tech_password",
+      "label": "password",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_password",
+      "label": "password",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "inyeccion-sql-visible-basada-en-errores",
+      "label": "Inyección SQL visible basada en errores",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Linux",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación no valida...",
+      "slug": "inyeccion-sql-visible-basada-en-errores"
+    },
+    {
+      "id": "tech_bypass",
+      "label": "Bypass",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_bypass",
+      "label": "Bypass",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "label": "SQL injection attack, querying the database type and version on Oracle",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación   concate...",
+      "slug": "sql-injection-attack-querying-the-database-type-and-version-on-oracle"
+    },
+    {
+      "id": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "label": "SQL injection UNION attack, retrieving multiple values in a single columnSQL injection UNION attack, retrieving multiple values in a single column",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Linux",
+      "difficulty": "Medium",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación web no va...",
+      "slug": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column"
+    },
+    {
+      "id": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "label": "Vulnerabilidad de inyección SQL en la cláusula WHERE que permite la recuperación de datos ocultos",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection (SQLi) ocurre cuando una aplicación web const...",
+      "slug": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos"
+    },
+    {
+      "id": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "label": "Vulnerabilidad de inyección SQL que permite eludir el inicio de sesión",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "status": "pwned",
+      "desc": "La vulnerabilidad de SQL Injection ocurre cuando una aplicación web no valida ni...",
+      "slug": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion"
+    },
+    {
+      "id": "tech_login",
+      "label": "Login",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_login",
+      "label": "Login",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "label": "Reflejó XSS en contexto HTML sin nada codificado",
+      "type": "machine",
+      "size": 19,
+      "platform": "PortSwigger",
+      "os": "Windows",
+      "difficulty": "Easy",
+      "status": "pwned",
+      "desc": "Los scripts entre sitios reflejados (o XSS) surgen cuando una aplicación recibe ...",
+      "slug": "reflejo-xss-en-contexto-html-sin-nada-codificado"
+    },
+    {
+      "id": "tech_xss",
+      "label": "XSS",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_reflected",
+      "label": "Reflected",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_csp",
+      "label": "CSP",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tag_xss",
+      "label": "XSS",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_reflected",
+      "label": "Reflected",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_csp",
+      "label": "CSP",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "sequence",
+      "label": "Sequence",
+      "type": "machine",
+      "size": 19,
+      "platform": "TryHackMe",
+      "os": "Linux",
+      "difficulty": "Hard",
+      "status": "pwned",
+      "desc": "Descripción del vector de ataque....",
+      "slug": "sequence"
+    },
+    {
+      "id": "plat_TryHackMe",
+      "label": "TryHackMe",
+      "type": "platform",
+      "size": 20
+    },
+    {
+      "id": "diff_Hard",
+      "label": "Hard",
+      "type": "difficulty",
+      "size": 13
+    },
+    {
+      "id": "tech_ssrf",
+      "label": "SSRF",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_httponly",
+      "label": "HttpOnly",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tech_csrf",
+      "label": "CSRF",
+      "type": "technique",
+      "size": 15
+    },
+    {
+      "id": "tool_nmap",
+      "label": "Nmap",
+      "type": "tool",
+      "size": 13
+    },
+    {
+      "id": "tool_fuff",
+      "label": "Fuff",
+      "type": "tool",
+      "size": 13
+    },
+    {
+      "id": "tag_ssrf",
+      "label": "SSRF",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_httponly",
+      "label": "HttpOnly",
+      "type": "tag",
+      "size": 11
+    },
+    {
+      "id": "tag_csrf",
+      "label": "CSRF",
+      "type": "tag",
+      "size": 11
+    }
+  ],
+  "links": [
+    {
+      "source": "plat_PortSwigger",
+      "target": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "rel": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "rel": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tech_database",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "tag_database",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "rel": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tech_database",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tech_oracledb",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tag_database",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "tag_oracledb",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Easy",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "rel": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tech_database",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tech_oracledb",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tech_waf",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tag_database",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tag_oracledb",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "tag_waf",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Easy",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tech_union",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tech_waf",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tag_union",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "tag_waf",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tech_database",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tech_oracledb",
+      "rel": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tag_database",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "tag_oracledb",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Linux",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Insane",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tech_blindsqli",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tech_cookie",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tech_concatenar",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tool_turbo_intruder",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tool_python",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_blindsqli",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_cookie",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_concatenar",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_oracle",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_database",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "tag_payload",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Linux",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Insane",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tech_blindsqli",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tech_cookie",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tech_password",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tool_turbo_intruder",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tool_python",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tag_blindsqli",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tag_cookie",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "tag_password",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Linux",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tech_bypass",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tech_cookie",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tech_waf",
+      "rel": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tag_bypass",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tag_cookie",
+      "rel": "tag"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "tag_waf",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "difficulty"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tech_oracledb",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tech_waf",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tag_oracledb",
+      "rel": "tag"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "tag_waf",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Linux",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Medium",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "difficulty"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tech_unionattack",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tech_database",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tech_oracledb",
+      "rel": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tag_unionattack",
+      "rel": "tag"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tag_database",
+      "rel": "tag"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "tag_oracledb",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Easy",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "difficulty"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Easy",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "difficulty"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tech_sqli",
+      "rel": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tech_bypass",
+      "rel": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tech_login",
+      "rel": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tag_sqli",
+      "rel": "tag"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tag_bypass",
+      "rel": "tag"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "tag_login",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_PortSwigger",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Windows",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Easy",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "difficulty"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tech_xss",
+      "rel": "technique"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tech_reflected",
+      "rel": "technique"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tech_csp",
+      "rel": "technique"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tool_burpsuite",
+      "rel": "tool"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tag_xss",
+      "rel": "tag"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tag_reflected",
+      "rel": "tag"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "tag_csp",
+      "rel": "tag"
+    },
+    {
+      "source": "plat_TryHackMe",
+      "target": "sequence",
+      "rel": "platform"
+    },
+    {
+      "source": "os_Linux",
+      "target": "sequence",
+      "rel": "os"
+    },
+    {
+      "source": "diff_Hard",
+      "target": "sequence",
+      "rel": "difficulty"
+    },
+    {
+      "source": "sequence",
+      "target": "tech_xss",
+      "rel": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "tech_ssrf",
+      "rel": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "tech_cookie",
+      "rel": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "tech_httponly",
+      "rel": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "tech_csrf",
+      "rel": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "tool_nmap",
+      "rel": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "tool_fuff",
+      "rel": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "tag_xss",
+      "rel": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "tag_ssrf",
+      "rel": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "tag_cookie",
+      "rel": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "tag_httponly",
+      "rel": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "tag_csrf",
+      "rel": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "sequence",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "sequence",
+      "rel": "related"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "sequence",
+      "rel": "related"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "sequence",
+      "rel": "related"
+    }
+  ],
+  "colors": {
+    "machine": "#00d4ff",
+    "platform": "#ff8c00",
+    "os": "#ffcc00",
+    "difficulty": "#b06aff",
+    "technique": "#ff3366",
+    "tool": "#00ffcc",
+    "tag": "#00ff88"
+  },
+  "subColors": {}
+}
