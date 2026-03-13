@@ -157,7 +157,7 @@ export default function Graph() {
         return 3;                // hojas            — periferia
       };
 
-      const layerR = [0, W * 0.17, W * 0.36, W * 0.58];
+      const layerR = [0, W * 0.22, W * 0.46, W * 0.72];
 
       // ── Posición orbital inicial ──────────────────────────────────────
       const initPos = {};
@@ -214,11 +214,11 @@ export default function Graph() {
             const tR   = layerR[n.layer] || 0;
             if (tR === 0) {
               // hub primario: gravedad al centro
-              n.vx += dx * 0.07 * alpha;
-              n.vy += dy * 0.07 * alpha;
+              n.vx += dx * 0.12 * alpha;
+              n.vy += dy * 0.12 * alpha;
             } else {
-              // orbital: atraído hacia su radio de anillo
-              const pull = ((dist - tR) / dist) * 0.032 * alpha;
+              // orbital: fuerza fuerte hacia su radio de anillo
+              const pull = ((dist - tR) / dist) * 0.09 * alpha;
               n.vx += dx * pull;
               n.vy += dy * pull;
             }
@@ -231,8 +231,8 @@ export default function Graph() {
       // ── Simulación fluida ─────────────────────────────────────────────
       const sim = d3
         .forceSimulation(nodes)
-        .velocityDecay(0.42)
-        .alphaDecay(0.018)
+        .velocityDecay(0.55)
+        .alphaDecay(0.015)
         .force(
           "link",
           d3.forceLink(links)
@@ -240,24 +240,23 @@ export default function Graph() {
             .distance((l) => {
               const src = typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source);
               const tgt = typeof l.target === "object" ? l.target : nodes.find((n) => n.id === l.target);
-              return (src?.size || 10) + (tgt?.size || 10) + 48;
+              return (src?.size || 10) + (tgt?.size || 10) + 60;
             })
-            .strength(0.22),
+            .strength(0.04), // muy débil — la fuerza orbital manda
         )
         .force(
           "charge",
           d3.forceManyBody()
-            .strength((d) => -(d.size || 10) * 26)
-            .distanceMax(380)
+            .strength((d) => -(d.size || 10) * 40) // más repulsión
             .theta(0.9),
         )
         .force("orbital", forceOrbital())
         .force(
           "collision",
           d3.forceCollide()
-            .radius((d) => (d.size || 10) + 7)
-            .strength(0.75)
-            .iterations(1),
+            .radius((d) => (d.size || 10) + 10)
+            .strength(0.9)
+            .iterations(2),
         );
       simRef.current = sim;
 
