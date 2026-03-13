@@ -90,6 +90,10 @@ export default function Graph() {
     return gColors[n.type] || "#4a6a7a";
   };
 
+  // Truncate label to 15 characters
+  const truncateLabel = (label) =>
+    label?.length > 15 ? label.slice(0, 15) + "…" : label;
+
   const filterGroups = graphData
     ? [
         {
@@ -197,6 +201,18 @@ export default function Graph() {
       const H = Math.max(400, Math.min(1000, graphData.nodes.length * 2.5));
       const svg = d3.select(svgRef.current).attr("width", W).attr("height", H);
       svg.selectAll("*").remove();
+
+      // ── Glow filter (Obsidian style) ──────────────────────────────────
+      const defs = svg.append("defs");
+      const filter = defs.append("filter").attr("id", "glow");
+      filter
+        .append("feGaussianBlur")
+        .attr("stdDeviation", "3.5")
+        .attr("result", "coloredBlur");
+      const feMerge = filter.append("feMerge");
+      feMerge.append("feMergeNode").attr("in", "coloredBlur");
+      feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
       const g = svg.append("g");
       gRef.current = g;
       svg.call(
@@ -207,10 +223,19 @@ export default function Graph() {
       );
 
       const nodeIds = new Set(graphData.nodes.map((n) => n.id));
-      const nodes = graphData.nodes.map((n) => ({
-        ...n,
-        size: n.size || TYPE_SIZE[n.type] || 12,
-      }));
+
+      // ── Dynamic size based on connection count (Obsidian style) ───────
+      const nodes = graphData.nodes.map((n) => {
+        const connectionCount = graphData.links.filter(
+          (l) => l.source === n.id || l.target === n.id,
+        ).length;
+        const baseSize = n.size || TYPE_SIZE[n.type] || 8;
+        return {
+          ...n,
+          size: Math.max(6, Math.min(42, baseSize + connectionCount * 1.5)),
+        };
+      });
+
       const links = graphData.links
         .filter((l) => l.source !== l.target)
         .filter((l) => nodeIds.has(l.source) && nodeIds.has(l.target))
@@ -218,6 +243,7 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
+      // ── Simulation with more separation (Obsidian style) ──────────────
       const sim = d3
         .forceSimulation(nodes)
         .force(
@@ -227,24 +253,25 @@ export default function Graph() {
             .id((d) => d.id)
             .distance((l) => {
               const t = typeof l.target === "object" ? l.target.type : "";
-              if (t === "platform" || t === "os") return 140;
-              if (t === "difficulty") return 110;
-              if (t === "technique" || t === "tool") return 85;
-              if (l.rel === "related") return 55;
-              return 70;
+              if (t === "platform" || t === "os") return 250;
+              if (t === "difficulty") return 200;
+              if (t === "technique" || t === "tool") return 160;
+              if (l.rel === "related") return 120;
+              return 150;
             }),
         )
         .force(
           "charge",
-          d3.forceManyBody().strength((d) => -(d.size || 12) * 12),
+          d3.forceManyBody().strength((d) => -(d.size || 12) * 40),
         )
         .force("center", d3.forceCenter(W / 2, H / 2))
         .force(
           "collision",
-          d3.forceCollide().radius((d) => (d.size || 12) + 8),
+          d3.forceCollide().radius((d) => (d.size || 12) + 20),
         );
       simRef.current = sim;
 
+      // ── Links (subtle Obsidian style) ─────────────────────────────────
       const link = g
         .append("g")
         .attr("class", "links")
@@ -259,8 +286,8 @@ export default function Graph() {
               : nodes.find((n) => n.id === d.source);
           return nodeColor(src);
         })
-        .attr("stroke-opacity", (d) => (d.rel === "related" ? 0.12 : 0.3))
-        .attr("stroke-width", (d) => (d.rel === "related" ? 0.6 : 1))
+        .attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.2))
+        .attr("stroke-width", (d) => (d.rel === "related" ? 0.5 : 0.8))
         .attr("stroke-dasharray", (d) =>
           d.rel === "related" ? "3,3" : "none",
         );
@@ -292,12 +319,14 @@ export default function Graph() {
             }),
         );
 
+      // ── Circles with glow (Obsidian style) ───────────────────────────
       node
         .append("circle")
         .attr("r", (d) => d.size)
-        .attr("fill", (d) => nodeColor(d) + "20")
+        .attr("fill", (d) => nodeColor(d) + "15")
         .attr("stroke", (d) => nodeColor(d))
-        .attr("stroke-width", (d) => (d.type === "machine" ? 2 : 1.2))
+        .attr("stroke-width", (d) => (d.type === "machine" ? 2.5 : 1.5))
+        .attr("filter", "url(#glow)")
         .style("cursor", "pointer")
         .on("mouseover", (e, d) =>
           setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }),
@@ -324,7 +353,7 @@ export default function Graph() {
               l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02,
             )
             .attr("stroke-width", (l) =>
-              l.source.id === d.id || l.target.id === d.id ? 2 : 0.6,
+              l.source.id === d.id || l.target.id === d.id ? 2 : 0.5,
             );
         })
         .on("dblclick", (e, d) => {
@@ -334,9 +363,10 @@ export default function Graph() {
           d.fy = d.pinned ? d.y : null;
         });
 
+      // ── Labels truncated to 15 chars ──────────────────────────────────
       node
         .append("text")
-        .text((d) => d.label?.length > 15 ? d.label.slice(0, 15): d.label)
+        .text((d) => truncateLabel(d.label))
         .attr("dy", (d) => d.size + 12)
         .attr("text-anchor", "middle")
         .attr("fill", (d) => nodeColor(d))
@@ -349,8 +379,8 @@ export default function Graph() {
         node.selectAll("circle").attr("opacity", 1);
         node.selectAll("text").attr("opacity", 0.85);
         link
-          .attr("stroke-opacity", (d) => (d.rel === "related" ? 0.12 : 0.3))
-          .attr("stroke-width", (d) => (d.rel === "related" ? 0.6 : 1));
+          .attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.2))
+          .attr("stroke-width", (d) => (d.rel === "related" ? 0.5 : 0.8));
       });
 
       sim.on("tick", () => {
@@ -375,7 +405,7 @@ export default function Graph() {
     if (activeFilters.type === "all") {
       node.selectAll("circle").attr("opacity", 1);
       node.selectAll("text").attr("opacity", 0.85);
-      link.attr("stroke-opacity", (d) => (d.rel === "related" ? 0.12 : 0.3));
+      link.attr("stroke-opacity", (d) => (d.rel === "related" ? 0.08 : 0.2));
       return;
     }
     node
@@ -397,7 +427,7 @@ export default function Graph() {
     if (!link) return;
     link.attr("stroke-opacity", (d) => {
       if (!showLinks) return 0;
-      return d.rel === "related" ? 0.12 : 0.3;
+      return d.rel === "related" ? 0.08 : 0.2;
     });
   }, [showLinks]);
 
@@ -449,7 +479,7 @@ export default function Graph() {
           .filter((d) => d === l)
           .transition()
           .duration(200)
-          .attr("stroke-opacity", l.rel === "related" ? 0.12 : 0.3);
+          .attr("stroke-opacity", l.rel === "related" ? 0.08 : 0.2);
         await delay(groupLinks.length > 100 ? 5 : 20);
       }
       await delay(300);
@@ -895,7 +925,7 @@ export default function Graph() {
                     height: 8,
                     borderRadius: "50%",
                     background: gColors[type] || "#4a6a7a",
-                    boxShadow: `0 0 5px ${gColors[type] || "#4a6a7a"}`,
+                    boxShadow: `0 0 8px ${gColors[type] || "#4a6a7a"}`,
                   }}
                 />
                 <span
