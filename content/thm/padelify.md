@@ -29,7 +29,7 @@ tools:
 flags_list:
   - label: "Flag"
     value: "THM{Logged_1n_Adm1n001}"
-summary: "Descripción del vector de ataque."
+summary: "Evacion del WAF"
 steps:
 
   - id: "exploit"
