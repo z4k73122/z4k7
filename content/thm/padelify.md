@@ -25,7 +25,7 @@ tools:
   - "Nmap"
   - "Fuff"
   - "feroxbuster"
-  - "pithon"
+  - "python"
 flags_list:
   - label: "Flag"
     value: "THM{Logged_1n_Adm1n001}"
