@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-const CONTENT_DIR = path.join(process.cwd(), "content");
-const GITHUB_USER = "z4k73122";
-const GITHUB_REPO = "z4k7";
+const CONTENT_DIR   = path.join(process.cwd(), "content");
+const GITHUB_USER   = "z4k73122";
+const GITHUB_REPO   = "z4k7";
 const GITHUB_BRANCH = "main";
 
 const getAllMdFiles = (dirPath) => {
@@ -24,7 +24,7 @@ function buildTree(dir) {
   try {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     node._files = entries.filter(
-      (e) => !e.isDirectory() && e.name.endsWith(".md"),
+      (e) => !e.isDirectory() && e.name.endsWith(".md")
     ).length;
     entries
       .filter((e) => e.isDirectory())
@@ -50,63 +50,52 @@ export async function GET(request, { params }) {
     }
   }
 
-  // ── --graph — NUEVO ───────────────────────────────────────
-  // Devuelve todos los writeups como nodos para el grafo D3
+  // ── --graph ───────────────────────────────────────────────
   if (slug === "--graph") {
     try {
-      const allFiles = getAllMdFiles(CONTENT_DIR);
+      const allFiles     = getAllMdFiles(CONTENT_DIR);
       const writeupNodes = [];
-      const categorySet = new Set(); // todos los niveles de carpeta
+      const categorySet  = new Set();
 
       for (const filePath of allFiles) {
-        const file = fs.readFileSync(filePath, "utf8");
-        const { data } = matter(file);
+        const file       = fs.readFileSync(filePath, "utf8");
+        const { data }   = matter(file);
+        const relative   = path.relative(CONTENT_DIR, filePath);
+        const segments   = relative.split(path.sep);
+        const rawParts   = segments.slice(0, -1);
+        const parts      = rawParts.map((p) => p.toLowerCase()).filter(Boolean);
+        const folderPath = parts.join("/");
+        const platform   = parts[0] || "other";
 
-        const relative    = path.relative(CONTENT_DIR, filePath);
-        const segments    = relative.split(path.sep);
-        const rawParts    = segments.slice(0, -1);
-        const parts       = rawParts.map(p => p.toLowerCase()).filter(Boolean);
-        const folderPath  = parts.join("/");
-        const platform    = parts[0] || "other";
-
-        // Registrar cada nivel de carpeta normalizado en minúsculas
         for (let i = 1; i <= parts.length; i++) {
           categorySet.add(parts.slice(0, i).join("/"));
         }
 
         const fileSlug = path.basename(filePath, ".md");
-        const slug     = (data.slug || fileSlug).toLowerCase().trim();
+        const wSlug    = (data.slug || fileSlug).toLowerCase().trim();
 
         writeupNodes.push({
-          slug,
-          title:      data.title || slug,
+          slug:       wSlug,
+          title:      data.title      || wSlug,
           platform,
           folderPath,
           parts,
-          tags:       (data.tags       || []).map(t => String(t).trim().toLowerCase()),
-          techniques: (data.techniques || []).map(t => String(t).trim().toLowerCase()),
-          tools:      (data.tools      || []).map(t => String(t).trim().toLowerCase()),
+          tags:       (data.tags       || []).map((t) => String(t).trim().toLowerCase()),
+          techniques: (data.techniques || []).map((t) => String(t).trim().toLowerCase()),
+          tools:      (data.tools      || []).map((t) => String(t).trim().toLowerCase()),
           difficulty: (data.difficulty || "").toLowerCase().trim(),
           os:         (data.os         || "").toLowerCase().trim(),
         });
       }
 
-      // Separar plataformas (nivel 0) de subcarpetas (nivel 1+)
       const platformSet = new Set(writeupNodes.map((w) => w.platform));
 
       const platformNodes = [...platformSet].map((p) => ({
-        id:       p,
-        type:     "platform",
-        platform: p,
-        size:     18,
+        id: p, type: "platform", platform: p, size: 18,
       }));
 
       const categoryNodes = [...categorySet]
-        .filter((c) => c.split("/").length > 1 || !platformSet.has(c))
-        .filter((c) => {
-          const parts = c.split("/");
-          return parts.length > 1;
-        })
+        .filter((c) => c.split("/").length > 1)
         .map((c) => ({
           id:       c,
           type:     "category",
@@ -115,58 +104,34 @@ export async function GET(request, { params }) {
           size:     Math.max(8, 14 - c.split("/").length * 2),
         }));
 
-      // Construir links struct encadenando cada nivel
       const structLinks = [];
       for (const w of writeupNodes) {
         const parts = w.parts;
-
         if (parts.length === 0) continue;
-
-        // encadenar niveles: plataforma → sub1 → sub2 → ... → writeup
         for (let i = 0; i < parts.length; i++) {
           const parent = i === 0 ? parts[0] : parts.slice(0, i).join("/");
           const child  = parts.slice(0, i + 1).join("/");
-          if (parent !== child) {
+          if (parent !== child)
             structLinks.push({ source: parent, target: child, type: "struct" });
-          }
         }
-
-        // último nivel de carpeta → writeup
-        structLinks.push({
-          source: parts.join("/"),
-          target: w.slug,
-          type:   "struct",
-        });
+        structLinks.push({ source: parts.join("/"), target: w.slug, type: "struct" });
       }
 
-      // ── Construir nodos de metadata + links ──────────────────────────────
-      // os, difficulty, technique, tool, tag — nodos GLOBALES compartidos entre clusters
-      // Si "SQL Injection" aparece en HTB y PortSwigger → es UN solo nodo que conecta ambos
-      const metaMap   = new Map(); // "type::id" → nodo
+      const metaMap   = new Map();
       const metaLinks = [];
 
       const DIFFICULTY_COLORS = {
-        easy:   "#00ff88",
-        medium: "#ffcc00",
-        hard:   "#ff8c00",
-        insane: "#ff3366",
+        easy: "#00ff88", medium: "#ffcc00", hard: "#ff8c00", insane: "#ff3366",
       };
 
       const registerMeta = (id, type, writeupSlug) => {
         if (!id || !String(id).trim()) return;
-        const cleanId = String(id).trim().toLowerCase(); // TODO en minúsculas
+        const cleanId = String(id).trim().toLowerCase();
         const key     = `${type}::${cleanId}`;
-
         if (!metaMap.has(key)) {
-          const node = {
-            id:    cleanId,
-            type,
-            count: 0,
-            size:  6,
-          };
-          if (type === "difficulty") {
+          const node = { id: cleanId, type, count: 0, size: 6 };
+          if (type === "difficulty")
             node.color = DIFFICULTY_COLORS[cleanId] || "#b06aff";
-          }
           metaMap.set(key, node);
         }
         const node = metaMap.get(key);
@@ -178,24 +143,18 @@ export async function GET(request, { params }) {
       for (const w of writeupNodes) {
         if (w.os)         registerMeta(w.os,         "os",         w.slug);
         if (w.difficulty) registerMeta(w.difficulty, "difficulty", w.slug);
-
         for (const t of (w.techniques || [])) registerMeta(t, "technique", w.slug);
         for (const t of (w.tools      || [])) registerMeta(t, "tool",      w.slug);
-
-        // Tags — si ya existe como técnica o tool globalmente, no crear nodo duplicado
-        // sino agregar un link directo al nodo técnica existente
-        for (const t of (w.tags || [])) {
-          const clean = t.toLowerCase().trim();
+        for (const t of (w.tags       || [])) {
+          const clean   = t.toLowerCase().trim();
           const techKey = `technique::${clean}`;
           const toolKey = `tool::${clean}`;
           if (metaMap.has(techKey)) {
-            // ya existe como técnica — solo agregar link
             const node = metaMap.get(techKey);
             node.count++;
             node.size = Math.min(6 + node.count * 2, 20);
             metaLinks.push({ source: w.slug, target: clean, type: "technique" });
           } else if (metaMap.has(toolKey)) {
-            // ya existe como tool — solo agregar link
             const node = metaMap.get(toolKey);
             node.count++;
             node.size = Math.min(6 + node.count * 2, 20);
@@ -208,7 +167,6 @@ export async function GET(request, { params }) {
 
       const metaNodes = [...metaMap.values()];
 
-      // Nodos finales de writeup
       const finalWriteupNodes = writeupNodes.map((w) => ({
         id:         w.slug,
         type:       "writeup",
@@ -220,8 +178,7 @@ export async function GET(request, { params }) {
         size:       Math.min(8 + ((w.tags?.length || 0) + (w.techniques?.length || 0)) * 0.4, 14),
       }));
 
-      // DEBUG — verificar links huérfanos
-      const writeupIds = new Set(finalWriteupNodes.map((w) => w.id));
+      const writeupIds  = new Set(finalWriteupNodes.map((w) => w.id));
       const orphanLinks = metaLinks.filter((l) => !writeupIds.has(l.source));
       if (orphanLinks.length > 0) {
         console.warn("[--graph] Links huérfanos:",
@@ -229,7 +186,6 @@ export async function GET(request, { params }) {
         );
       }
 
-      // Deduplicar y filtrar links huérfanos
       const allNodeIds = new Set([
         ...platformNodes.map((n) => n.id),
         ...categoryNodes.map((n) => n.id),
@@ -237,40 +193,52 @@ export async function GET(request, { params }) {
         ...metaNodes.map((n) => n.id),
       ]);
 
-      const seenLinks = new Set();
+      const seenLinks    = new Set();
       const dedupedLinks = [...structLinks, ...metaLinks].filter((l) => {
         const key = `${l.source}→${l.target}`;
         if (seenLinks.has(key)) return false;
         seenLinks.add(key);
-        // Filtrar links cuyo source o target no existe como nodo
         if (!allNodeIds.has(l.source) || !allNodeIds.has(l.target)) return false;
         return true;
       });
 
+      // ── Leer colores desde graph.json ─────────────────────
+      const jsonPath = path.join(process.cwd(), "data", "graph.json");
+      let savedColors    = {};
+      let savedSubColors = {};
+      if (fs.existsSync(jsonPath)) {
+        try {
+          const saved    = JSON.parse(fs.readFileSync(jsonPath, "utf8"));
+          savedColors    = saved.colors    || {};
+          savedSubColors = saved.subColors || {};
+        } catch {}
+      }
+
       return Response.json({
-        nodes: [...platformNodes, ...categoryNodes, ...finalWriteupNodes, ...metaNodes],
-        links: dedupedLinks,
+        nodes:     [...platformNodes, ...categoryNodes, ...finalWriteupNodes, ...metaNodes],
+        links:     dedupedLinks,
+        colors:    savedColors,
+        subColors: savedSubColors,
         meta: {
           totalWriteups:  writeupNodes.length,
           totalPlatforms: platformNodes.length,
           totalMeta:      metaNodes.length,
         },
       });
+
     } catch (err) {
       return Response.json({ error: err.message }, { status: 500 });
     }
   }
 
-  // ── GET por folder (check existencia) ────────────────────
+  // ── GET por folder ────────────────────────────────────────
   const { searchParams } = new URL(request.url);
   const folder = searchParams.get("folder");
 
   if (folder) {
     const segments = folder
       .split("/")
-      .map((s) =>
-        s.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-_]/g, ""),
-      )
+      .map((s) => s.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-_]/g, ""))
       .filter(Boolean);
     const safeSlug = slug.replace(/[^a-z0-9\-]/g, "").toLowerCase();
     const filePath = path.join(CONTENT_DIR, ...segments, `${safeSlug}.md`);
@@ -282,7 +250,7 @@ export async function GET(request, { params }) {
     return Response.json({ error: "not found" }, { status: 404 });
   }
 
-  // ── GET por slug — búsqueda recursiva ────────────────────
+  // ── GET por slug ──────────────────────────────────────────
   const allFiles = getAllMdFiles(CONTENT_DIR);
   const match = allFiles.find((f) => {
     const { data } = matter(fs.readFileSync(f, "utf8"));
@@ -293,16 +261,14 @@ export async function GET(request, { params }) {
 
   const file = fs.readFileSync(match, "utf8");
   const { data: frontmatter } = matter(file);
-
-  // ── CAMBIO 1: agregar folderPath al response ──────────────
-  const relative = path.relative(CONTENT_DIR, match);
-  const segments = relative.split(path.sep);
+  const relative   = path.relative(CONTENT_DIR, match);
+  const segments   = relative.split(path.sep);
   const folderPath = segments.slice(0, -1).join("/");
 
   return Response.json({ frontmatter, folderPath });
 }
 
-// ── POST — guarda .md via GitHub API ─────────────────────────
+// ── POST ──────────────────────────────────────────────────────
 export async function POST(request, { params }) {
   try {
     const { slug } = await params;
@@ -318,26 +284,20 @@ export async function POST(request, { params }) {
       return Response.json({ error: "Slug inválido" }, { status: 400 });
 
     const rawFolder = folder || "writeups";
-    const segments = rawFolder
+    const segments  = rawFolder
       .split("/")
-      .map((s) =>
-        s.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-_]/g, ""),
-      )
+      .map((s) => s.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-_]/g, ""))
       .filter(Boolean);
     if (!segments.length)
       return Response.json({ error: "Carpeta inválida" }, { status: 400 });
 
     const filePath = `content/${segments.join("/")}/${safeSlug}.md`;
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${filePath}`;
-    const encoded = Buffer.from(content).toString("base64");
+    const apiUrl   = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${filePath}`;
+    const encoded  = Buffer.from(content).toString("base64");
 
-    // Verificar si ya existe (para obtener SHA)
     let sha;
     const getRes = await fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
-      },
+      headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" },
     });
     if (getRes.ok) {
       const existing = await getRes.json();
@@ -354,7 +314,7 @@ export async function POST(request, { params }) {
       body: JSON.stringify({
         message: `add writeup: ${safeSlug}`,
         content: encoded,
-        branch: GITHUB_BRANCH,
+        branch:  GITHUB_BRANCH,
         ...(sha ? { sha } : {}),
       }),
     });
