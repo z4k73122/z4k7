@@ -15,14 +15,14 @@ const TYPE_COLOR = {
 };
 
 const TYPE_SIZE = {
-  platform:  14,
-  category:  8,
-  writeup:   6,
-  os:        7,
-  difficulty:6,
-  technique: 5,
-  tool:      5,
-  tag:       5,
+  platform:  18,
+  category:  12,
+  writeup:   9,
+  os:        13,
+  difficulty:11,
+  technique: 10,
+  tool:      9,
+  tag:       8,
 };
 
 const TYPE_LABEL = {
@@ -204,34 +204,77 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── Simulación estilo Obsidian — compacta, sin dispersión ────────────
+      // ── Simulación disjoint — compacta por plataforma ────────────────────
       const sim = d3.forceSimulation(nodes)
         .force("link",
           d3.forceLink(links).id((d) => d.id)
-            .distance(30)   // distancia corta — nodos juntos como Obsidian
-            .strength(1)
+            .distance((l) => {
+              const tt = typeof l.target === "object" ? l.target.type : "";
+              if (tt === "category")  return 60;
+              if (tt === "writeup")   return 45;
+              if (tt === "os")        return 50;
+              if (tt === "difficulty")return 50;
+              if (tt === "technique") return 40;
+              if (tt === "tool")      return 35;
+              if (tt === "tag")       return 40;
+              return 40;
+            })
+            .strength((l) => {
+              const tt = typeof l.target === "object" ? l.target.type : "";
+              const metaTypes = ["tag","technique","tool","os","difficulty"];
+              return metaTypes.includes(tt) ? 0.2 : 0.8;
+            })
         )
         .force("charge",
           d3.forceManyBody()
             .strength((d) => {
-              if (d.type === "platform")  return -120;
-              if (d.type === "category")  return -80;
-              return -40;
+              if (d.type === "platform")  return -200;
+              if (d.type === "category")  return -100;
+              if (d.type === "os")        return -80;
+              if (d.type === "difficulty")return -70;
+              if (d.type === "technique") return -60;
+              if (d.type === "tool")      return -55;
+              if (d.type === "tag")       return -55;
+              return -45;
             })
             .distanceMax(200)
         )
-        .force("center", d3.forceCenter(W / 2, H / 2).strength(0.3))
-        .force("collision", d3.forceCollide().radius((d) => (d.size || 6) + 2).strength(0.7))
-        .alphaDecay(0.02);
+        .force("x",
+          d3.forceX((d) => {
+            const plat = d.platform || d.id;
+            return PLATFORM_X[plat] || W / 2;
+          }).strength((d) => {
+            if (d.type === "platform") return 0.12;
+            if (["tag","technique","tool"].includes(d.type)) return 0.02;
+            return 0.08;
+          })
+        )
+        .force("y", d3.forceY(H / 2).strength(0.06))
+        .force("collision", d3.forceCollide().radius((d) => (d.size || 6) + 4).strength(0.8))
+        .alphaDecay(0.018);
 
       simRef.current = sim;
 
-      // ── Links estilo Obsidian — delgados y visibles ───────────────────────
+      // ── Links ────────────────────────────────────────────────────────────
       const link = g.append("g").attr("class", "links")
         .selectAll("line").data(links).join("line")
-        .attr("stroke", "#3a4a5a")
-        .attr("stroke-width", 0.8)
-        .attr("opacity", 0.6);
+        .attr("stroke", (d) => {
+          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+          if (tt === "tag")       return "#3a3020";
+          if (tt === "technique") return "#3a1020";
+          if (tt === "tool")      return "#0a3a3a";
+          if (tt === "os")        return "#3a3a10";
+          if (tt === "difficulty")return "#2a1a3a";
+          if (tt === "category")  return "#1a3a4a";
+          return "#1a2a3a";
+        })
+        .attr("stroke-width", (d) => {
+          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+          if (tt === "category") return 1;
+          if (["tag","technique","tool","os","difficulty"].includes(tt)) return 0.5;
+          return 0.7;
+        })
+        .attr("opacity", 0.7);
 
       linkRef.current = link;
 
@@ -245,23 +288,22 @@ export default function Graph() {
             .on("end",   (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.pinned) { d.fx = null; d.fy = null; } })
         );
 
-      // Anillo exterior glow para plataformas
+      // Anillo exterior para plataformas
       node.filter((d) => d.type === "platform")
         .append("circle")
-        .attr("r", (d) => d.size + 5)
+        .attr("r", (d) => d.size + 7)
         .attr("fill", "none")
         .attr("stroke", (d) => resolveColor(d))
         .attr("stroke-width", 0.5)
-        .attr("opacity", 0.15);
+        .attr("opacity", 0.2);
 
-      // Círculo principal — estilo Obsidian: pequeño, fill sólido con alpha
+      // Círculo principal
       node.append("circle")
         .attr("r", (d) => d.size)
-        .attr("fill", (d) => resolveColor(d) + "30")
+        .attr("fill", (d) => resolveColor(d) + "18")
         .attr("stroke", (d) => resolveColor(d))
-        .attr("stroke-width", (d) => d.type === "platform" ? 1.5 : 1)
+        .attr("stroke-width", (d) => d.type === "platform" ? 1.8 : d.type === "category" ? 1.2 : 0.8)
         .style("cursor", "pointer")
-        .style("filter", (d) => `drop-shadow(0 0 ${d.type === "platform" ? 4 : 2}px ${resolveColor(d)}88)`)
         .on("mouseover", (e, d) => setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }))
         .on("mousemove", (e) => setTooltip((t) => ({ ...t, x: e.clientX, y: e.clientY })))
         .on("mouseout",  () => setTooltip((t) => ({ ...t, visible: false })))
