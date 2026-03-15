@@ -217,12 +217,12 @@ export default function Graph() {
         const conn = connCount.get(n.id) || 0;
         const base = TYPE_SIZE[n.type] || 7;
         const maxSize = {
-          platform: 30, category: 22, writeup: 20,
-          os: 20, difficulty: 18, technique: 22, tool: 20, tag: 20,
+          platform: 35, category: 25, writeup: 18,
+          os: 20, difficulty: 18, technique: 25, tool: 22, tag: 22,
         }[n.type] || 20;
-        const serverSize = n.size || base;
-        // Factor alto para que la diferencia sea visible como en imagen 2
-        n.size = Math.min(Math.max(serverSize, base + conn * 1.5), maxSize);
+        // Calcular SOLO desde conexiones reales — ignora el size del servidor
+        // Así sqli(30 conn) > waf(10 conn) se ve claramente
+        n.size = Math.min(base + conn * 1.2, maxSize);
       });
 
       // ── Simulación disjoint — separada como Obsidian ────────────────────
