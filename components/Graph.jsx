@@ -15,14 +15,14 @@ const TYPE_COLOR = {
 };
 
 const TYPE_SIZE = {
-  platform:  14,
-  category:  9,
-  writeup:   6,
-  os:        8,
-  difficulty:7,
-  technique: 6,
-  tool:      6,
-  tag:       5,
+  platform:  16,
+  category:  10,
+  writeup:   7,
+  os:        10,
+  difficulty:9,
+  technique: 8,
+  tool:      8,
+  tag:       7,
 };
 
 const TYPE_LABEL = {
@@ -215,16 +215,14 @@ export default function Graph() {
 
       nodes.forEach((n) => {
         const conn = connCount.get(n.id) || 0;
-        const base = TYPE_SIZE[n.type] || 5;
+        const base = TYPE_SIZE[n.type] || 7;
         const maxSize = {
-          platform: 22, category: 16, writeup: 14,
-          os: 14, difficulty: 13, technique: 16, tool: 14, tag: 14,
-        }[n.type] || 14;
-        // Usar el size del servidor si existe, sino calcular desde base+conn
-        // El size del servidor ya tiene el conteo de tags/técnicas
-        // Aquí solo crecemos si las conexiones reales superan lo calculado
+          platform: 30, category: 22, writeup: 20,
+          os: 20, difficulty: 18, technique: 22, tool: 20, tag: 20,
+        }[n.type] || 20;
         const serverSize = n.size || base;
-        n.size = Math.min(Math.max(serverSize, base + conn * 0.6), maxSize);
+        // Factor alto para que la diferencia sea visible como en imagen 2
+        n.size = Math.min(Math.max(serverSize, base + conn * 1.5), maxSize);
       });
 
       // ── Simulación disjoint — separada como Obsidian ────────────────────
