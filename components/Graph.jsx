@@ -67,7 +67,6 @@ export default function Graph() {
   const [isMobile,     setIsMobile]     = useState(false);
   const [showPanel,    setShowPanel]    = useState(false);
 
-  // ─── Colores desde graph.json o defaults ─────────────────────────────────
   const gColors   = graphData?.colors    || TYPE_COLOR;
   const subColors = graphData?.subColors || {};
 
@@ -97,74 +96,37 @@ export default function Graph() {
       .catch(() => setLoading(false));
   }, []);
 
-  const filterGroups = graphData
-    ? [
-        {
-          id: "platform",
-          label: "Plataforma",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "platform").map((n) => n.id))],
-        },
-        {
-          id: "category",
-          label: "Carpeta",
-          values: [...new Set(
-            graphData.nodes
-              .filter((n) => n.type === "category")
-              .map((n) => ({ full: n.id, display: n.id.split("/").slice(1).join("/") }))
-              .filter((n) => n.display)
-          )].reduce((acc, n) => {
-            if (!acc.find((a) => a.display === n.display)) acc.push(n);
-            return acc;
-          }, []),
-        },
-        {
-          id: "os",
-          label: "Sistema OS",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "os").map((n) => n.id))],
-        },
-        {
-          id: "difficulty",
-          label: "Dificultad",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "difficulty").map((n) => n.id))],
-        },
-        {
-          id: "technique",
-          label: "Técnica",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "technique").map((n) => n.id))],
-        },
-        {
-          id: "tool",
-          label: "Herramienta",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "tool").map((n) => n.id))],
-        },
-        {
-          id: "tag",
-          label: "Tag",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "tag").map((n) => n.id))],
-        },
-      ]
-    : [];
+  const filterGroups = graphData ? [
+    { id: "platform",  label: "Plataforma",  values: [...new Set(graphData.nodes.filter((n) => n.type === "platform").map((n) => n.id))] },
+    { id: "category",  label: "Carpeta",
+      values: [...new Set(
+        graphData.nodes.filter((n) => n.type === "category")
+          .map((n) => ({ full: n.id, display: n.id.split("/").slice(1).join("/") }))
+          .filter((n) => n.display)
+      )].reduce((acc, n) => { if (!acc.find((a) => a.display === n.display)) acc.push(n); return acc; }, []),
+    },
+    { id: "os",        label: "Sistema OS",  values: [...new Set(graphData.nodes.filter((n) => n.type === "os").map((n) => n.id))] },
+    { id: "difficulty",label: "Dificultad",  values: [...new Set(graphData.nodes.filter((n) => n.type === "difficulty").map((n) => n.id))] },
+    { id: "technique", label: "Técnica",     values: [...new Set(graphData.nodes.filter((n) => n.type === "technique").map((n) => n.id))] },
+    { id: "tool",      label: "Herramienta", values: [...new Set(graphData.nodes.filter((n) => n.type === "tool").map((n) => n.id))] },
+    { id: "tag",       label: "Tag",         values: [...new Set(graphData.nodes.filter((n) => n.type === "tag").map((n) => n.id))] },
+  ] : [];
 
   function nodeMatchesFilter(node, filter) {
     if (filter.type === "all") return true;
-    if (filter.type === "platform")
-      return node.id === filter.value || node.platform === filter.value;
-    if (filter.type === "category")
-      return node.id === filter.value || node.folderPath?.startsWith(filter.value);
-    if (filter.type === "os")
-      return node.id === filter.value || node.os === filter.value;
-    if (filter.type === "difficulty")
-      return node.id === filter.value || node.difficulty === filter.value;
-    if (filter.type === "technique" || filter.type === "tool" || filter.type === "tag")
+    if (filter.type === "platform")   return node.id === filter.value || node.platform === filter.value;
+    if (filter.type === "category")   return node.id === filter.value || node.folderPath?.startsWith(filter.value);
+    if (filter.type === "os")         return node.id === filter.value || node.os === filter.value;
+    if (filter.type === "difficulty") return node.id === filter.value || node.difficulty === filter.value;
+    if (["technique","tool","tag"].includes(filter.type))
       return node.id === filter.value || node.type === "writeup";
     return false;
   }
 
   useEffect(() => {
     if (!graphData) return;
-
     async function init() {
-      const d3 = await import("d3");
+      const d3        = await import("d3");
       const container = svgRef.current?.parentElement;
       if (!container) return;
 
@@ -173,26 +135,17 @@ export default function Graph() {
 
       const svg = d3.select(svgRef.current).attr("width", W).attr("height", H);
       svg.selectAll("*").remove();
-
       const g = svg.append("g");
       gRef.current = g;
 
-      svg.call(
-        d3.zoom().scaleExtent([0.05, 5])
-          .on("zoom", (e) => g.attr("transform", e.transform))
-      );
+      svg.call(d3.zoom().scaleExtent([0.05, 5]).on("zoom", (e) => g.attr("transform", e.transform)));
 
       const platforms = [...new Set(graphData.nodes.filter((n) => n.type === "platform").map((n) => n.id))];
-      platforms.forEach((p, i) => {
-        PLATFORM_X[p] = W * ((i + 1) / (platforms.length + 1));
-      });
+      platforms.forEach((p, i) => { PLATFORM_X[p] = W * ((i + 1) / (platforms.length + 1)); });
 
       const nodeIds = new Set(graphData.nodes.map((n) => n.id));
-      const nodes = graphData.nodes.map((n) => ({
-        ...n,
-        size: n.size || TYPE_SIZE[n.type] || 8,
-      }));
-      const links = graphData.links
+      const nodes   = graphData.nodes.map((n) => ({ ...n, size: n.size || TYPE_SIZE[n.type] || 8 }));
+      const links   = graphData.links
         .filter((l) => l.source !== l.target)
         .filter((l) => nodeIds.has(l.source) && nodeIds.has(l.target))
         .map((l) => ({ ...l }));
@@ -207,56 +160,46 @@ export default function Graph() {
         connCount.set(s, (connCount.get(s) || 0) + 1);
         connCount.set(t, (connCount.get(t) || 0) + 1);
       });
-
       nodes.forEach((n) => {
-        const conn = connCount.get(n.id) || 0;
-        const base = TYPE_SIZE[n.type] || 7;
-        const maxSize = {
-          platform: 35, category: 25, writeup: 18,
-          os: 20, difficulty: 18, technique: 25, tool: 22, tag: 22,
-        }[n.type] || 20;
+        const conn    = connCount.get(n.id) || 0;
+        const base    = TYPE_SIZE[n.type] || 7;
+        const maxSize = { platform:35, category:25, writeup:18, os:20, difficulty:18, technique:25, tool:22, tag:22 }[n.type] || 20;
         n.size = Math.min(base + conn * 1.2, maxSize);
       });
 
       const sim = d3.forceSimulation(nodes)
-        .force("link",
-          d3.forceLink(links).id((d) => d.id)
-            .distance((l) => {
-              const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "category")   return 80;
-              if (tt === "writeup")    return 60;
-              if (tt === "os")         return 70;
-              if (tt === "difficulty") return 70;
-              if (tt === "technique")  return 65;
-              if (tt === "tool")       return 60;
-              if (tt === "tag")        return 65;
-              return 60;
-            })
-            .strength((l) => {
-              const tt = typeof l.target === "object" ? l.target.type : "";
-              const metaTypes = ["tag","technique","tool","os","difficulty"];
-              return metaTypes.includes(tt) ? 0.08 : 0.6;
-            })
+        .force("link", d3.forceLink(links).id((d) => d.id)
+          .distance((l) => {
+            const tt = typeof l.target === "object" ? l.target.type : "";
+            if (tt === "category")   return 80;
+            if (tt === "writeup")    return 60;
+            if (tt === "os")         return 70;
+            if (tt === "difficulty") return 70;
+            if (tt === "technique")  return 65;
+            if (tt === "tool")       return 60;
+            if (tt === "tag")        return 65;
+            return 60;
+          })
+          .strength((l) => {
+            const tt = typeof l.target === "object" ? l.target.type : "";
+            return ["tag","technique","tool","os","difficulty"].includes(tt) ? 0.08 : 0.6;
+          })
         )
-        .force("charge",
-          d3.forceManyBody()
-            .strength((d) => {
-              if (d.type === "platform")   return -800;
-              if (d.type === "category")   return -400;
-              if (d.type === "os")         return -300;
-              if (d.type === "difficulty") return -300;
-              if (d.type === "technique")  return -250;
-              if (d.type === "tool")       return -250;
-              if (d.type === "tag")        return -250;
-              return -200;
-            })
-            .distanceMax(500)
+        .force("charge", d3.forceManyBody()
+          .strength((d) => {
+            if (d.type === "platform")   return -800;
+            if (d.type === "category")   return -400;
+            if (d.type === "os")         return -300;
+            if (d.type === "difficulty") return -300;
+            if (d.type === "technique")  return -250;
+            if (d.type === "tool")       return -250;
+            if (d.type === "tag")        return -250;
+            return -200;
+          })
+          .distanceMax(500)
         )
-        .force("x",
-          d3.forceX((d) => {
-            const plat = d.platform || d.id;
-            return PLATFORM_X[plat] || W / 2;
-          }).strength((d) => {
+        .force("x", d3.forceX((d) => PLATFORM_X[d.platform || d.id] || W / 2)
+          .strength((d) => {
             if (d.type === "platform") return 0.08;
             if (["tag","technique","tool"].includes(d.type)) return 0.01;
             return 0.05;
@@ -269,42 +212,41 @@ export default function Graph() {
 
       simRef.current = sim;
 
+      const linkStrokeColor = (d) => {
+        const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+        if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
+        if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
+        if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
+        if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
+        if (tt === "difficulty") {
+          const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
+          return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
+        }
+        if (tt === "category")  return gColors.category || TYPE_COLOR.category;
+        if (tt === "writeup")   return gColors.writeup  || TYPE_COLOR.writeup;
+        return "#2a3a4a";
+      };
+
       const link = g.append("g").attr("class", "links")
         .selectAll("line").data(links).join("line")
-        .attr("stroke", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-          if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
-          if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
-          if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
-          if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
-          if (tt === "difficulty") {
-            const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
-            return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
-          }
-          if (tt === "category")   return gColors.category  || TYPE_COLOR.category;
-          if (tt === "writeup")    return gColors.writeup   || TYPE_COLOR.writeup;
-          return "#2a3a4a";
-        })
+        .attr("stroke", linkStrokeColor)
         .attr("stroke-width", (d) => {
           const tt = typeof d.target === "object" ? d.target.type : "";
-          if (tt === "category" || tt === "platform") return 1;
-          return 0.5;
+          return (tt === "category" || tt === "platform") ? 1 : 0.5;
         })
         .attr("stroke-opacity", (d) => {
           const tt = typeof d.target === "object" ? d.target.type : "";
-          if (tt === "category" || tt === "writeup") return 0.5;
-          return 0.3;
+          return (tt === "category" || tt === "writeup") ? 0.5 : 0.3;
         });
 
       linkRef.current = link;
 
       const node = g.append("g").attr("class", "nodes")
         .selectAll("g").data(nodes).join("g")
-        .call(
-          d3.drag()
-            .on("start", (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
-            .on("drag",  (e, d) => { d.fx = e.x; d.fy = e.y; })
-            .on("end",   (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.pinned) { d.fx = null; d.fy = null; } })
+        .call(d3.drag()
+          .on("start", (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+          .on("drag",  (e, d) => { d.fx = e.x; d.fy = e.y; })
+          .on("end",   (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.pinned) { d.fx = null; d.fy = null; } })
         );
 
       node.filter((d) => d.type === "platform")
@@ -336,28 +278,11 @@ export default function Graph() {
           link
             .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
             .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2.5 : 0.3)
-            .attr("stroke", (l) => {
-              const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
-              if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
-              if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
-              if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
-              if (tt === "category")   return gColors.category  || TYPE_COLOR.category;
-              if (tt === "writeup")    return gColors.writeup   || TYPE_COLOR.writeup;
-              if (tt === "difficulty") {
-                const did = typeof l.target === "object" ? l.target.id?.toLowerCase() : "";
-                return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
-              }
-              const st = typeof l.source === "object" ? l.source.type : "";
-              return gColors[st] || TYPE_COLOR[st] || "#2a3a4a";
-            });
+            .attr("stroke", linkStrokeColor);
         })
         .on("dblclick", (e, d) => {
           e.stopPropagation();
-          if (d.type === "writeup" && d.id) {
-            router.push(`/writeups/${d.id}`);
-            return;
-          }
+          if (d.type === "writeup" && d.id) { router.push(`/writeups/${d.id}`); return; }
           d.pinned = !d.pinned;
           d.fx = d.pinned ? d.x : null;
           d.fy = d.pinned ? d.y : null;
@@ -385,24 +310,8 @@ export default function Graph() {
         node.selectAll("circle").attr("opacity", 1);
         node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
         link
-          .attr("stroke", (d) => {
-            const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-            if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
-            if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
-            if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
-            if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
-            if (tt === "difficulty") {
-              const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
-              return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
-            }
-            if (tt === "category")   return gColors.category  || TYPE_COLOR.category;
-            if (tt === "writeup")    return gColors.writeup   || TYPE_COLOR.writeup;
-            return "#2a3a4a";
-          })
-          .attr("stroke-width", (d) => {
-            const tt = typeof d.target === "object" ? d.target.type : "";
-            return tt === "category" ? 1 : 0.6;
-          })
+          .attr("stroke", linkStrokeColor)
+          .attr("stroke-width", (d) => { const tt = typeof d.target === "object" ? d.target.type : ""; return tt === "category" ? 1 : 0.6; })
           .attr("stroke-opacity", 0.35);
       });
 
@@ -418,13 +327,9 @@ export default function Graph() {
         const xs = nodes.map((d) => d.x).filter(Boolean);
         const ys = nodes.map((d) => d.y).filter(Boolean);
         if (!xs.length) return;
-        const x0 = Math.min(...xs) - padding;
-        const y0 = Math.min(...ys) - padding;
-        const x1 = Math.max(...xs) + padding;
-        const y1 = Math.max(...ys) + padding;
-        const scaleX = W / (x1 - x0);
-        const scaleY = H / (y1 - y0);
-        const scale  = Math.min(scaleX, scaleY, 0.9);
+        const x0 = Math.min(...xs) - padding, x1 = Math.max(...xs) + padding;
+        const y0 = Math.min(...ys) - padding, y1 = Math.max(...ys) + padding;
+        const scale = Math.min(W / (x1 - x0), H / (y1 - y0), 0.9);
         const tx = W / 2 - scale * (x0 + x1) / 2;
         const ty = H / 2 - scale * (y0 + y1) / 2;
         svg.transition().duration(800)
@@ -433,7 +338,6 @@ export default function Graph() {
 
       nodeRef.current = node;
     }
-
     init();
   }, [graphData]);
 
@@ -480,10 +384,8 @@ export default function Graph() {
       if (!groupNodes.length) continue;
       setAnimStep(TYPE_LABEL[groupType] || groupType);
       for (const n of groupNodes) {
-        node.filter((d) => d.id === n.id).selectAll("circle")
-          .attr("opacity", 0).transition().duration(250).attr("opacity", 1);
-        node.filter((d) => d.id === n.id).selectAll("text")
-          .attr("opacity", 0).transition().duration(250).attr("opacity", 0.9);
+        node.filter((d) => d.id === n.id).selectAll("circle").attr("opacity", 0).transition().duration(250).attr("opacity", 1);
+        node.filter((d) => d.id === n.id).selectAll("text").attr("opacity", 0).transition().duration(250).attr("opacity", 0.9);
         await delay(groupNodes.length > 20 ? 20 : 50);
       }
       const groupLinks = links.filter((l) => {
@@ -508,9 +410,9 @@ export default function Graph() {
       setActiveFilter({ type, value });
   };
 
-  const totalNodes  = graphData?.nodes?.length  || 0;
-  const totalLinks  = graphData?.links?.length   || 0;
-  const totalWrites = graphData?.meta?.totalWriteups || 0;
+  const totalNodes  = graphData?.nodes?.length       || 0;
+  const totalLinks  = graphData?.links?.length        || 0;
+  const totalWrites = graphData?.meta?.totalWriteups  || 0;
 
   const FilterPanel = () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
@@ -521,8 +423,7 @@ export default function Graph() {
           cursor: "pointer", textAlign: "left", letterSpacing: "1px",
           background: activeFilter.type === "all" ? "rgba(0,255,136,0.1)" : "transparent",
           border: `1px solid ${activeFilter.type === "all" ? "#00ff88" : "#1a3a4a"}`,
-          color: activeFilter.type === "all" ? "#00ff88" : "#4a6a7a",
-          marginBottom: "0.3rem",
+          color: activeFilter.type === "all" ? "#00ff88" : "#4a6a7a", marginBottom: "0.3rem",
         }}
       >
         // Todos
@@ -533,294 +434,4 @@ export default function Graph() {
             onClick={() => setOpenSection(openSection === group.id ? null : group.id)}
             style={{
               width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
-              padding: "4px 10px", cursor: "pointer", background: "transparent",
-              border: "1px solid #1a3a4a",
-              color: gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a",
-              textAlign: "left", display: "flex", justifyContent: "space-between",
-              alignItems: "center", letterSpacing: "1px",
-            }}
-          >
-            <span>{group.label}</span>
-            <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
-          </button>
-          {openSection === group.id && (
-            <div style={{ background: "#030810", border: "1px solid #1a3a4a", borderTop: "none", maxHeight: "160px", overflowY: "auto" }}>
-              {(group.id === "category" ? group.values : group.values.map((v) => ({ full: v, display: v }))).map((item) => {
-                const fullVal    = item.full    || item;
-                const displayVal = item.display || item;
-                const isActive   = activeFilter.type === group.id && activeFilter.value === fullVal;
-                const c = group.id === "difficulty"
-                  ? (DIFFICULTY_COLORS[fullVal?.toLowerCase()] || gColors.difficulty || TYPE_COLOR.difficulty)
-                  : (gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a");
-                return (
-                  <button
-                    key={fullVal}
-                    onClick={() => setFilter(group.id, fullVal)}
-                    style={{
-                      width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
-                      padding: "3px 12px", cursor: "pointer",
-                      background: isActive ? c + "18" : "transparent",
-                      border: "none", borderLeft: `2px solid ${isActive ? c : "transparent"}`,
-                      color: isActive ? c : "#4a6a7a", textAlign: "left",
-                      display: "flex", alignItems: "center", gap: "0.5rem",
-                    }}
-                  >
-                    <div style={{ width: 4, height: 4, borderRadius: "50%", background: c, flexShrink: 0 }} />
-                    {displayVal}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-
-  return (
-    <section id="graph" style={{ background: "#050a0e", padding: "2rem 0", fontFamily: "monospace" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem", flexWrap: "wrap" }}>
-        <span style={{ color: "#00ff88", fontSize: "0.85rem", flexShrink: 0 }}>03.</span>
-        <h2 style={{ fontSize: "1.4rem", fontWeight: 700, color: "#fff", letterSpacing: "3px", textTransform: "uppercase", margin: 0 }}>
-          Knowledge Graph
-        </h2>
-        <div style={{ flex: 1, height: "1px", background: "linear-gradient(to right,#1a3a4a,transparent)", minWidth: "20px" }} />
-        {!loading && (
-          <span style={{ fontSize: "0.62rem", color: "#4a6a7a", flexShrink: 0 }}>
-            {totalWrites} writeups · {totalNodes} nodos · {totalLinks} links
-          </span>
-        )}
-      </div>
-
-      <p style={{ fontSize: "0.75rem", color: "#4a6a7a", marginBottom: "1.2rem" }}>
-        // Mapa interactivo — plataformas, carpetas, writeups y técnicas
-      </p>
-
-      {loading && (
-        <div style={{ background: "#050a0e", border: "1px solid #1a3a4a", padding: "4rem", textAlign: "center" }}>
-          <p style={{ color: "#00d4ff", fontSize: "0.85rem", letterSpacing: "2px" }}>// Cargando grafo...</p>
-        </div>
-      )}
-
-      {!loading && !graphData?.nodes?.length && (
-        <div style={{ background: "#050a0e", border: "1px solid #1a3a4a", padding: "4rem", textAlign: "center" }}>
-          <p style={{ color: "#4a6a7a", fontSize: "0.85rem", letterSpacing: "2px" }}>// No hay writeups aún</p>
-        </div>
-      )}
-
-      {!loading && graphData?.nodes?.length > 0 && (
-        <>
-          {isMobile && (
-            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.8rem" }}>
-              {[
-                { label: animating ? `⟳ ${animStep}` : "▶ Animar", action: runAnimation, active: animating },
-                { label: showLinks ? "⋯ Ocultar links" : "⋯ Links", action: () => setShowLinks((s) => !s), active: showLinks },
-                { label: "⊞ Filtros" + (activeFilter.type !== "all" ? " ●" : ""), action: () => setShowPanel((s) => !s), active: showPanel },
-              ].map((btn, i) => (
-                <button key={i} onClick={btn.action} disabled={animating && i === 0}
-                  style={{
-                    fontFamily: "monospace", fontSize: "0.65rem", padding: "5px 12px",
-                    border: `1px solid ${btn.active ? "#00ff88" : "#1a3a4a"}`,
-                    background: btn.active ? "rgba(0,255,136,0.08)" : "transparent",
-                    color: btn.active ? "#00ff88" : "#4a6a7a", cursor: "pointer", letterSpacing: "1px",
-                  }}
-                >
-                  {btn.label}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {isMobile && showPanel && (
-            <div style={{ background: "#060d14", border: "1px solid #1a3a4a", padding: "0.8rem", marginBottom: "0.8rem" }}>
-              <FilterPanel />
-            </div>
-          )}
-
-          <div style={{ position: "relative", background: "#050a0e", border: "1px solid #1a3a4a", overflow: "hidden" }}>
-            {!isMobile && (
-              <div style={{
-                position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
-                zIndex: 10, display: "flex", gap: "6px", alignItems: "center",
-                backdropFilter: "blur(8px)",
-              }}>
-                <input
-                  type="text"
-                  placeholder="// buscar..."
-                  onChange={(e) => {
-                    const v = e.target.value.toLowerCase();
-                    const node = nodeRef.current;
-                    const link = linkRef.current;
-                    if (!node || !link) return;
-                    node.selectAll("circle").attr("opacity", (d) => !v ? 1 : d.id.toLowerCase().includes(v) ? 1 : 0.05);
-                    node.selectAll("text").attr("opacity",   (d) => !v ? 0.9 : d.id.toLowerCase().includes(v) ? 1 : 0.02);
-                    link.attr("stroke-opacity", (l) => {
-                      if (!v) return 0.7;
-                      return (l.source.id?.toLowerCase().includes(v) || l.target.id?.toLowerCase().includes(v)) ? 0.9 : 0.02;
-                    });
-                  }}
-                  style={{
-                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 12px", width: "160px",
-                    background: "rgba(5,10,14,0.95)", border: "1px solid #1a3a4a",
-                    color: "#c8d8e8", outline: "none", letterSpacing: "0.5px", caretColor: "#00ff88",
-                  }}
-                  onFocus={(e) => (e.target.style.borderColor = "#00d4ff")}
-                  onBlur={(e)  => (e.target.style.borderColor = "#1a3a4a")}
-                />
-                <button
-                  onClick={async () => {
-                    const node = nodeRef.current;
-                    const link = linkRef.current;
-                    if (!node || !link) return;
-                    node.selectAll("circle").attr("opacity", 1);
-                    node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
-                    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
-                    const d3 = await import("d3");
-                    d3.select(svgRef.current).transition().duration(400)
-                      .call(d3.zoom().transform, d3.zoomIdentity);
-                  }}
-                  style={{
-                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
-                    border: "1px solid #1a3a4a", background: "rgba(5,10,14,0.95)",
-                    color: "#c8d8e8", cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
-                  }}
-                  onMouseOver={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
-                  onMouseOut={(e)  => { e.currentTarget.style.borderColor = "#1a3a4a"; e.currentTarget.style.color = "#c8d8e8"; }}
-                >
-                  reset
-                </button>
-                <button
-                  onClick={() => {
-                    setShowLabels((s) => {
-                      const next = !s;
-                      if (nodeRef.current)
-                        nodeRef.current.selectAll("text").attr("opacity", next ? 0.9 : 0);
-                      return next;
-                    });
-                  }}
-                  style={{
-                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
-                    border: `1px solid ${showLabels ? "#00ff88" : "#1a3a4a"}`,
-                    background: showLabels ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
-                    color: showLabels ? "#00ff88" : "#c8d8e8",
-                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
-                  }}
-                >
-                  labels
-                </button>
-                <button onClick={runAnimation} disabled={animating}
-                  style={{
-                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
-                    border: `1px solid ${animating ? "#00ff88" : "#1a3a4a"}`,
-                    background: animating ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
-                    color: animating ? "#00ff88" : "#c8d8e8",
-                    cursor: animating ? "not-allowed" : "pointer", letterSpacing: "1px", transition: "all 0.2s",
-                  }}
-                >
-                  {animating ? `⟳ ${animStep}` : "▶ animar"}
-                </button>
-                <button onClick={() => setShowLinks((s) => !s)}
-                  style={{
-                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
-                    border: `1px solid ${showLinks ? "#00d4ff" : "#1a3a4a"}`,
-                    background: showLinks ? "rgba(0,212,255,0.08)" : "rgba(5,10,14,0.95)",
-                    color: showLinks ? "#00d4ff" : "#c8d8e8",
-                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
-                  }}
-                >
-                  {showLinks ? "⋯ links" : "⋯ links"}
-                </button>
-              </div>
-            )}
-
-            {!isMobile && (
-              <div style={{
-                position: "absolute", top: 10, left: 10, zIndex: 10,
-                background: "rgba(5,10,14,0.92)", border: "1px solid #1a3a4a",
-                padding: "0.7rem 0.9rem", backdropFilter: "blur(8px)",
-              }}>
-                <div style={{ fontSize: "0.55rem", color: "#4a6a7a", letterSpacing: "2px", marginBottom: "0.5rem" }}>// TIPOS</div>
-                {Object.entries(TYPE_LABEL).map(([type, label]) => (
-                  <div key={type} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                    <div style={{
-                      width: 7, height: 7, borderRadius: "50%",
-                      background: gColors[type] || TYPE_COLOR[type],
-                      boxShadow: `0 0 4px ${gColors[type] || TYPE_COLOR[type]}`
-                    }} />
-                    <span style={{ fontSize: "0.62rem", color: "#c8d8e8" }}>{label}</span>
-                  </div>
-                ))}
-                <div style={{ marginTop: "6px", paddingTop: "6px", borderTop: "1px solid #1a3a4a" }}>
-                  {Object.entries(DIFFICULTY_COLORS).map(([diff, color]) => (
-                    <div key={diff} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
-                      <div style={{ width: 7, height: 7, borderRadius: "50%", background: color, boxShadow: `0 0 4px ${color}` }} />
-                      <span style={{ fontSize: "0.60rem", color: "#4a6a7a", textTransform: "capitalize" }}>{diff}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {!isMobile && (
-              <div style={{
-                position: "absolute", top: 10, right: 10, zIndex: 10, width: "160px",
-                background: "rgba(5,10,14,0.92)", border: "1px solid #1a3a4a",
-                padding: "0.7rem 0.9rem", backdropFilter: "blur(8px)",
-              }}>
-                <div style={{ fontSize: "0.55rem", color: "#4a6a7a", letterSpacing: "2px", marginBottom: "0.5rem" }}>// FILTRAR</div>
-                <FilterPanel />
-              </div>
-            )}
-
-            <svg ref={svgRef} style={{ width: "100%", display: "block" }} />
-
-            <div style={{ fontFamily: "monospace", fontSize: "0.6rem", color: "#2a4a5a", textAlign: "center", padding: "0.4rem", borderTop: "1px solid #1a3a4a" }}>
-              {isMobile
-                ? "pinch → zoom · drag → mover · tap → conexiones"
-                : "scroll → zoom · drag → mover · click → resaltar · doble click writeup → abrir · doble click nodo → fijar"}
-            </div>
-          </div>
-        </>
-      )}
-
-      {tooltip.visible && tooltip.node && (
-        <div style={{
-          position: "fixed", zIndex: 2000, pointerEvents: "none",
-          left: Math.min(tooltip.x + 14, (typeof window !== "undefined" ? window.innerWidth : 800) - 230),
-          top: tooltip.y - 10,
-          background: "rgba(8,16,26,0.97)",
-          border: `1px solid ${resolveColor(tooltip.node)}44`,
-          padding: "0.8rem 1rem", minWidth: "180px", fontFamily: "monospace",
-        }}>
-          <div style={{ fontSize: "0.55rem", color: resolveColor(tooltip.node), letterSpacing: "2px", marginBottom: "3px" }}>
-            {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
-          </div>
-          <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-            {tooltip.node.type === "writeup"
-              ? (tooltip.node.title || tooltip.node.id)
-              : tooltip.node.type === "category"
-              ? tooltip.node.id.split("/").pop()
-              : tooltip.node.id}
-          </div>
-          {tooltip.node.type === "writeup" && (
-            <>
-              {(tooltip.node.difficulty || tooltip.node.os) && (
-                <div style={{ fontSize: "0.62rem", color: "#4a6a7a", marginBottom: "4px" }}>
-                  {[tooltip.node.difficulty, tooltip.node.os].filter(Boolean).join(" · ")}
-                </div>
-              )}
-              <div style={{ fontSize: "0.6rem", color: "#00ff88", marginTop: "4px", borderTop: "1px solid #1a3a4a", paddingTop: "4px" }}>
-                doble click → ver write-up ↗
-              </div>
-            </>
-          )}
-          {["os","difficulty","technique","tool","tag"].includes(tooltip.node.type) && (
-            <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
-              {tooltip.node.count || 1} writeup{(tooltip.node.count || 1) > 1 ? "s" : ""}
-            </div>
-          )}
-        </div>
-      )}
-    </section>
-  );
-}
+              padding: "4px 10px", cursor: "poin
