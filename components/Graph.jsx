@@ -788,17 +788,14 @@ export default function Graph() {
             {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
           </div>
           <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-            {tooltip.node.type === "category"
-              ? tooltip.node.id.split("/").join(" / ")
+            {tooltip.node.type === "writeup"
+              ? (tooltip.node.title || tooltip.node.id)
+              : tooltip.node.type === "category"
+              ? tooltip.node.id.split("/").pop()
               : tooltip.node.id}
           </div>
           {tooltip.node.type === "writeup" && (
             <>
-              {tooltip.node.folderPath && (
-                <div style={{ fontSize: "0.62rem", color: "#00d4ff", marginBottom: "2px" }}>
-                  📁 {tooltip.node.folderPath}
-                </div>
-              )}
               {(tooltip.node.difficulty || tooltip.node.os) && (
                 <div style={{ fontSize: "0.62rem", color: "#4a6a7a", marginBottom: "4px" }}>
                   {[tooltip.node.difficulty, tooltip.node.os].filter(Boolean).join(" · ")}
