@@ -15,14 +15,14 @@ const TYPE_COLOR = {
 };
 
 const TYPE_SIZE = {
-  platform:  18,
-  category:  12,
-  writeup:   9,
-  os:        13,
-  difficulty:11,
-  technique: 10,
-  tool:      9,
-  tag:       8,
+  platform:  14,
+  category:  8,
+  writeup:   6,
+  os:        7,
+  difficulty:6,
+  technique: 5,
+  tool:      5,
+  tag:       5,
 };
 
 const TYPE_LABEL = {
@@ -204,72 +204,34 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── DISJOINT simulation ──────────────────────────────────────────────
+      // ── Simulación estilo Obsidian — compacta, sin dispersión ────────────
       const sim = d3.forceSimulation(nodes)
         .force("link",
           d3.forceLink(links).id((d) => d.id)
-            .distance((l) => {
-              const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "category")  return 90;
-              if (tt === "writeup")   return 65;
-              if (tt === "os")        return 70;
-              if (tt === "difficulty")return 70;
-              if (tt === "technique") return 55;
-              if (tt === "tool")      return 50;
-              if (tt === "tag")       return 55;
-              return 60;
-            })
-            .strength((l) => {
-              const tt = typeof l.target === "object" ? l.target.type : "";
-              const metaTypes = ["tag","technique","tool","os","difficulty"];
-              return metaTypes.includes(tt) ? 0.15 : 0.7;
-            })
+            .distance(30)   // distancia corta — nodos juntos como Obsidian
+            .strength(1)
         )
         .force("charge",
-          d3.forceManyBody().strength((d) => {
-            if (d.type === "platform")  return -400;
-            if (d.type === "category")  return -200;
-            if (d.type === "os")        return -180;
-            if (d.type === "difficulty")return -160;
-            if (d.type === "technique") return -150;
-            if (d.type === "tool")      return -130;
-            if (d.type === "tag")       return -130;
-            return -90;
-          }).distanceMax(380)
+          d3.forceManyBody()
+            .strength((d) => {
+              if (d.type === "platform")  return -120;
+              if (d.type === "category")  return -80;
+              return -40;
+            })
+            .distanceMax(200)
         )
-        // DISJOINT — cada plataforma atrae su cluster a su propia zona X
-        .force("x",
-          d3.forceX((d) => {
-            const plat = d.platform || d.id;
-            return PLATFORM_X[plat] || W / 2;
-          }).strength((d) => d.type === "tag" ? 0.01 : 0.07)
-        )
-        .force("y", d3.forceY(H / 2).strength(0.04))
-        .force("collision", d3.forceCollide().radius((d) => (d.size || 8) + 7).strength(0.9))
-        .alphaDecay(0.012);
+        .force("center", d3.forceCenter(W / 2, H / 2).strength(0.3))
+        .force("collision", d3.forceCollide().radius((d) => (d.size || 6) + 2).strength(0.7))
+        .alphaDecay(0.02);
 
       simRef.current = sim;
 
-      // ── Links ────────────────────────────────────────────────────────────
+      // ── Links estilo Obsidian — delgados y visibles ───────────────────────
       const link = g.append("g").attr("class", "links")
         .selectAll("line").data(links).join("line")
-        .attr("stroke", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-          if (tt === "tag")       return "#3a3020";
-          if (tt === "technique") return "#3a1020";
-          if (tt === "tool")      return "#0a3a3a";
-          if (tt === "os")        return "#3a3a10";
-          if (tt === "difficulty")return "#2a1a3a";
-          if (tt === "category")  return "#1a3a4a";
-          return "#1a2a3a";
-        })
-        .attr("stroke-width", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-          if (tt === "category") return 1;
-          if (["tag","technique","tool","os","difficulty"].includes(tt)) return 0.5;
-          return 0.7;
-        })
-        .attr("opacity", 0.7);
+        .attr("stroke", "#3a4a5a")
+        .attr("stroke-width", 0.8)
+        .attr("opacity", 0.6);
 
       linkRef.current = link;
 
@@ -283,22 +245,23 @@ export default function Graph() {
             .on("end",   (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.pinned) { d.fx = null; d.fy = null; } })
         );
 
-      // Anillo exterior para plataformas
+      // Anillo exterior glow para plataformas
       node.filter((d) => d.type === "platform")
         .append("circle")
-        .attr("r", (d) => d.size + 7)
+        .attr("r", (d) => d.size + 5)
         .attr("fill", "none")
         .attr("stroke", (d) => resolveColor(d))
         .attr("stroke-width", 0.5)
-        .attr("opacity", 0.2);
+        .attr("opacity", 0.15);
 
-      // Círculo principal
+      // Círculo principal — estilo Obsidian: pequeño, fill sólido con alpha
       node.append("circle")
         .attr("r", (d) => d.size)
-        .attr("fill", (d) => resolveColor(d) + "18")
+        .attr("fill", (d) => resolveColor(d) + "30")
         .attr("stroke", (d) => resolveColor(d))
-        .attr("stroke-width", (d) => d.type === "platform" ? 1.8 : d.type === "category" ? 1.2 : 0.8)
+        .attr("stroke-width", (d) => d.type === "platform" ? 1.5 : 1)
         .style("cursor", "pointer")
+        .style("filter", (d) => `drop-shadow(0 0 ${d.type === "platform" ? 4 : 2}px ${resolveColor(d)}88)`)
         .on("mouseover", (e, d) => setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }))
         .on("mousemove", (e) => setTooltip((t) => ({ ...t, x: e.clientX, y: e.clientY })))
         .on("mouseout",  () => setTooltip((t) => ({ ...t, visible: false })))
@@ -374,6 +337,28 @@ export default function Graph() {
           .attr("x1", (d) => d.source.x).attr("y1", (d) => d.source.y)
           .attr("x2", (d) => d.target.x).attr("y2", (d) => d.target.y);
         node.attr("transform", (d) => `translate(${d.x},${d.y})`);
+      });
+
+      // Auto-fit: cuando la sim converge, encuadra todos los nodos
+      sim.on("end", () => {
+        const padding = 40;
+        const xs = nodes.map((d) => d.x).filter(Boolean);
+        const ys = nodes.map((d) => d.y).filter(Boolean);
+        if (!xs.length) return;
+        const x0 = Math.min(...xs) - padding;
+        const y0 = Math.min(...ys) - padding;
+        const x1 = Math.max(...xs) + padding;
+        const y1 = Math.max(...ys) + padding;
+        const scaleX = W / (x1 - x0);
+        const scaleY = H / (y1 - y0);
+        const scale  = Math.min(scaleX, scaleY, 1.2); // máximo 1.2x
+        const tx = W / 2 - scale * (x0 + x1) / 2;
+        const ty = H / 2 - scale * (y0 + y1) / 2;
+        svg.transition().duration(600)
+          .call(
+            d3.zoom().transform,
+            d3.zoomIdentity.translate(tx, ty).scale(scale)
+          );
       });
 
       nodeRef.current = node;
