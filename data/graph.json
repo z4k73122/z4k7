@@ -1,0 +1,1226 @@
+{
+  "nodes": [
+    {
+      "id": "portswigger",
+      "type": "platform",
+      "platform": "portswigger",
+      "size": 18
+    },
+    {
+      "id": "thm",
+      "type": "platform",
+      "platform": "thm",
+      "size": 18
+    },
+    {
+      "id": "portswigger/sql",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10,
+      "color": "#e204fb"
+    },
+    {
+      "id": "portswigger/xss",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "type": "writeup",
+      "title": "Ataque de inyección SQL, consultando el tipo y versión de la base de datos en MySQL y Microsoft",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "type": "writeup",
+      "title": "Ataque de inyección SQL, listando el contenido de bases de datos en bases de datos que no son Oracle",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "type": "writeup",
+      "title": "Ataque de inyección SQL, listando el contenido de la base de datos en Oracle",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "type": "writeup",
+      "title": "Ataque UNION de inyección SQL, búsqueda de una columna que contiene texto",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 12
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "type": "writeup",
+      "title": "Ataque UNION de inyección SQL, determinando el número de columnas devueltas por la consulta",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "type": "writeup",
+      "title": "Ataque UNION de inyección SQL, recuperando datos de otras tablas",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "inyeccion-sql-ciega-con-errores-condicionales",
+      "type": "writeup",
+      "title": "Inyección SQL ciega con errores condicionales",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "insane",
+      "os": "linux",
+      "size": 13.2
+    },
+    {
+      "id": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "type": "writeup",
+      "title": "Inyección SQL ciega con respuestas condicionales",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "insane",
+      "os": "linux",
+      "size": 12
+    },
+    {
+      "id": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "type": "writeup",
+      "title": "Inyección SQL ciega con retardos de tiempo",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "type": "writeup",
+      "title": "Inyección SQL ciega con retrasos temporales y recuperación de información",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "inyeccion-sql-visible-basada-en-errores",
+      "type": "writeup",
+      "title": "Inyección SQL visible basada en errores",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 11.2
+    },
+    {
+      "id": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "type": "writeup",
+      "title": "SQL injection attack, querying the database type and version on Oracle",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "type": "writeup",
+      "title": "SQL injection UNION attack, retrieving multiple values in a single columnSQL injection UNION attack, retrieving multiple values in a single column",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 11.2
+    },
+    {
+      "id": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "type": "writeup",
+      "title": "Vulnerabilidad de inyección SQL en la cláusula WHERE que permite la recuperación de datos ocultos",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 8.8
+    },
+    {
+      "id": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "type": "writeup",
+      "title": "Vulnerabilidad de inyección SQL que permite eludir el inicio de sesión",
+      "platform": "portswigger",
+      "folderPath": "portswigger/sql",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "type": "writeup",
+      "title": "Reflejó XSS en contexto HTML sin nada codificado",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "padelify",
+      "type": "writeup",
+      "title": "Padelify",
+      "platform": "thm",
+      "folderPath": "thm",
+      "difficulty": "hard",
+      "os": "linux",
+      "size": 12
+    },
+    {
+      "id": "sequence",
+      "type": "writeup",
+      "title": "Sequence",
+      "platform": "thm",
+      "folderPath": "thm",
+      "difficulty": "hard",
+      "os": "linux",
+      "size": 12
+    },
+    {
+      "id": "windows",
+      "type": "os",
+      "count": 12,
+      "size": 20
+    },
+    {
+      "id": "medium",
+      "type": "difficulty",
+      "count": 8,
+      "size": 20,
+      "color": "#ffcc00"
+    },
+    {
+      "id": "sqli",
+      "type": "technique",
+      "count": 30,
+      "size": 20
+    },
+    {
+      "id": "unionattack",
+      "type": "technique",
+      "count": 18,
+      "size": 20
+    },
+    {
+      "id": "burpsuite",
+      "type": "tool",
+      "count": 16,
+      "size": 20
+    },
+    {
+      "id": "database",
+      "type": "technique",
+      "count": 11,
+      "size": 20
+    },
+    {
+      "id": "oracledb",
+      "type": "technique",
+      "count": 10,
+      "size": 20
+    },
+    {
+      "id": "easy",
+      "type": "difficulty",
+      "count": 5,
+      "size": 16,
+      "color": "#00ff88"
+    },
+    {
+      "id": "waf",
+      "type": "technique",
+      "count": 10,
+      "size": 20
+    },
+    {
+      "id": "union",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "linux",
+      "type": "os",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "insane",
+      "type": "difficulty",
+      "count": 2,
+      "size": 10,
+      "color": "#ff3366"
+    },
+    {
+      "id": "blindsqli",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "cookie",
+      "type": "technique",
+      "count": 10,
+      "size": 20
+    },
+    {
+      "id": "concatenar",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "turbo-intruder",
+      "type": "tool",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "python",
+      "type": "tool",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "oracle",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "payload",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "password",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "blindinjection",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "timebased",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "cookietracking",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "hard",
+      "type": "difficulty",
+      "count": 3,
+      "size": 12,
+      "color": "#ff8c00"
+    },
+    {
+      "id": "bypass",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "login",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "xss",
+      "type": "technique",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "reflected",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "csp",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "httponly",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "lfi",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "nmap",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "fuff",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "feroxbuster",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "ssrf",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "csrf",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    }
+  ],
+  "links": [
+    {
+      "source": "portswigger",
+      "target": "portswigger/sql",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "inyeccion-sql-ciega-con-errores-condicionales",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "inyeccion-sql-visible-basada-en-errores",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/sql",
+      "target": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger",
+      "target": "portswigger/xss",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "padelify",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "sequence",
+      "type": "struct"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "database",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "database",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "oracledb",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "database",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "oracledb",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "union",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "database",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "oracledb",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "insane",
+      "type": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "blindsqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "concatenar",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "turbo-intruder",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "python",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "oracle",
+      "type": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "database",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-errores-condicionales",
+      "target": "payload",
+      "type": "tag"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "insane",
+      "type": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "blindsqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "password",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "turbo-intruder",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-respuestas-condicionales",
+      "target": "python",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "blindinjection",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "timebased",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "cookietracking",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retardos-de-tiempo",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "blindinjection",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "timebased",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "cookietracking",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "turbo-intruder",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-ciega-con-retrasos-temporales-y-recuperacion-de-informacion",
+      "target": "python",
+      "type": "tool"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "bypass",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "inyeccion-sql-visible-basada-en-errores",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "oracledb",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-attack-querying-the-database-type-and-version-on-oracle",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "unionattack",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "database",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "oracledb",
+      "type": "technique"
+    },
+    {
+      "source": "sql-injection-union-attack-retrieving-multiple-values-in-a-single-columnsql-injection-union-attack-retrieving-multiple-values-in-a-single-column",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-en-la-clausula-where-que-permite-la-recuperacion-de-datos-ocultos",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "sqli",
+      "type": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "bypass",
+      "type": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "login",
+      "type": "technique"
+    },
+    {
+      "source": "vulnerabilidad-de-inyeccion-sql-que-permite-eludir-el-inicio-de-sesion",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "xss",
+      "type": "technique"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "reflected",
+      "type": "technique"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "csp",
+      "type": "technique"
+    },
+    {
+      "source": "reflejo-xss-en-contexto-html-sin-nada-codificado",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "padelify",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "padelify",
+      "target": "xss",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "httponly",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "lfi",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "nmap",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "fuff",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "feroxbuster",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "python",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "sequence",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "sequence",
+      "target": "xss",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "ssrf",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "httponly",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "nmap",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "fuff",
+      "type": "tool"
+    }
+  ],
+  "colors": {
+    "platform": "#00ff88",
+    "category": "#00d4ff",
+    "writeup": "#7F77DD",
+    "os": "#ffcc00",
+    "difficulty": "#b06aff",
+    "technique": "#ff3366",
+    "tool": "#00ffcc",
+    "tag": "#EF9F27"
+  },
+  "subColors": {
+    "portswigger/sql": "#e204fb"
+  },
+  "meta": {
+    "totalWriteups": 18,
+    "totalPlatforms": 2,
+    "totalMeta": 36
+  }
+}
