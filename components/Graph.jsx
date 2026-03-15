@@ -349,8 +349,20 @@ export default function Graph() {
             .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
             .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2.5 : 0.3)
             .attr("stroke", (l) => {
-              const target = typeof l.target === "object" ? l.target : null;
-              return target ? resolveColor(target) : "#334455";
+              const tt = typeof l.target === "object" ? l.target.type : "";
+              if (tt === "technique") return TYPE_COLOR.technique;
+              if (tt === "tag")       return TYPE_COLOR.tag;
+              if (tt === "tool")      return TYPE_COLOR.tool;
+              if (tt === "os")        return TYPE_COLOR.os;
+              if (tt === "category")  return TYPE_COLOR.category;
+              if (tt === "writeup")   return TYPE_COLOR.writeup;
+              if (tt === "difficulty") {
+                const did = typeof l.target === "object" ? l.target.id?.toLowerCase() : "";
+                return DIFFICULTY_COLORS[did] || TYPE_COLOR.difficulty;
+              }
+              // source → plataforma u otros: usar color del source
+              const st = typeof l.source === "object" ? l.source.type : "";
+              return TYPE_COLOR[st] || "#2a3a4a";
             });
         })
         .on("dblclick", (e, d) => {
