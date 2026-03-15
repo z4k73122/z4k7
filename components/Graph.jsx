@@ -3,31 +3,43 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 // ─── Colores por tipo ─────────────────────────────────────────────────────────
 const TYPE_COLOR = {
-  platform: "#00ff88",
-  category: "#00d4ff",
-  writeup:  "#7F77DD",
-  tag:      "#EF9F27",
+  platform:  "#00ff88",
+  category:  "#00d4ff",
+  writeup:   "#7F77DD",
+  os:        "#ffcc00",
+  difficulty:"#b06aff",
+  technique: "#ff3366",
+  tool:      "#00ffcc",
+  tag:       "#EF9F27",
 };
 
 const TYPE_SIZE = {
-  platform: 18,
-  category: 12,
-  writeup:  9,
-  tag:      8,
+  platform:  18,
+  category:  12,
+  writeup:   9,
+  os:        13,
+  difficulty:11,
+  technique: 10,
+  tool:      9,
+  tag:       8,
 };
 
 const TYPE_LABEL = {
-  platform: "Plataforma",
-  category: "Carpeta",
-  writeup:  "Writeup",
-  tag:      "Tag / Técnica",
+  platform:  "Plataforma",
+  category:  "Carpeta",
+  writeup:   "Writeup",
+  os:        "Sistema OS",
+  difficulty:"Dificultad",
+  technique: "Técnica",
+  tool:      "Herramienta",
+  tag:       "Tag",
 };
 
 // Fuerza X por plataforma — clusters separados (disjoint)
 const PLATFORM_X = {};
 
 // ─── ANIM ORDER ───────────────────────────────────────────────────────────────
-const ANIM_ORDER = ["platform", "category", "writeup", "tag"];
+const ANIM_ORDER = ["platform", "category", "writeup", "os", "difficulty", "technique", "tool", "tag"];
 
 export default function Graph() {
   const svgRef    = useRef(null);
@@ -81,8 +93,28 @@ export default function Graph() {
           values: [...new Set(graphData.nodes.filter((n) => n.type === "category").map((n) => n.id))],
         },
         {
+          id: "os",
+          label: "Sistema OS",
+          values: [...new Set(graphData.nodes.filter((n) => n.type === "os").map((n) => n.id))],
+        },
+        {
+          id: "difficulty",
+          label: "Dificultad",
+          values: [...new Set(graphData.nodes.filter((n) => n.type === "difficulty").map((n) => n.id))],
+        },
+        {
+          id: "technique",
+          label: "Técnica",
+          values: [...new Set(graphData.nodes.filter((n) => n.type === "technique").map((n) => n.id))],
+        },
+        {
+          id: "tool",
+          label: "Herramienta",
+          values: [...new Set(graphData.nodes.filter((n) => n.type === "tool").map((n) => n.id))],
+        },
+        {
           id: "tag",
-          label: "Tag / Técnica",
+          label: "Tag",
           values: [...new Set(graphData.nodes.filter((n) => n.type === "tag").map((n) => n.id))],
         },
       ]
@@ -94,7 +126,11 @@ export default function Graph() {
       return node.id === filter.value || node.platform === filter.value;
     if (filter.type === "category")
       return node.id === filter.value || node.folderPath?.startsWith(filter.value);
-    if (filter.type === "tag")
+    if (filter.type === "os")
+      return node.id === filter.value || node.os === filter.value;
+    if (filter.type === "difficulty")
+      return node.id === filter.value || node.difficulty === filter.value;
+    if (filter.type === "technique" || filter.type === "tool" || filter.type === "tag")
       return node.id === filter.value || node.type === "writeup";
     return false;
   }
@@ -147,23 +183,32 @@ export default function Graph() {
           d3.forceLink(links).id((d) => d.id)
             .distance((l) => {
               const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "category") return 90;
-              if (tt === "writeup")  return 65;
-              if (tt === "tag")      return 55;
+              if (tt === "category")  return 90;
+              if (tt === "writeup")   return 65;
+              if (tt === "os")        return 70;
+              if (tt === "difficulty")return 70;
+              if (tt === "technique") return 55;
+              if (tt === "tool")      return 50;
+              if (tt === "tag")       return 55;
               return 60;
             })
             .strength((l) => {
               const tt = typeof l.target === "object" ? l.target.type : "";
-              return tt === "tag" ? 0.15 : 0.7;
+              const metaTypes = ["tag","technique","tool","os","difficulty"];
+              return metaTypes.includes(tt) ? 0.15 : 0.7;
             })
         )
         .force("charge",
           d3.forceManyBody().strength((d) => {
-            if (d.type === "platform") return -400;
-            if (d.type === "category") return -200;
-            if (d.type === "tag")      return -180;
+            if (d.type === "platform")  return -400;
+            if (d.type === "category")  return -200;
+            if (d.type === "os")        return -180;
+            if (d.type === "difficulty")return -160;
+            if (d.type === "technique") return -150;
+            if (d.type === "tool")      return -130;
+            if (d.type === "tag")       return -130;
             return -90;
-          }).distanceMax(350)
+          }).distanceMax(380)
         )
         // DISJOINT — cada plataforma atrae su cluster a su propia zona X
         .force("x",
@@ -182,14 +227,20 @@ export default function Graph() {
       const link = g.append("g").attr("class", "links")
         .selectAll("line").data(links).join("line")
         .attr("stroke", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : "";
-          if (tt === "tag")      return "#3a3020";
-          if (tt === "category") return "#1a3a4a";
+          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+          if (tt === "tag")       return "#3a3020";
+          if (tt === "technique") return "#3a1020";
+          if (tt === "tool")      return "#0a3a3a";
+          if (tt === "os")        return "#3a3a10";
+          if (tt === "difficulty")return "#2a1a3a";
+          if (tt === "category")  return "#1a3a4a";
           return "#1a2a3a";
         })
         .attr("stroke-width", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : "";
-          return tt === "tag" ? 0.5 : tt === "category" ? 1 : 0.7;
+          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+          if (tt === "category") return 1;
+          if (["tag","technique","tool","os","difficulty"].includes(tt)) return 0.5;
+          return 0.7;
         })
         .attr("opacity", 0.7);
 
@@ -620,15 +671,17 @@ export default function Graph() {
                   📁 {tooltip.node.folderPath}
                 </div>
               )}
-              {tooltip.node.difficulty && (
+              {(tooltip.node.difficulty || tooltip.node.os) && (
                 <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
-                  {tooltip.node.difficulty} · {tooltip.node.os}
+                  {[tooltip.node.difficulty, tooltip.node.os].filter(Boolean).join(" · ")}
                 </div>
               )}
             </>
           )}
-          {tooltip.node.type === "tag" && (
-            <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>tag / técnica</div>
+          {["os","difficulty","technique","tool","tag"].includes(tooltip.node.type) && (
+            <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
+              {tooltip.node.count || 1} writeup{(tooltip.node.count || 1) > 1 ? "s" : ""}
+            </div>
           )}
         </div>
       )}
