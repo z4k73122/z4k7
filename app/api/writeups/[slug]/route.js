@@ -62,21 +62,20 @@ export async function GET(request, { params }) {
         const file = fs.readFileSync(filePath, "utf8");
         const { data } = matter(file);
 
-        const relative = path.relative(CONTENT_DIR, filePath);
-        const segments = relative.split(path.sep);
-        const folderPath = segments.slice(0, -1).join("/");
-        const parts = folderPath.split("/").filter(Boolean);
+        const relative    = path.relative(CONTENT_DIR, filePath);
+        const segments    = relative.split(path.sep);
+        const rawParts    = segments.slice(0, -1);
+        const parts       = rawParts.map(p => p.toLowerCase()).filter(Boolean);
+        const folderPath  = parts.join("/");
+        const platform    = parts[0] || "other";
 
-        const platform = parts[0] || "other";
-
-        // Registrar cada nivel de carpeta como nodo
-        // ej: portswigger/sql/blind → genera "portswigger", "portswigger/sql", "portswigger/sql/blind"
+        // Registrar cada nivel de carpeta normalizado en minúsculas
         for (let i = 1; i <= parts.length; i++) {
           categorySet.add(parts.slice(0, i).join("/"));
         }
 
         const fileSlug = path.basename(filePath, ".md");
-        const slug     = data.slug || fileSlug; // mismo criterio en ambos lados
+        const slug     = (data.slug || fileSlug).toLowerCase().trim();
 
         writeupNodes.push({
           slug,
@@ -84,11 +83,11 @@ export async function GET(request, { params }) {
           platform,
           folderPath,
           parts,
-          tags:       data.tags       || [],
-          techniques: data.techniques || [],
-          tools:      data.tools      || [],
-          difficulty: data.difficulty || "",
-          os:         data.os         || "",
+          tags:       (data.tags       || []).map(t => String(t).trim().toLowerCase()),
+          techniques: (data.techniques || []).map(t => String(t).trim().toLowerCase()),
+          tools:      (data.tools      || []).map(t => String(t).trim().toLowerCase()),
+          difficulty: (data.difficulty || "").toLowerCase().trim(),
+          os:         (data.os         || "").toLowerCase().trim(),
         });
       }
 
@@ -155,7 +154,7 @@ export async function GET(request, { params }) {
 
       const registerMeta = (id, type, writeupSlug) => {
         if (!id || !String(id).trim()) return;
-        const cleanId = String(id).trim();
+        const cleanId = String(id).trim().toLowerCase(); // TODO en minúsculas
         const key     = `${type}::${cleanId}`;
 
         if (!metaMap.has(key)) {
@@ -165,16 +164,14 @@ export async function GET(request, { params }) {
             count: 0,
             size:  6,
           };
-          // Asignar color por dificultad
           if (type === "difficulty") {
-            node.color = DIFFICULTY_COLORS[cleanId.toLowerCase()] || "#b06aff";
+            node.color = DIFFICULTY_COLORS[cleanId] || "#b06aff";
           }
           metaMap.set(key, node);
         }
         const node = metaMap.get(key);
         node.count++;
-        node.size  = Math.min(6 + node.count * 2, 20);
-
+        node.size = Math.min(6 + node.count * 2, 20);
         metaLinks.push({ source: writeupSlug, target: cleanId, type });
       };
 
