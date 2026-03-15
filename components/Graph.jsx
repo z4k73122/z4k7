@@ -265,13 +265,9 @@ export default function Graph() {
         })
         .attr("stroke-width", (d) => {
           const tt = typeof d.target === "object" ? d.target.type : "";
-          return tt === "category" ? 1.2 : 0.6;
+          return tt === "category" ? 1.2 : 0.8;
         })
-        .attr("opacity", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : "";
-          if (["technique","tag","tool","os","difficulty"].includes(tt)) return 0.2;
-          return 0.45;
-        });
+        .attr("stroke-opacity", 0.5);
 
       linkRef.current = link;
 
@@ -366,12 +362,9 @@ export default function Graph() {
           })
           .attr("stroke-width", (d) => {
             const tt = typeof d.target === "object" ? d.target.type : "";
-            return tt === "category" ? 1.2 : 0.6;
+            return tt === "category" ? 1.2 : 0.8;
           })
-          .attr("opacity", (d) => {
-            const tt = typeof d.target === "object" ? d.target.type : "";
-            return ["technique","tag","tool","os","difficulty"].includes(tt) ? 0.2 : 0.45;
-          });
+          .attr("stroke-opacity", 0.5);
       });
 
       sim.on("tick", () => {
@@ -425,7 +418,7 @@ export default function Graph() {
     node.selectAll("circle").attr("opacity", (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.04);
     node.selectAll("text").attr("opacity",   (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.02);
     link.attr("stroke-opacity", (l) =>
-      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter) ? 0.8 : 0.02
+      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter) ? 0.6 : 0.02
     );
   }, [activeFilter]);
 
@@ -433,7 +426,7 @@ export default function Graph() {
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
-    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
+    link.attr("stroke-opacity", showLinks ? 0.5 : 0);
   }, [showLinks]);
 
   // ─── Animación por grupos ─────────────────────────────────────────────────
