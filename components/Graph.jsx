@@ -61,6 +61,7 @@ export default function Graph() {
   const linkRef   = useRef(null);
   const simRef    = useRef(null);
   const gRef      = useRef(null);
+  const d3Select  = useRef(null);
   const allNodes  = useRef([]);
   const allLinks  = useRef([]);
 
@@ -71,6 +72,7 @@ export default function Graph() {
   const [animating,    setAnimating]    = useState(false);
   const [animStep,     setAnimStep]     = useState(null);
   const [showLinks,    setShowLinks]    = useState(true);
+  const [showLabels,   setShowLabels]   = useState(true);
   const [openSection,  setOpenSection]  = useState(null);
   const [isMobile,     setIsMobile]     = useState(false);
   const [showPanel,    setShowPanel]    = useState(false);
@@ -611,38 +613,115 @@ export default function Graph() {
           {/* Contenedor principal */}
           <div style={{ position: "relative", background: "#050a0e", border: "1px solid #1a3a4a", overflow: "hidden" }}>
 
-            {/* Botones desktop */}
+            {/* Controles top-left: buscar + reset + labels + animar + links */}
             {!isMobile && (
-              <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: "8px", zIndex: 10 }}>
-                {[
-                  {
-                    label: animating ? `⟳ ${animStep}...` : "▶ Animar grafo",
-                    action: runAnimation,
-                    disabled: animating,
-                    active: animating,
-                    activeColor: "#00ff88",
-                  },
-                  {
-                    label: showLinks ? "⋯ Ocultar links" : "⋯ Mostrar links",
-                    action: () => setShowLinks((s) => !s),
-                    disabled: false,
-                    active: showLinks,
-                    activeColor: "#00d4ff",
-                  },
-                ].map((btn, i) => (
-                  <button key={i} onClick={btn.action} disabled={btn.disabled}
-                    style={{
-                      fontFamily: "monospace", fontSize: "0.68rem", padding: "6px 16px",
-                      border: `1px solid ${btn.active ? btn.activeColor : "#1a3a4a"}`,
-                      background: btn.active ? btn.activeColor + "15" : "rgba(5,10,14,0.95)",
-                      color: btn.active ? btn.activeColor : "#c8d8e8",
-                      cursor: btn.disabled ? "not-allowed" : "pointer",
-                      letterSpacing: "1px", backdropFilter: "blur(8px)", transition: "all 0.2s",
-                    }}
-                  >
-                    {btn.label}
-                  </button>
-                ))}
+              <div style={{
+                position: "absolute", top: 10, left: 10, zIndex: 10,
+                display: "flex", gap: "6px", alignItems: "center",
+                backdropFilter: "blur(8px)",
+              }}>
+                {/* Búsqueda */}
+                <input
+                  type="text"
+                  placeholder="// buscar..."
+                  onChange={(e) => {
+                    const v = e.target.value.toLowerCase();
+                    const node = nodeRef.current;
+                    const link = linkRef.current;
+                    if (!node || !link) return;
+                    node.selectAll("circle").attr("opacity", (d) =>
+                      !v ? 1 : d.id.toLowerCase().includes(v) ? 1 : 0.05
+                    );
+                    node.selectAll("text").attr("opacity", (d) =>
+                      !v ? 0.9 : d.id.toLowerCase().includes(v) ? 1 : 0.02
+                    );
+                    link.attr("stroke-opacity", (l) => {
+                      if (!v) return 0.7;
+                      return (l.source.id?.toLowerCase().includes(v) || l.target.id?.toLowerCase().includes(v)) ? 0.9 : 0.02;
+                    });
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem",
+                    padding: "5px 12px", width: "160px",
+                    background: "rgba(5,10,14,0.95)",
+                    border: "1px solid #1a3a4a", color: "#c8d8e8",
+                    outline: "none", letterSpacing: "0.5px",
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = "#00d4ff")}
+                  onBlur={(e)  => (e.target.style.borderColor = "#1a3a4a")}
+                />
+
+                {/* Reset */}
+                <button
+                  onClick={async () => {
+                    const node = nodeRef.current;
+                    const link = linkRef.current;
+                    if (!node || !link) return;
+                    node.selectAll("circle").attr("opacity", 1);
+                    node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
+                    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
+                    const d3 = await import("d3");
+                    d3.select(svgRef.current).transition().duration(400)
+                      .call(d3.zoom().transform, d3.zoomIdentity);
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: "1px solid #1a3a4a", background: "rgba(5,10,14,0.95)",
+                    color: "#c8d8e8", cursor: "pointer", letterSpacing: "1px",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+                  onMouseOut={(e)  => { e.currentTarget.style.borderColor = "#1a3a4a"; e.currentTarget.style.color = "#c8d8e8"; }}
+                >
+                  reset
+                </button>
+
+                {/* Labels */}
+                <button
+                  onClick={() => {
+                    setShowLabels((s) => {
+                      const next = !s;
+                      if (nodeRef.current)
+                        nodeRef.current.selectAll("text").attr("opacity", next ? 0.9 : 0);
+                      return next;
+                    });
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${showLabels ? "#00ff88" : "#1a3a4a"}`,
+                    background: showLabels ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
+                    color: showLabels ? "#00ff88" : "#c8d8e8",
+                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  labels
+                </button>
+
+                {/* Animar */}
+                <button onClick={runAnimation} disabled={animating}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${animating ? "#00ff88" : "#1a3a4a"}`,
+                    background: animating ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
+                    color: animating ? "#00ff88" : "#c8d8e8",
+                    cursor: animating ? "not-allowed" : "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  {animating ? `⟳ ${animStep}` : "▶ animar"}
+                </button>
+
+                {/* Links */}
+                <button onClick={() => setShowLinks((s) => !s)}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${showLinks ? "#00d4ff" : "#1a3a4a"}`,
+                    background: showLinks ? "rgba(0,212,255,0.08)" : "rgba(5,10,14,0.95)",
+                    color: showLinks ? "#00d4ff" : "#c8d8e8",
+                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  {showLinks ? "⋯ links" : "⋯ links"}
+                </button>
               </div>
             )}
 
