@@ -35,10 +35,24 @@ const TYPE_LABEL = {
   tag:       "Tag",
 };
 
+// ─── Color resolver — usa node.color si existe (ej: difficulty) ──────────────
+const DIFFICULTY_COLORS = {
+  easy:   "#00ff88",
+  medium: "#ffcc00",
+  hard:   "#ff8c00",
+  insane: "#ff3366",
+};
+
+function resolveColor(node) {
+  if (!node) return "#4a6a7a";
+  if (node.color) return node.color;
+  if (node.type === "difficulty")
+    return DIFFICULTY_COLORS[node.id?.toLowerCase()] || TYPE_COLOR.difficulty;
+  return TYPE_COLOR[node.type] || "#4a6a7a";
+}
+
 // Fuerza X por plataforma — clusters separados (disjoint)
 const PLATFORM_X = {};
-
-// ─── ANIM ORDER ───────────────────────────────────────────────────────────────
 const ANIM_ORDER = ["platform", "category", "writeup", "os", "difficulty", "technique", "tool", "tag"];
 
 export default function Graph() {
@@ -270,15 +284,15 @@ export default function Graph() {
         .append("circle")
         .attr("r", (d) => d.size + 7)
         .attr("fill", "none")
-        .attr("stroke", (d) => TYPE_COLOR[d.type])
+        .attr("stroke", (d) => resolveColor(d))
         .attr("stroke-width", 0.5)
         .attr("opacity", 0.2);
 
       // Círculo principal
       node.append("circle")
         .attr("r", (d) => d.size)
-        .attr("fill", (d) => TYPE_COLOR[d.type] + "18")
-        .attr("stroke", (d) => TYPE_COLOR[d.type])
+        .attr("fill", (d) => resolveColor(d) + "18")
+        .attr("stroke", (d) => resolveColor(d))
         .attr("stroke-width", (d) => d.type === "platform" ? 1.8 : d.type === "category" ? 1.2 : 0.8)
         .style("cursor", "pointer")
         .on("mouseover", (e, d) => setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d }))
@@ -312,13 +326,12 @@ export default function Graph() {
       // Label
       node.append("text")
         .text((d) => {
-          // Para categorías mostrar solo el último segmento
           if (d.type === "category") return d.id.split("/").pop();
           return d.id;
         })
         .attr("dy", (d) => d.size + 11)
         .attr("text-anchor", "middle")
-        .attr("fill", (d) => TYPE_COLOR[d.type])
+        .attr("fill", (d) => resolveColor(d))
         .attr("font-family", "monospace")
         .attr("font-size", (d) => d.type === "platform" ? "9px" : "7.5px")
         .attr("letter-spacing", "0.5px")
@@ -494,7 +507,9 @@ export default function Graph() {
                 const fullVal    = item.full    || item;
                 const displayVal = item.display || item;
                 const isActive   = activeFilter.type === group.id && activeFilter.value === fullVal;
-                const c          = TYPE_COLOR[group.id] || "#4a6a7a";
+                  const c = group.id === "difficulty"
+                    ? (DIFFICULTY_COLORS[fullVal?.toLowerCase()] || TYPE_COLOR.difficulty)
+                    : TYPE_COLOR[group.id] || "#4a6a7a";
                 return (
                   <button
                     key={fullVal}
@@ -645,6 +660,15 @@ export default function Graph() {
                     <span style={{ fontSize: "0.62rem", color: "#c8d8e8" }}>{label}</span>
                   </div>
                 ))}
+                {/* Escala de dificultad */}
+                <div style={{ marginTop: "6px", paddingTop: "6px", borderTop: "1px solid #1a3a4a" }}>
+                  {Object.entries(DIFFICULTY_COLORS).map(([diff, color]) => (
+                    <div key={diff} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
+                      <div style={{ width: 7, height: 7, borderRadius: "50%", background: color, boxShadow: `0 0 4px ${color}` }} />
+                      <span style={{ fontSize: "0.60rem", color: "#4a6a7a", textTransform: "capitalize" }}>{diff}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -678,11 +702,11 @@ export default function Graph() {
           left: Math.min(tooltip.x + 14, (typeof window !== "undefined" ? window.innerWidth : 800) - 230),
           top: tooltip.y - 10,
           background: "rgba(8,16,26,0.97)",
-          border: `1px solid ${TYPE_COLOR[tooltip.node.type] || "#1a3a4a"}44`,
+          border: `1px solid ${resolveColor(tooltip.node)}44`,
           padding: "0.8rem 1rem", minWidth: "180px",
           fontFamily: "monospace",
         }}>
-          <div style={{ fontSize: "0.55rem", color: TYPE_COLOR[tooltip.node.type] || "#4a6a7a", letterSpacing: "2px", marginBottom: "3px" }}>
+          <div style={{ fontSize: "0.55rem", color: resolveColor(tooltip.node), letterSpacing: "2px", marginBottom: "3px" }}>
             {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
           </div>
           <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
