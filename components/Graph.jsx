@@ -597,11 +597,11 @@ export default function Graph() {
           {/* Contenedor principal */}
           <div style={{ position: "relative", background: "#050a0e", border: "1px solid #1a3a4a", overflow: "hidden" }}>
 
-            {/* Controles top-left: buscar + reset + labels + animar + links */}
+            {/* Controles top-center: buscar + reset + labels + animar + links */}
             {!isMobile && (
               <div style={{
-                position: "absolute", top: 10, left: 10, zIndex: 10,
-                display: "flex", gap: "6px", alignItems: "center",
+                position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
+                zIndex: 10, display: "flex", gap: "6px", alignItems: "center",
                 backdropFilter: "blur(8px)",
               }}>
                 {/* Búsqueda */}
@@ -628,8 +628,10 @@ export default function Graph() {
                     fontFamily: "monospace", fontSize: "0.68rem",
                     padding: "5px 12px", width: "160px",
                     background: "rgba(5,10,14,0.95)",
-                    border: "1px solid #1a3a4a", color: "#c8d8e8",
+                    border: "1px solid #1a3a4a",
+                    color: "#c8d8e8",
                     outline: "none", letterSpacing: "0.5px",
+                    caretColor: "#00ff88",
                   }}
                   onFocus={(e) => (e.target.style.borderColor = "#00d4ff")}
                   onBlur={(e)  => (e.target.style.borderColor = "#1a3a4a")}
