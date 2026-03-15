@@ -145,24 +145,35 @@ export async function GET(request, { params }) {
       const metaMap   = new Map(); // "type::id" → nodo
       const metaLinks = [];
 
+      const DIFFICULTY_COLORS = {
+        easy:   "#00ff88",
+        medium: "#ffcc00",
+        hard:   "#ff8c00",
+        insane: "#ff3366",
+      };
+
       const registerMeta = (id, type, writeupSlug) => {
         if (!id || !String(id).trim()) return;
         const cleanId = String(id).trim();
-        const key     = `${type}::${cleanId}`; // key global — NO incluye plataforma
+        const key     = `${type}::${cleanId}`;
 
         if (!metaMap.has(key)) {
-          metaMap.set(key, {
-            id:    cleanId,   // id sin prefijo — mismo nodo para todos los writeups
+          const node = {
+            id:    cleanId,
             type,
             count: 0,
             size:  6,
-          });
+          };
+          // Asignar color por dificultad
+          if (type === "difficulty") {
+            node.color = DIFFICULTY_COLORS[cleanId.toLowerCase()] || "#b06aff";
+          }
+          metaMap.set(key, node);
         }
-        const node  = metaMap.get(key);
+        const node = metaMap.get(key);
         node.count++;
-        node.size   = Math.min(6 + node.count * 2, 20);
+        node.size  = Math.min(6 + node.count * 2, 20);
 
-        // El link va desde el writeup al nodo global
         metaLinks.push({ source: writeupSlug, target: cleanId, type });
       };
 
