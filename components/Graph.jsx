@@ -487,22 +487,6 @@ export default function Graph() {
             <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
           </button>
 
-      {filterGroups.map((group) => (
-        <div key={group.id} style={{ marginBottom: "0.2rem" }}>
-          <button
-            onClick={() => setOpenSection(openSection === group.id ? null : group.id)}
-            style={{
-              width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
-              padding: "4px 10px", cursor: "pointer", background: "transparent",
-              border: "1px solid #1a3a4a", color: TYPE_COLOR[group.id] || "#4a6a7a",
-              textAlign: "left", display: "flex", justifyContent: "space-between",
-              alignItems: "center", letterSpacing: "1px",
-            }}
-          >
-            <span>{group.label}</span>
-            <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
-          </button>
-
           {openSection === group.id && (
             <div style={{ background: "#030810", border: "1px solid #1a3a4a", borderTop: "none", maxHeight: "160px", overflowY: "auto" }}>
               {(group.id === "category" ? group.values : group.values.map((v) => ({ full: v, display: v }))).map((item) => {
