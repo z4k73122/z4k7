@@ -75,9 +75,12 @@ export async function GET(request, { params }) {
           categorySet.add(parts.slice(0, i).join("/"));
         }
 
+        const fileSlug = path.basename(filePath, ".md");
+        const slug     = data.slug || fileSlug; // mismo criterio en ambos lados
+
         writeupNodes.push({
-          slug:       data.slug || path.basename(filePath, ".md"),
-          title:      data.title || "",
+          slug,
+          title:      data.title || slug,
           platform,
           folderPath,
           parts,
@@ -96,14 +99,13 @@ export async function GET(request, { params }) {
         id:       p,
         type:     "platform",
         platform: p,
-        size:     18,
+        size:     14,
       }));
 
       // Categorías = todos los niveles EXCEPTO el nivel 0 (plataforma)
       const categoryNodes = [...categorySet]
         .filter((c) => c.split("/").length > 1 || !platformSet.has(c))
         .filter((c) => {
-          // excluir los que son solo plataforma (ya están en platformNodes)
           const parts = c.split("/");
           return parts.length > 1;
         })
@@ -111,8 +113,8 @@ export async function GET(request, { params }) {
           id:       c,
           type:     "category",
           platform: c.split("/")[0],
-          depth:    c.split("/").length, // profundidad del nodo
-          size:     Math.max(8, 14 - c.split("/").length * 2),
+          depth:    c.split("/").length,
+          size:     Math.max(5, 10 - c.split("/").length * 2),
         }));
 
       // Construir links struct encadenando cada nivel
@@ -196,9 +198,18 @@ export async function GET(request, { params }) {
 
       const metaNodes = [...metaMap.values()];
 
+      // DEBUG — verificar que todos los metaLinks apuntan a slugs que existen
+      const writeupIds = new Set(finalWriteupNodes.map((w) => w.id));
+      const orphanLinks = metaLinks.filter((l) => !writeupIds.has(l.source));
+      if (orphanLinks.length > 0) {
+        console.warn("[--graph] Links huérfanos (source no existe como nodo):", 
+          [...new Set(orphanLinks.map((l) => l.source))].slice(0, 5)
+        );
+      }
+
       // Nodos finales de writeup
       const finalWriteupNodes = writeupNodes.map((w) => ({
-        id:         w.slug,
+        id:         w.slug,          // mismo valor que se usó en registerMeta y structLinks
         type:       "writeup",
         title:      w.title,
         platform:   w.platform,
@@ -208,12 +219,21 @@ export async function GET(request, { params }) {
         size:       Math.min(8 + ((w.tags?.length || 0) + (w.techniques?.length || 0)) * 0.4, 14),
       }));
 
-      // Deduplicar todos los links
+      // Deduplicar y filtrar links huérfanos
+      const allNodeIds = new Set([
+        ...platformNodes.map((n) => n.id),
+        ...categoryNodes.map((n) => n.id),
+        ...finalWriteupNodes.map((n) => n.id),
+        ...metaNodes.map((n) => n.id),
+      ]);
+
       const seenLinks = new Set();
       const dedupedLinks = [...structLinks, ...metaLinks].filter((l) => {
         const key = `${l.source}→${l.target}`;
         if (seenLinks.has(key)) return false;
         seenLinks.add(key);
+        // Filtrar links cuyo source o target no existe como nodo
+        if (!allNodeIds.has(l.source) || !allNodeIds.has(l.target)) return false;
         return true;
       });
 
