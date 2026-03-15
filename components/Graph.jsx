@@ -259,15 +259,22 @@ export default function Graph() {
       const link = g.append("g").attr("class", "links")
         .selectAll("line").data(links).join("line")
         .attr("stroke", (d) => {
-          const target = typeof d.target === "object" ? d.target : null;
-          if (target) return resolveColor(target);
-          return "#334455";
+          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+          if (tt === "tag")       return "#3a3020";
+          if (tt === "technique") return "#3a1020";
+          if (tt === "tool")      return "#0a3a3a";
+          if (tt === "os")        return "#3a3a10";
+          if (tt === "difficulty")return "#2a1a3a";
+          if (tt === "category")  return "#1a3a4a";
+          return "#1a2a3a";
         })
         .attr("stroke-width", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : "";
-          return tt === "category" ? 1.2 : 0.8;
+          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+          if (tt === "category") return 1;
+          if (["tag","technique","tool","os","difficulty"].includes(tt)) return 0.5;
+          return 0.7;
         })
-        .attr("stroke-opacity", 0.5);
+        .attr("opacity", 0.7);
 
       linkRef.current = link;
 
@@ -310,13 +317,13 @@ export default function Graph() {
           node.selectAll("circle").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.05);
           node.selectAll("text").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.02);
           link
-            .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
+            .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 1 : 0.02)
             .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2 : 0.3)
-            .attr("stroke", (l) => {
-              if (l.source.id === d.id || l.target.id === d.id) return "#00ff88";
-              const target = typeof l.target === "object" ? l.target : null;
-              return target ? resolveColor(target) : "#334455";
-            });
+            .attr("stroke", (l) =>
+              l.source.id === d.id || l.target.id === d.id
+                ? "#00ff88"
+                : (typeof l.target === "object" && l.target.type === "tag" ? "#3a3020" : "#1a3a4a")
+            );
         })
         .on("dblclick", (e, d) => {
           e.stopPropagation();
@@ -354,17 +361,17 @@ export default function Graph() {
       // Click en fondo — resetear
       svg.on("click", () => {
         node.selectAll("circle").attr("opacity", 1);
-        node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
+        node.selectAll("text").attr("opacity", 0.9);
         link
-          .attr("stroke", (d) => {
-            const target = typeof d.target === "object" ? d.target : null;
-            return target ? resolveColor(target) : "#334455";
-          })
+          .attr("stroke-opacity", 0.7)
           .attr("stroke-width", (d) => {
             const tt = typeof d.target === "object" ? d.target.type : "";
-            return tt === "category" ? 1.2 : 0.8;
+            return tt === "tag" ? 0.5 : tt === "category" ? 1 : 0.7;
           })
-          .attr("stroke-opacity", 0.5);
+          .attr("stroke", (d) => {
+            const tt = typeof d.target === "object" ? d.target.type : "";
+            return tt === "tag" ? "#3a3020" : tt === "category" ? "#1a3a4a" : "#1a2a3a";
+          });
       });
 
       sim.on("tick", () => {
@@ -418,7 +425,7 @@ export default function Graph() {
     node.selectAll("circle").attr("opacity", (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.04);
     node.selectAll("text").attr("opacity",   (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.02);
     link.attr("stroke-opacity", (l) =>
-      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter) ? 0.6 : 0.02
+      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter) ? 0.8 : 0.02
     );
   }, [activeFilter]);
 
@@ -426,7 +433,7 @@ export default function Graph() {
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
-    link.attr("stroke-opacity", showLinks ? 0.5 : 0);
+    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
   }, [showLinks]);
 
   // ─── Animación por grupos ─────────────────────────────────────────────────
