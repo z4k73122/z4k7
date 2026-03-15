@@ -4,13 +4,15 @@
       "id": "portswigger",
       "type": "platform",
       "platform": "portswigger",
-      "size": 18
+      "size": 18,
+      "color": "#ff8000"
     },
     {
       "id": "thm",
       "type": "platform",
       "platform": "thm",
-      "size": 18
+      "size": 18,
+      "color": "#ff0000"
     },
     {
       "id": "portswigger/sql",
@@ -1216,7 +1218,9 @@
     "tag": "#EF9F27"
   },
   "subColors": {
-    "portswigger/sql": "#e204fb"
+    "portswigger/sql": "#e204fb",
+    "portswigger": "#ff8000",
+    "thm": "#ff0000"
   },
   "meta": {
     "totalWriteups": 18,
