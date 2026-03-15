@@ -434,4 +434,293 @@ export default function Graph() {
             onClick={() => setOpenSection(openSection === group.id ? null : group.id)}
             style={{
               width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
-              padding: "4px 10px", cursor: "poin
+              padding: "4px 10px", cursor: "pointer", background: "transparent",
+              border: "1px solid #1a3a4a",
+              color: gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a",
+              textAlign: "left", display: "flex", justifyContent: "space-between",
+              alignItems: "center", letterSpacing: "1px",
+            }}
+          >
+            <span>{group.label}</span>
+            <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
+          </button>
+          {openSection === group.id && (
+            <div style={{ background: "#030810", border: "1px solid #1a3a4a", borderTop: "none", maxHeight: "160px", overflowY: "auto" }}>
+              {(group.id === "category" ? group.values : group.values.map((v) => ({ full: v, display: v }))).map((item) => {
+                const fullVal    = item.full    || item;
+                const displayVal = item.display || item;
+                const isActive   = activeFilter.type === group.id && activeFilter.value === fullVal;
+                const c = group.id === "difficulty"
+                  ? (DIFFICULTY_COLORS[fullVal?.toLowerCase()] || gColors.difficulty || TYPE_COLOR.difficulty)
+                  : (gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a");
+                return (
+                  <button
+                    key={fullVal}
+                    onClick={() => setFilter(group.id, fullVal)}
+                    style={{
+                      width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
+                      padding: "3px 12px", cursor: "pointer",
+                      background: isActive ? c + "18" : "transparent",
+                      border: "none", borderLeft: `2px solid ${isActive ? c : "transparent"}`,
+                      color: isActive ? c : "#4a6a7a", textAlign: "left",
+                      display: "flex", alignItems: "center", gap: "0.5rem",
+                    }}
+                  >
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", background: c, flexShrink: 0 }} />
+                    {displayVal}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <section id="graph" style={{ background: "#050a0e", padding: "2rem 0", fontFamily: "monospace" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem", flexWrap: "wrap" }}>
+        <span style={{ color: "#00ff88", fontSize: "0.85rem", flexShrink: 0 }}>03.</span>
+        <h2 style={{ fontSize: "1.4rem", fontWeight: 700, color: "#fff", letterSpacing: "3px", textTransform: "uppercase", margin: 0 }}>
+          Knowledge Graph
+        </h2>
+        <div style={{ flex: 1, height: "1px", background: "linear-gradient(to right,#1a3a4a,transparent)", minWidth: "20px" }} />
+        {!loading && (
+          <span style={{ fontSize: "0.62rem", color: "#4a6a7a", flexShrink: 0 }}>
+            {totalWrites} writeups · {totalNodes} nodos · {totalLinks} links
+          </span>
+        )}
+      </div>
+
+      <p style={{ fontSize: "0.75rem", color: "#4a6a7a", marginBottom: "1.2rem" }}>
+        // Mapa interactivo — plataformas, carpetas, writeups y técnicas
+      </p>
+
+      {loading && (
+        <div style={{ background: "#050a0e", border: "1px solid #1a3a4a", padding: "4rem", textAlign: "center" }}>
+          <p style={{ color: "#00d4ff", fontSize: "0.85rem", letterSpacing: "2px" }}>// Cargando grafo...</p>
+        </div>
+      )}
+
+      {!loading && !graphData?.nodes?.length && (
+        <div style={{ background: "#050a0e", border: "1px solid #1a3a4a", padding: "4rem", textAlign: "center" }}>
+          <p style={{ color: "#4a6a7a", fontSize: "0.85rem", letterSpacing: "2px" }}>// No hay writeups aún</p>
+        </div>
+      )}
+
+      {!loading && graphData?.nodes?.length > 0 && (
+        <>
+          {isMobile && (
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.8rem" }}>
+              {[
+                { label: animating ? `⟳ ${animStep}` : "▶ Animar", action: runAnimation, active: animating },
+                { label: showLinks ? "⋯ Ocultar links" : "⋯ Links", action: () => setShowLinks((s) => !s), active: showLinks },
+                { label: "⊞ Filtros" + (activeFilter.type !== "all" ? " ●" : ""), action: () => setShowPanel((s) => !s), active: showPanel },
+              ].map((btn, i) => (
+                <button key={i} onClick={btn.action} disabled={animating && i === 0}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.65rem", padding: "5px 12px",
+                    border: `1px solid ${btn.active ? "#00ff88" : "#1a3a4a"}`,
+                    background: btn.active ? "rgba(0,255,136,0.08)" : "transparent",
+                    color: btn.active ? "#00ff88" : "#4a6a7a", cursor: "pointer", letterSpacing: "1px",
+                  }}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {isMobile && showPanel && (
+            <div style={{ background: "#060d14", border: "1px solid #1a3a4a", padding: "0.8rem", marginBottom: "0.8rem" }}>
+              <FilterPanel />
+            </div>
+          )}
+
+          <div style={{ position: "relative", background: "#050a0e", border: "1px solid #1a3a4a", overflow: "hidden" }}>
+
+            {!isMobile && (
+              <div style={{
+                position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
+                zIndex: 10, display: "flex", gap: "6px", alignItems: "center", backdropFilter: "blur(8px)",
+              }}>
+                <input
+                  type="text"
+                  placeholder="// buscar..."
+                  onChange={(e) => {
+                    const v    = e.target.value.toLowerCase();
+                    const node = nodeRef.current;
+                    const link = linkRef.current;
+                    if (!node || !link) return;
+                    node.selectAll("circle").attr("opacity", (d) => !v ? 1 : d.id.toLowerCase().includes(v) ? 1 : 0.05);
+                    node.selectAll("text").attr("opacity",   (d) => !v ? 0.9 : d.id.toLowerCase().includes(v) ? 1 : 0.02);
+                    link.attr("stroke-opacity", (l) => {
+                      if (!v) return 0.7;
+                      return (l.source.id?.toLowerCase().includes(v) || l.target.id?.toLowerCase().includes(v)) ? 0.9 : 0.02;
+                    });
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 12px", width: "160px",
+                    background: "rgba(5,10,14,0.95)", border: "1px solid #1a3a4a",
+                    color: "#c8d8e8", outline: "none", letterSpacing: "0.5px", caretColor: "#00ff88",
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = "#00d4ff")}
+                  onBlur={(e)  => (e.target.style.borderColor = "#1a3a4a")}
+                />
+                <button
+                  onClick={async () => {
+                    const node = nodeRef.current;
+                    const link = linkRef.current;
+                    if (!node || !link) return;
+                    node.selectAll("circle").attr("opacity", 1);
+                    node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
+                    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
+                    const d3 = await import("d3");
+                    d3.select(svgRef.current).transition().duration(400)
+                      .call(d3.zoom().transform, d3.zoomIdentity);
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: "1px solid #1a3a4a", background: "rgba(5,10,14,0.95)",
+                    color: "#c8d8e8", cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+                  onMouseOut={(e)  => { e.currentTarget.style.borderColor = "#1a3a4a"; e.currentTarget.style.color = "#c8d8e8"; }}
+                >
+                  reset
+                </button>
+                <button
+                  onClick={() => {
+                    setShowLabels((s) => {
+                      const next = !s;
+                      if (nodeRef.current) nodeRef.current.selectAll("text").attr("opacity", next ? 0.9 : 0);
+                      return next;
+                    });
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${showLabels ? "#00ff88" : "#1a3a4a"}`,
+                    background: showLabels ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
+                    color: showLabels ? "#00ff88" : "#c8d8e8",
+                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  labels
+                </button>
+                <button onClick={runAnimation} disabled={animating}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${animating ? "#00ff88" : "#1a3a4a"}`,
+                    background: animating ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
+                    color: animating ? "#00ff88" : "#c8d8e8",
+                    cursor: animating ? "not-allowed" : "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  {animating ? `⟳ ${animStep}` : "▶ animar"}
+                </button>
+                <button onClick={() => setShowLinks((s) => !s)}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${showLinks ? "#00d4ff" : "#1a3a4a"}`,
+                    background: showLinks ? "rgba(0,212,255,0.08)" : "rgba(5,10,14,0.95)",
+                    color: showLinks ? "#00d4ff" : "#c8d8e8",
+                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  {showLinks ? "⋯ links" : "⋯ links"}
+                </button>
+              </div>
+            )}
+
+            {!isMobile && (
+              <div style={{
+                position: "absolute", top: 10, left: 10, zIndex: 10,
+                background: "rgba(5,10,14,0.92)", border: "1px solid #1a3a4a",
+                padding: "0.7rem 0.9rem", backdropFilter: "blur(8px)",
+              }}>
+                <div style={{ fontSize: "0.55rem", color: "#4a6a7a", letterSpacing: "2px", marginBottom: "0.5rem" }}>// TIPOS</div>
+                {Object.entries(TYPE_LABEL).map(([type, label]) => (
+                  <div key={type} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                    <div style={{
+                      width: 7, height: 7, borderRadius: "50%",
+                      background: gColors[type] || TYPE_COLOR[type],
+                      boxShadow: `0 0 4px ${gColors[type] || TYPE_COLOR[type]}`
+                    }} />
+                    <span style={{ fontSize: "0.62rem", color: "#c8d8e8" }}>{label}</span>
+                  </div>
+                ))}
+                <div style={{ marginTop: "6px", paddingTop: "6px", borderTop: "1px solid #1a3a4a" }}>
+                  {Object.entries(DIFFICULTY_COLORS).map(([diff, color]) => (
+                    <div key={diff} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
+                      <div style={{ width: 7, height: 7, borderRadius: "50%", background: color, boxShadow: `0 0 4px ${color}` }} />
+                      <span style={{ fontSize: "0.60rem", color: "#4a6a7a", textTransform: "capitalize" }}>{diff}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!isMobile && (
+              <div style={{
+                position: "absolute", top: 10, right: 10, zIndex: 10, width: "160px",
+                background: "rgba(5,10,14,0.92)", border: "1px solid #1a3a4a",
+                padding: "0.7rem 0.9rem", backdropFilter: "blur(8px)",
+              }}>
+                <div style={{ fontSize: "0.55rem", color: "#4a6a7a", letterSpacing: "2px", marginBottom: "0.5rem" }}>// FILTRAR</div>
+                <FilterPanel />
+              </div>
+            )}
+
+            <svg ref={svgRef} style={{ width: "100%", display: "block" }} />
+
+            <div style={{ fontFamily: "monospace", fontSize: "0.6rem", color: "#2a4a5a", textAlign: "center", padding: "0.4rem", borderTop: "1px solid #1a3a4a" }}>
+              {isMobile
+                ? "pinch → zoom · drag → mover · tap → conexiones"
+                : "scroll → zoom · drag → mover · click → resaltar · doble click writeup → abrir · doble click nodo → fijar"}
+            </div>
+          </div>
+        </>
+      )}
+
+      {tooltip.visible && tooltip.node && (
+        <div style={{
+          position: "fixed", zIndex: 2000, pointerEvents: "none",
+          left: Math.min(tooltip.x + 14, (typeof window !== "undefined" ? window.innerWidth : 800) - 230),
+          top: tooltip.y - 10,
+          background: "rgba(8,16,26,0.97)",
+          border: `1px solid ${resolveColor(tooltip.node)}44`,
+          padding: "0.8rem 1rem", minWidth: "180px", fontFamily: "monospace",
+        }}>
+          <div style={{ fontSize: "0.55rem", color: resolveColor(tooltip.node), letterSpacing: "2px", marginBottom: "3px" }}>
+            {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
+          </div>
+          <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
+            {tooltip.node.type === "writeup"
+              ? (tooltip.node.title || tooltip.node.id)
+              : tooltip.node.type === "category"
+              ? tooltip.node.id.split("/").pop()
+              : tooltip.node.id}
+          </div>
+          {tooltip.node.type === "writeup" && (
+            <>
+              {(tooltip.node.difficulty || tooltip.node.os) && (
+                <div style={{ fontSize: "0.62rem", color: "#4a6a7a", marginBottom: "4px" }}>
+                  {[tooltip.node.difficulty, tooltip.node.os].filter(Boolean).join(" · ")}
+                </div>
+              )}
+              <div style={{ fontSize: "0.6rem", color: "#00ff88", marginTop: "4px", borderTop: "1px solid #1a3a4a", paddingTop: "4px" }}>
+                doble click → ver write-up ↗
+              </div>
+            </>
+          )}
+          {["os","difficulty","technique","tool","tag"].includes(tooltip.node.type) && (
+            <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
+              {tooltip.node.count || 1} writeup{(tooltip.node.count || 1) > 1 ? "s" : ""}
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
