@@ -176,20 +176,34 @@ export async function GET(request, { params }) {
       };
 
       for (const w of writeupNodes) {
-        // os — nodo único por valor
-        if (w.os) registerMeta(w.os, "os", w.slug);
-
-        // difficulty — nodo único por valor
+        if (w.os)         registerMeta(w.os,         "os",         w.slug);
         if (w.difficulty) registerMeta(w.difficulty, "difficulty", w.slug);
 
-        // techniques
         for (const t of (w.techniques || [])) registerMeta(t, "technique", w.slug);
+        for (const t of (w.tools      || [])) registerMeta(t, "tool",      w.slug);
 
-        // tools
-        for (const t of (w.tools || [])) registerMeta(t, "tool", w.slug);
-
-        // tags
-        for (const t of (w.tags || [])) registerMeta(t, "tag", w.slug);
+        // Tags — si ya existe como técnica o tool globalmente, no crear nodo duplicado
+        // sino agregar un link directo al nodo técnica existente
+        for (const t of (w.tags || [])) {
+          const clean = t.toLowerCase().trim();
+          const techKey = `technique::${clean}`;
+          const toolKey = `tool::${clean}`;
+          if (metaMap.has(techKey)) {
+            // ya existe como técnica — solo agregar link
+            const node = metaMap.get(techKey);
+            node.count++;
+            node.size = Math.min(6 + node.count * 2, 20);
+            metaLinks.push({ source: w.slug, target: clean, type: "technique" });
+          } else if (metaMap.has(toolKey)) {
+            // ya existe como tool — solo agregar link
+            const node = metaMap.get(toolKey);
+            node.count++;
+            node.size = Math.min(6 + node.count * 2, 20);
+            metaLinks.push({ source: w.slug, target: clean, type: "tool" });
+          } else {
+            registerMeta(t, "tag", w.slug);
+          }
+        }
       }
 
       const metaNodes = [...metaMap.values()];
