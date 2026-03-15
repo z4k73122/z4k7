@@ -140,20 +140,30 @@ export async function GET(request, { params }) {
       }
 
       // ── Construir nodos de metadata + links ──────────────────────────────
-      // os, difficulty, technique, tool, tag — cada uno como nodo separado
-      const metaMap  = new Map(); // id → nodo
+      // os, difficulty, technique, tool, tag — nodos GLOBALES compartidos entre clusters
+      // Si "SQL Injection" aparece en HTB y PortSwigger → es UN solo nodo que conecta ambos
+      const metaMap   = new Map(); // "type::id" → nodo
       const metaLinks = [];
 
       const registerMeta = (id, type, writeupSlug) => {
-        if (!id || !id.trim()) return;
-        const key = `${type}::${id}`;
+        if (!id || !String(id).trim()) return;
+        const cleanId = String(id).trim();
+        const key     = `${type}::${cleanId}`; // key global — NO incluye plataforma
+
         if (!metaMap.has(key)) {
-          metaMap.set(key, { id, type, count: 0, size: 6 });
+          metaMap.set(key, {
+            id:    cleanId,   // id sin prefijo — mismo nodo para todos los writeups
+            type,
+            count: 0,
+            size:  6,
+          });
         }
-        const node = metaMap.get(key);
+        const node  = metaMap.get(key);
         node.count++;
-        node.size = Math.min(6 + node.count * 2, 18);
-        metaLinks.push({ source: writeupSlug, target: id, type });
+        node.size   = Math.min(6 + node.count * 2, 20);
+
+        // El link va desde el writeup al nodo global
+        metaLinks.push({ source: writeupSlug, target: cleanId, type });
       };
 
       for (const w of writeupNodes) {
