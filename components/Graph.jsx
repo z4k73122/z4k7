@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 // ─── Colores por tipo ─────────────────────────────────────────────────────────
 const TYPE_COLOR = {
@@ -56,6 +57,7 @@ const PLATFORM_X = {};
 const ANIM_ORDER = ["platform", "category", "writeup", "os", "difficulty", "technique", "tool", "tag"];
 
 export default function Graph() {
+  const router    = useRouter();
   const svgRef    = useRef(null);
   const nodeRef   = useRef(null);
   const linkRef   = useRef(null);
@@ -72,7 +74,7 @@ export default function Graph() {
   const [animating,    setAnimating]    = useState(false);
   const [animStep,     setAnimStep]     = useState(null);
   const [showLinks,    setShowLinks]    = useState(true);
-  const [showLabels,   setShowLabels]   = useState(true);
+  const [showLabels,   setShowLabels]   = useState(false); // inician ocultos
   const [openSection,  setOpenSection]  = useState(null);
   const [isMobile,     setIsMobile]     = useState(false);
   const [showPanel,    setShowPanel]    = useState(false);
@@ -320,15 +322,26 @@ export default function Graph() {
         })
         .on("dblclick", (e, d) => {
           e.stopPropagation();
+          // Writeup → navegar al write-up
+          if (d.type === "writeup" && d.id) {
+            router.push(`/writeups/${d.id}`);
+            return;
+          }
+          // Otros nodos → fijar/desfijar posición
           d.pinned = !d.pinned;
           d.fx = d.pinned ? d.x : null;
           d.fy = d.pinned ? d.y : null;
         });
 
-      // Label
+      // Label — inician OCULTOS (opacity 0)
       node.append("text")
         .text((d) => {
           if (d.type === "category") return d.id.split("/").pop();
+          // writeup — usar title si existe, truncado a 15 chars
+          if (d.type === "writeup") {
+            const label = d.title || d.id;
+            return label.length > 15 ? label.slice(0, 15) + "…" : label;
+          }
           return d.id;
         })
         .attr("dy", (d) => d.size + 11)
@@ -338,7 +351,7 @@ export default function Graph() {
         .attr("font-size", (d) => d.type === "platform" ? "9px" : "7.5px")
         .attr("letter-spacing", "0.5px")
         .attr("pointer-events", "none")
-        .attr("opacity", 0.9);
+        .attr("opacity", 0); // ← inician ocultos, se activan con botón "labels"
 
       // Click en fondo — resetear
       svg.on("click", () => {
@@ -754,7 +767,7 @@ export default function Graph() {
             <div style={{ fontFamily: "monospace", fontSize: "0.6rem", color: "#2a4a5a", textAlign: "center", padding: "0.4rem", borderTop: "1px solid #1a3a4a" }}>
               {isMobile
                 ? "pinch → zoom · drag → mover · tap → conexiones"
-                : "scroll → zoom · drag → mover · click → resaltar · doble click → fijar"}
+                : "scroll → zoom · drag → mover · click → resaltar · doble click writeup → abrir · doble click nodo → fijar"}
             </div>
           </div>
         </>
@@ -787,10 +800,13 @@ export default function Graph() {
                 </div>
               )}
               {(tooltip.node.difficulty || tooltip.node.os) && (
-                <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
+                <div style={{ fontSize: "0.62rem", color: "#4a6a7a", marginBottom: "4px" }}>
                   {[tooltip.node.difficulty, tooltip.node.os].filter(Boolean).join(" · ")}
                 </div>
               )}
+              <div style={{ fontSize: "0.6rem", color: "#00ff88", marginTop: "4px", borderTop: "1px solid #1a3a4a", paddingTop: "4px" }}>
+                doble click → ver write-up ↗
+              </div>
             </>
           )}
           {["os","difficulty","technique","tool","tag"].includes(tooltip.node.type) && (
