@@ -226,21 +226,22 @@ export default function Graph() {
             .forceLink(links)
             .id((d) => d.id)
             .distance((l) => {
-              const s = typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source);
-              const t = typeof l.target === "object" ? l.target : nodes.find((n) => n.id === l.target);
-              return (s?.size || 12) + (t?.size || 12) + 55;
-            })
-            .strength(0.4),
+              const t = typeof l.target === "object" ? l.target.type : "";
+              if (t === "platform" || t === "os") return 140;
+              if (t === "difficulty") return 110;
+              if (t === "technique" || t === "tool") return 85;
+              if (l.rel === "related") return 55;
+              return 70;
+            }),
         )
         .force(
           "charge",
-          d3.forceManyBody().strength((d) => -(d.size || 12) * (d.size || 12) * 8).theta(0.9),
+          d3.forceManyBody().strength((d) => -(d.size || 12) * 12),
         )
-        .force("x", d3.forceX(W / 2).strength(0.02))
-        .force("y", d3.forceY(H / 2).strength(0.02))
+        .force("center", d3.forceCenter(W / 2, H / 2))
         .force(
           "collision",
-          d3.forceCollide().radius((d) => (d.size || 12) + 14).iterations(3),
+          d3.forceCollide().radius((d) => (d.size || 12) + 8),
         );
       simRef.current = sim;
 
@@ -335,7 +336,7 @@ export default function Graph() {
 
       node
         .append("text")
-        .text((d) => d.label?.length > 15 ? d.label.slice(0, 15): d.label)
+        .text((d) => d.label)
         .attr("dy", (d) => d.size + 12)
         .attr("text-anchor", "middle")
         .attr("fill", (d) => nodeColor(d))
