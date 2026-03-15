@@ -204,6 +204,29 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
+      // ── Tamaño dinámico según conexiones reales en el grafo ──────────────
+      const connCount = new Map();
+      links.forEach((l) => {
+        const s = typeof l.source === "object" ? l.source.id : l.source;
+        const t = typeof l.target === "object" ? l.target.id : l.target;
+        connCount.set(s, (connCount.get(s) || 0) + 1);
+        connCount.set(t, (connCount.get(t) || 0) + 1);
+      });
+
+      nodes.forEach((n) => {
+        const conn = connCount.get(n.id) || 0;
+        const base = TYPE_SIZE[n.type] || 5;
+        const maxSize = {
+          platform: 22, category: 16, writeup: 14,
+          os: 14, difficulty: 13, technique: 16, tool: 14, tag: 14,
+        }[n.type] || 14;
+        // Usar el size del servidor si existe, sino calcular desde base+conn
+        // El size del servidor ya tiene el conteo de tags/técnicas
+        // Aquí solo crecemos si las conexiones reales superan lo calculado
+        const serverSize = n.size || base;
+        n.size = Math.min(Math.max(serverSize, base + conn * 0.6), maxSize);
+      });
+
       // ── Simulación disjoint — separada como Obsidian ────────────────────
       const sim = d3.forceSimulation(nodes)
         .force("link",
@@ -275,9 +298,14 @@ export default function Graph() {
         })
         .attr("stroke-width", (d) => {
           const tt = typeof d.target === "object" ? d.target.type : "";
-          return tt === "category" ? 1 : 0.8;
+          if (tt === "category" || tt === "platform") return 1;
+          return 0.5;
         })
-        .attr("stroke-opacity", 0.4);
+        .attr("stroke-opacity", (d) => {
+          const tt = typeof d.target === "object" ? d.target.type : "";
+          if (tt === "category" || tt === "writeup") return 0.5;
+          return 0.3;
+        });
 
       linkRef.current = link;
 
@@ -443,7 +471,11 @@ export default function Graph() {
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
-    link.attr("stroke-opacity", showLinks ? 0.5 : 0);
+    link.attr("stroke-opacity", (d) => {
+      if (!showLinks) return 0;
+      const tt = typeof d.target === "object" ? d.target.type : "";
+      return (tt === "category" || tt === "writeup") ? 0.5 : 0.3;
+    });
   }, [showLinks]);
 
   // ─── Animación por grupos ─────────────────────────────────────────────────
