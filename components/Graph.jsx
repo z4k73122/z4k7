@@ -14,14 +14,14 @@ const TYPE_COLOR = {
 };
 
 const TYPE_SIZE = {
-  platform:  5,
-  category:  5,
-  writeup:   5,
-  os:        5,
-  difficulty:5,
-  technique: 5,
-  tool:      5,
-  tag:       5,
+  platform:  18,
+  category:  12,
+  writeup:   9,
+  os:        13,
+  difficulty:11,
+  technique: 10,
+  tool:      9,
+  tag:       8,
 };
 
 const TYPE_LABEL = {
@@ -90,7 +90,16 @@ export default function Graph() {
         {
           id: "category",
           label: "Carpeta",
-          values: [...new Set(graphData.nodes.filter((n) => n.type === "category").map((n) => n.id))],
+          // Mostrar sin el prefijo de plataforma: "portswigger/sql/blind" → "sql/blind"
+          values: [...new Set(
+            graphData.nodes
+              .filter((n) => n.type === "category")
+              .map((n) => ({ full: n.id, display: n.id.split("/").slice(1).join("/") }))
+              .filter((n) => n.display) // excluir los que son solo plataforma
+          )].reduce((acc, n) => {
+            if (!acc.find((a) => a.display === n.display)) acc.push(n);
+            return acc;
+          }, []),
         },
         {
           id: "os",
@@ -463,16 +472,33 @@ export default function Graph() {
             <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
           </button>
 
+      {filterGroups.map((group) => (
+        <div key={group.id} style={{ marginBottom: "0.2rem" }}>
+          <button
+            onClick={() => setOpenSection(openSection === group.id ? null : group.id)}
+            style={{
+              width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
+              padding: "4px 10px", cursor: "pointer", background: "transparent",
+              border: "1px solid #1a3a4a", color: TYPE_COLOR[group.id] || "#4a6a7a",
+              textAlign: "left", display: "flex", justifyContent: "space-between",
+              alignItems: "center", letterSpacing: "1px",
+            }}
+          >
+            <span>{group.label}</span>
+            <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
+          </button>
+
           {openSection === group.id && (
             <div style={{ background: "#030810", border: "1px solid #1a3a4a", borderTop: "none", maxHeight: "160px", overflowY: "auto" }}>
-              {group.values.map((val) => {
-                const isActive = activeFilter.type === group.id && activeFilter.value === val;
-                const c = TYPE_COLOR[group.id] || "#4a6a7a";
-                const displayVal = group.id === "category" ? val.split("/").join(" / ") : val;
+              {(group.id === "category" ? group.values : group.values.map((v) => ({ full: v, display: v }))).map((item) => {
+                const fullVal    = item.full    || item;
+                const displayVal = item.display || item;
+                const isActive   = activeFilter.type === group.id && activeFilter.value === fullVal;
+                const c          = TYPE_COLOR[group.id] || "#4a6a7a";
                 return (
                   <button
-                    key={val}
-                    onClick={() => setFilter(group.id, val)}
+                    key={fullVal}
+                    onClick={() => setFilter(group.id, fullVal)}
                     style={{
                       width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
                       padding: "3px 12px", cursor: "pointer",
