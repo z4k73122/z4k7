@@ -49,36 +49,30 @@ function StepHeader({ num, title, done, active }) {
 }
 
 export default function GraphConfigPage() {
-  const [token,      setToken]      = useState("");
-  const [tokenOk,    setTokenOk]    = useState(false);
-  const [tokenError, setTokenError] = useState("");
-  const [validating, setValidating] = useState(false);
+  const [token,       setToken]      = useState("");
+  const [tokenOk,     setTokenOk]    = useState(false);
+  const [tokenError,  setTokenError] = useState("");
+  const [validating,  setValidating] = useState(false);
+  const [colors,      setColors]     = useState(DEFAULT_COLORS);
+  const [subColors,   setSubColors]  = useState({});
+  const [expanded,    setExpanded]   = useState({});
+  const [preview,     setPreview]    = useState(null);
+  const [graphJson,   setGraphJson]  = useState(null);
+  const [loading,     setLoading]    = useState(false);
+  const [copied,      setCopied]     = useState(false);
+  const [saved,       setSaved]      = useState(false);
+  const [saveError,   setSaveError]  = useState("");
+  const [step,        setStep]       = useState(1);
+  const [openSection, setOpenSection]= useState(null);
 
-  const [colors,    setColors]    = useState(DEFAULT_COLORS);
-  const [subColors, setSubColors] = useState({});
-  const [expanded,  setExpanded]  = useState({});
-  const [preview,   setPreview]   = useState(null);
-  const [graphJson, setGraphJson] = useState(null);
-  const [loading,   setLoading]   = useState(false);
-  const [copied,    setCopied]    = useState(false);
-  const [saved,     setSaved]     = useState(false);
-  const [saveError, setSaveError] = useState("");
-  const [step,      setStep]      = useState(1);
-  const [openSection, setOpenSection] = useState(null);
-
-  // ── Validar token ────────────────────────────────────────────────────────
+  // ── Validar token ─────────────────────────────────────────
   const handleValidateToken = async () => {
     setValidating(true);
     setTokenError("");
     try {
       const res = await fetch(
         `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/vnd.github+json",
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" } }
       );
       if (res.ok) {
         setTokenOk(true);
@@ -93,15 +87,14 @@ export default function GraphConfigPage() {
     }
   };
 
-  // ── Helpers ──────────────────────────────────────────────────────────────
+  // ── Helpers ───────────────────────────────────────────────
   const getNodesByType  = (type) => preview?.nodes?.filter((n) => n.type === type) || [];
   const countByType     = (type) => getNodesByType(type).length;
+  const toggleExpand    = (type) => setExpanded((p) => ({ ...p, [type]: !p[type] }));
+  const setSubColor     = (id, color) => setSubColors((p) => ({ ...p, [id]: color }));
+  const resetSubColor   = (id) => setSubColors((p) => { const n = { ...p }; delete n[id]; return n; });
 
-  const toggleExpand  = (type) => setExpanded((p) => ({ ...p, [type]: !p[type] }));
-  const setSubColor   = (id, color) => setSubColors((p) => ({ ...p, [id]: color }));
-  const resetSubColor = (id) => setSubColors((p) => { const n = { ...p }; delete n[id]; return n; });
-
-  // ── Scan ─────────────────────────────────────────────────────────────────
+  // ── Scan ──────────────────────────────────────────────────
   const handleScan = async () => {
     setLoading(true);
     setGraphJson(null);
@@ -120,11 +113,10 @@ export default function GraphConfigPage() {
     }
   };
 
-  // ── Generate + Save ───────────────────────────────────────────────────────
+  // ── Generate + Save ───────────────────────────────────────
   const handleGenerate = async () => {
     if (!preview) return;
     setSaveError("");
-
     const enrichedNodes = preview.nodes.map((n) => {
       const sub = subColors[n.id];
       if (sub) return { ...n, color: sub };
@@ -134,11 +126,9 @@ export default function GraphConfigPage() {
       }
       return n;
     });
-
     const body = { ...preview, nodes: enrichedNodes, colors, subColors };
     setGraphJson(JSON.stringify(body, null, 2));
     setStep(3);
-
     try {
       const res = await fetch("/api/graph", {
         method: "POST",
@@ -157,7 +147,7 @@ export default function GraphConfigPage() {
     }
   };
 
-  // ── Reset ─────────────────────────────────────────────────────────────────
+  // ── Reset ─────────────────────────────────────────────────
   const handleReset = async () => {
     setStep(1);
     setPreview(null);
@@ -175,7 +165,7 @@ export default function GraphConfigPage() {
     }).catch(() => {});
   };
 
-  // ── Copy ──────────────────────────────────────────────────────────────────
+  // ── Copy ──────────────────────────────────────────────────
   const handleCopy = () => {
     if (!graphJson) return;
     navigator.clipboard.writeText(graphJson).then(() => {
@@ -184,9 +174,9 @@ export default function GraphConfigPage() {
     });
   };
 
-  // ════════════════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════
   // PANTALLA TOKEN
-  // ════════════════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════
   if (!tokenOk) {
     return (
       <div className="graph-token-screen">
@@ -230,14 +220,14 @@ export default function GraphConfigPage() {
     );
   }
 
-  // ════════════════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════
   // PANEL PRINCIPAL
-  // ════════════════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════
   return (
     <div className="graph-page">
       <div className="graph-grid-bg" />
 
-      {/* ── Topbar ── */}
+      {/* Topbar */}
       <div className="graph-topbar">
         <div className="graph-topbar-left">
           <span style={{ color: "#4a6a7a" }}>z4k7-tools</span>
@@ -250,9 +240,9 @@ export default function GraphConfigPage() {
           {[["01","ESCANEAR"],["02","COLOREAR"],["03","JSON"]].map(([n, label], i) => (
             <span
               key={n}
-              className={`graph-topbar-step ${step > i + 1 ? "done" : step === i + 1 ? "active" : "idle"}`}
+              className={`graph-topbar-step ${step > i+1 ? "done" : step === i+1 ? "active" : "idle"}`}
             >
-              {n} · {label} {step > i + 1 ? "✓" : ""}
+              {n} · {label} {step > i+1 ? "✓" : ""}
             </span>
           ))}
         </div>
@@ -268,7 +258,7 @@ export default function GraphConfigPage() {
 
       <div className="graph-inner">
 
-        {/* ════ PASO 1 ════ */}
+        {/* ══ PASO 1 ══ */}
         <div className="graph-section">
           <StepHeader num="01" title="Escanear Write-ups" done={step > 1} active={step === 1} />
           {step === 1 && (
@@ -282,7 +272,6 @@ export default function GraphConfigPage() {
               </button>
             </div>
           )}
-
           {step > 1 && preview && (
             <div className="graph-section-body">
               <div className="graph-stats-grid">
@@ -303,18 +292,13 @@ export default function GraphConfigPage() {
                   <div className="graph-stat-sub">links</div>
                 </div>
               </div>
-
-              {/* Writeups detectados */}
               {getNodesByType("writeup").length > 0 && (
                 <div className="graph-machines-card">
                   <div className="graph-machines-label">// WRITEUPS DETECTADOS</div>
                   <div className="graph-machines-list">
                     {getNodesByType("writeup").map((n) => (
                       <div key={n.id} className="graph-machine-chip">
-                        <div
-                          className="graph-machine-dot"
-                          style={{ background: DEFAULT_COLORS.writeup }}
-                        />
+                        <div className="graph-machine-dot" style={{ background: DEFAULT_COLORS.writeup }} />
                         <span className="graph-machine-name">{n.title || n.id}</span>
                         <span className="graph-machine-meta">
                           {[n.platform, n.difficulty, n.os].filter(Boolean).join(" · ")}
@@ -328,7 +312,7 @@ export default function GraphConfigPage() {
           )}
         </div>
 
-        {/* ════ PASO 2 ════ */}
+        {/* ══ PASO 2 ══ */}
         {step >= 2 && (
           <div className="graph-section">
             <StepHeader num="02" title="Asignar Colores" done={step > 2} active={step === 2} />
@@ -338,7 +322,6 @@ export default function GraphConfigPage() {
                   const isExpandable = EXPANDABLE.includes(type);
                   const isOpen       = expanded[type];
                   const subNodes     = getNodesByType(type);
-
                   return (
                     <div key={type}>
                       <div
@@ -372,7 +355,6 @@ export default function GraphConfigPage() {
                           )}
                         </div>
                       </div>
-
                       {isExpandable && isOpen && subNodes.length > 0 && (
                         <div className="graph-subcolor-panel">
                           <div className="graph-subcolor-label">// COLOR INDIVIDUAL</div>
@@ -387,7 +369,6 @@ export default function GraphConfigPage() {
                               const displayName = n.type === "category"
                                 ? n.id.split("/").pop()
                                 : n.id;
-
                               return (
                                 <div
                                   key={n.id}
@@ -431,7 +412,6 @@ export default function GraphConfigPage() {
                   );
                 })}
               </div>
-
               <div className="graph-color-actions">
                 <button
                   className="graph-reset-colors-btn"
@@ -447,7 +427,7 @@ export default function GraphConfigPage() {
           </div>
         )}
 
-        {/* ════ PASO 3 ════ */}
+        {/* ══ PASO 3 ══ */}
         {step >= 3 && graphJson && (
           <div className="graph-section">
             <StepHeader num="03" title="JSON Generado" done={false} active={true} />
