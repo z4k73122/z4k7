@@ -347,9 +347,8 @@ export default function Graph() {
           node.selectAll("text").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.02);
           link
             .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
-            .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2 : 0.3)
+            .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2.5 : 0.3)
             .attr("stroke", (l) => {
-              if (l.source.id === d.id || l.target.id === d.id) return "#00ff88";
               const target = typeof l.target === "object" ? l.target : null;
               return target ? resolveColor(target) : "#334455";
             });
