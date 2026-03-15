@@ -14,14 +14,14 @@ const TYPE_COLOR = {
 };
 
 const TYPE_SIZE = {
-  platform:  18,
-  category:  12,
-  writeup:   9,
-  os:        13,
-  difficulty:11,
-  technique: 10,
-  tool:      9,
-  tag:       8,
+  platform:  5,
+  category:  5,
+  writeup:   5,
+  os:        5,
+  difficulty:5,
+  technique: 5,
+  tool:      5,
+  tag:       5,
 };
 
 const TYPE_LABEL = {
