@@ -99,10 +99,9 @@ export async function GET(request, { params }) {
         id:       p,
         type:     "platform",
         platform: p,
-        size:     14,
+        size:     18,
       }));
 
-      // Categorías = todos los niveles EXCEPTO el nivel 0 (plataforma)
       const categoryNodes = [...categorySet]
         .filter((c) => c.split("/").length > 1 || !platformSet.has(c))
         .filter((c) => {
@@ -114,7 +113,7 @@ export async function GET(request, { params }) {
           type:     "category",
           platform: c.split("/")[0],
           depth:    c.split("/").length,
-          size:     Math.max(5, 10 - c.split("/").length * 2),
+          size:     Math.max(8, 14 - c.split("/").length * 2),
         }));
 
       // Construir links struct encadenando cada nivel
@@ -198,18 +197,9 @@ export async function GET(request, { params }) {
 
       const metaNodes = [...metaMap.values()];
 
-      // DEBUG — verificar que todos los metaLinks apuntan a slugs que existen
-      const writeupIds = new Set(finalWriteupNodes.map((w) => w.id));
-      const orphanLinks = metaLinks.filter((l) => !writeupIds.has(l.source));
-      if (orphanLinks.length > 0) {
-        console.warn("[--graph] Links huérfanos (source no existe como nodo):", 
-          [...new Set(orphanLinks.map((l) => l.source))].slice(0, 5)
-        );
-      }
-
       // Nodos finales de writeup
       const finalWriteupNodes = writeupNodes.map((w) => ({
-        id:         w.slug,          // mismo valor que se usó en registerMeta y structLinks
+        id:         w.slug,
         type:       "writeup",
         title:      w.title,
         platform:   w.platform,
@@ -218,6 +208,15 @@ export async function GET(request, { params }) {
         os:         w.os,
         size:       Math.min(8 + ((w.tags?.length || 0) + (w.techniques?.length || 0)) * 0.4, 14),
       }));
+
+      // DEBUG — verificar links huérfanos
+      const writeupIds = new Set(finalWriteupNodes.map((w) => w.id));
+      const orphanLinks = metaLinks.filter((l) => !writeupIds.has(l.source));
+      if (orphanLinks.length > 0) {
+        console.warn("[--graph] Links huérfanos:",
+          [...new Set(orphanLinks.map((l) => l.source))].slice(0, 5)
+        );
+      }
 
       // Deduplicar y filtrar links huérfanos
       const allNodeIds = new Set([
