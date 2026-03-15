@@ -86,15 +86,33 @@ export default function Graph() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // ─── Fetch /api/writeups/--graph ─────────────────────────────────────────
+  // ─── Fetch /api/writeups/--graph + colores de /api/graph ────────────────
   useEffect(() => {
-    fetch("/api/writeups/--graph")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.nodes?.length) setGraphData(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    Promise.all([
+      fetch("/api/writeups/--graph").then((r) => r.json()),
+      fetch("/api/graph").then((r) => r.json()).catch(() => ({})),
+    ]).then(([graphData, colorData]) => {
+      if (!graphData?.nodes?.length) { setLoading(false); return; }
+
+      // Aplicar colores guardados si existen
+      if (colorData?.colors && Object.keys(colorData.colors).length > 0) {
+        Object.assign(TYPE_COLOR, colorData.colors);
+      }
+
+      // Aplicar subColors (colores por nodo individual)
+      if (colorData?.subColors && Object.keys(colorData.subColors).length > 0) {
+        const enriched = {
+          ...graphData,
+          nodes: graphData.nodes.map((n) =>
+            colorData.subColors[n.id] ? { ...n, color: colorData.subColors[n.id] } : n
+          ),
+        };
+        setGraphData(enriched);
+      } else {
+        setGraphData(graphData);
+      }
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
   // ─── Grupos de filtros dinámicos ─────────────────────────────────────────
