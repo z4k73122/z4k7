@@ -83,9 +83,9 @@ export async function GET(request, { params }) {
           parts,
           tags:       data.tags       || [],
           techniques: data.techniques || [],
+          tools:      data.tools      || [],
           difficulty: data.difficulty || "",
           os:         data.os         || "",
-          size:       (data.tags?.length || 0) + (data.techniques?.length || 0),
         });
       }
 
@@ -139,39 +139,57 @@ export async function GET(request, { params }) {
         });
       }
 
-      // Construir nodos de tags y técnicas + links tag
-      const tagMap = new Map();
-      const tagLinks = [];
+      // ── Construir nodos de metadata + links ──────────────────────────────
+      // os, difficulty, technique, tool, tag — cada uno como nodo separado
+      const metaMap  = new Map(); // id → nodo
+      const metaLinks = [];
+
+      const registerMeta = (id, type, writeupSlug) => {
+        if (!id || !id.trim()) return;
+        const key = `${type}::${id}`;
+        if (!metaMap.has(key)) {
+          metaMap.set(key, { id, type, count: 0, size: 6 });
+        }
+        const node = metaMap.get(key);
+        node.count++;
+        node.size = Math.min(6 + node.count * 2, 18);
+        metaLinks.push({ source: writeupSlug, target: id, type });
+      };
 
       for (const w of writeupNodes) {
-        const allTags = [...(w.tags || []), ...(w.techniques || [])];
-        for (const tag of allTags) {
-          if (!tagMap.has(tag)) {
-            tagMap.set(tag, { id: tag, type: "tag", count: 0, size: 6 });
-          }
-          tagMap.get(tag).count++;
-          tagMap.get(tag).size = 6 + tagMap.get(tag).count * 2;
-          tagLinks.push({ source: w.slug, target: tag, type: "tag" });
-        }
+        // os — nodo único por valor
+        if (w.os) registerMeta(w.os, "os", w.slug);
+
+        // difficulty — nodo único por valor
+        if (w.difficulty) registerMeta(w.difficulty, "difficulty", w.slug);
+
+        // techniques
+        for (const t of (w.techniques || [])) registerMeta(t, "technique", w.slug);
+
+        // tools
+        for (const t of (w.tools || [])) registerMeta(t, "tool", w.slug);
+
+        // tags
+        for (const t of (w.tags || [])) registerMeta(t, "tag", w.slug);
       }
 
-      const tagNodes = [...tagMap.values()];
+      const metaNodes = [...metaMap.values()];
 
-      // Nodos finales de writeup con size calculado
+      // Nodos finales de writeup
       const finalWriteupNodes = writeupNodes.map((w) => ({
         id:         w.slug,
         type:       "writeup",
         title:      w.title,
         platform:   w.platform,
-        folderPath: w.folderPath,  // "portswigger/sql/blind"
+        folderPath: w.folderPath,
         difficulty: w.difficulty,
         os:         w.os,
-        size:       Math.min(7 + w.size * 0.5, 14),
+        size:       Math.min(8 + ((w.tags?.length || 0) + (w.techniques?.length || 0)) * 0.4, 14),
       }));
 
-      // Deduplicar links struct
+      // Deduplicar todos los links
       const seenLinks = new Set();
-      const dedupedLinks = [...structLinks, ...tagLinks].filter((l) => {
+      const dedupedLinks = [...structLinks, ...metaLinks].filter((l) => {
         const key = `${l.source}→${l.target}`;
         if (seenLinks.has(key)) return false;
         seenLinks.add(key);
@@ -179,12 +197,12 @@ export async function GET(request, { params }) {
       });
 
       return Response.json({
-        nodes: [...platformNodes, ...categoryNodes, ...finalWriteupNodes, ...tagNodes],
+        nodes: [...platformNodes, ...categoryNodes, ...finalWriteupNodes, ...metaNodes],
         links: dedupedLinks,
         meta: {
           totalWriteups:  writeupNodes.length,
           totalPlatforms: platformNodes.length,
-          totalTags:      tagNodes.length,
+          totalMeta:      metaNodes.length,
         },
       });
     } catch (err) {
