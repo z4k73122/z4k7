@@ -15,14 +15,14 @@ const TYPE_COLOR = {
 };
 
 const TYPE_SIZE = {
-  platform:  18,
-  category:  12,
-  writeup:   9,
-  os:        13,
-  difficulty:11,
-  technique: 10,
-  tool:      9,
-  tag:       8,
+  platform:  14,
+  category:  9,
+  writeup:   6,
+  os:        8,
+  difficulty:7,
+  technique: 6,
+  tool:      6,
+  tag:       5,
 };
 
 const TYPE_LABEL = {
@@ -204,54 +204,55 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── Simulación disjoint — compacta por plataforma ────────────────────
+      // ── Simulación disjoint — separada como Obsidian ────────────────────
       const sim = d3.forceSimulation(nodes)
         .force("link",
           d3.forceLink(links).id((d) => d.id)
             .distance((l) => {
               const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "category")  return 60;
-              if (tt === "writeup")   return 45;
-              if (tt === "os")        return 50;
-              if (tt === "difficulty")return 50;
-              if (tt === "technique") return 40;
-              if (tt === "tool")      return 35;
-              if (tt === "tag")       return 40;
-              return 40;
+              if (tt === "category")  return 80;
+              if (tt === "writeup")   return 60;
+              if (tt === "os")        return 70;
+              if (tt === "difficulty")return 70;
+              if (tt === "technique") return 65;
+              if (tt === "tool")      return 60;
+              if (tt === "tag")       return 65;
+              return 60;
             })
             .strength((l) => {
               const tt = typeof l.target === "object" ? l.target.type : "";
               const metaTypes = ["tag","technique","tool","os","difficulty"];
-              return metaTypes.includes(tt) ? 0.2 : 0.8;
+              return metaTypes.includes(tt) ? 0.08 : 0.6;
             })
         )
         .force("charge",
           d3.forceManyBody()
             .strength((d) => {
-              if (d.type === "platform")  return -200;
-              if (d.type === "category")  return -100;
-              if (d.type === "os")        return -80;
-              if (d.type === "difficulty")return -70;
-              if (d.type === "technique") return -60;
-              if (d.type === "tool")      return -55;
-              if (d.type === "tag")       return -55;
-              return -45;
+              if (d.type === "platform")  return -800;
+              if (d.type === "category")  return -400;
+              if (d.type === "os")        return -300;
+              if (d.type === "difficulty")return -300;
+              if (d.type === "technique") return -250;
+              if (d.type === "tool")      return -250;
+              if (d.type === "tag")       return -250;
+              return -200;
             })
-            .distanceMax(200)
+            .distanceMax(500)
         )
         .force("x",
           d3.forceX((d) => {
             const plat = d.platform || d.id;
             return PLATFORM_X[plat] || W / 2;
           }).strength((d) => {
-            if (d.type === "platform") return 0.12;
-            if (["tag","technique","tool"].includes(d.type)) return 0.02;
-            return 0.08;
+            if (d.type === "platform") return 0.08;
+            if (["tag","technique","tool"].includes(d.type)) return 0.01;
+            return 0.05;
           })
         )
-        .force("y", d3.forceY(H / 2).strength(0.06))
-        .force("collision", d3.forceCollide().radius((d) => (d.size || 6) + 4).strength(0.8))
-        .alphaDecay(0.018);
+        .force("y", d3.forceY(H / 2).strength(0.03))
+        .force("collision", d3.forceCollide().radius((d) => (d.size || 6) + 10).strength(1))
+        .alphaDecay(0.01)
+        .velocityDecay(0.4);
 
       simRef.current = sim;
 
@@ -260,21 +261,23 @@ export default function Graph() {
         .selectAll("line").data(links).join("line")
         .attr("stroke", (d) => {
           const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-          if (tt === "tag")       return "#3a3020";
-          if (tt === "technique") return "#3a1020";
-          if (tt === "tool")      return "#0a3a3a";
-          if (tt === "os")        return "#3a3a10";
-          if (tt === "difficulty")return "#2a1a3a";
-          if (tt === "category")  return "#1a3a4a";
-          return "#1a2a3a";
+          if (tt === "technique") return TYPE_COLOR.technique;
+          if (tt === "tag")       return TYPE_COLOR.tag;
+          if (tt === "tool")      return TYPE_COLOR.tool;
+          if (tt === "os")        return TYPE_COLOR.os;
+          if (tt === "difficulty") {
+            const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
+            return DIFFICULTY_COLORS[did] || TYPE_COLOR.difficulty;
+          }
+          if (tt === "category")  return TYPE_COLOR.category;
+          if (tt === "writeup")   return TYPE_COLOR.writeup;
+          return "#2a3a4a";
         })
         .attr("stroke-width", (d) => {
-          const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-          if (tt === "category") return 1;
-          if (["tag","technique","tool","os","difficulty"].includes(tt)) return 0.5;
-          return 0.7;
+          const tt = typeof d.target === "object" ? d.target.type : "";
+          return tt === "category" ? 1 : 0.8;
         })
-        .attr("opacity", 0.7);
+        .attr("stroke-opacity", 0.4);
 
       linkRef.current = link;
 
@@ -317,13 +320,13 @@ export default function Graph() {
           node.selectAll("circle").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.05);
           node.selectAll("text").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.02);
           link
-            .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 1 : 0.02)
+            .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
             .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2 : 0.3)
-            .attr("stroke", (l) =>
-              l.source.id === d.id || l.target.id === d.id
-                ? "#00ff88"
-                : (typeof l.target === "object" && l.target.type === "tag" ? "#3a3020" : "#1a3a4a")
-            );
+            .attr("stroke", (l) => {
+              if (l.source.id === d.id || l.target.id === d.id) return "#00ff88";
+              const target = typeof l.target === "object" ? l.target : null;
+              return target ? resolveColor(target) : "#334455";
+            });
         })
         .on("dblclick", (e, d) => {
           e.stopPropagation();
@@ -361,17 +364,27 @@ export default function Graph() {
       // Click en fondo — resetear
       svg.on("click", () => {
         node.selectAll("circle").attr("opacity", 1);
-        node.selectAll("text").attr("opacity", 0.9);
+        node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
         link
-          .attr("stroke-opacity", 0.7)
+          .attr("stroke", (d) => {
+            const tt = typeof d.target === "object" ? d.target.type : d.type || "";
+            if (tt === "technique") return TYPE_COLOR.technique;
+            if (tt === "tag")       return TYPE_COLOR.tag;
+            if (tt === "tool")      return TYPE_COLOR.tool;
+            if (tt === "os")        return TYPE_COLOR.os;
+            if (tt === "difficulty") {
+              const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
+              return DIFFICULTY_COLORS[did] || TYPE_COLOR.difficulty;
+            }
+            if (tt === "category")  return TYPE_COLOR.category;
+            if (tt === "writeup")   return TYPE_COLOR.writeup;
+            return "#2a3a4a";
+          })
           .attr("stroke-width", (d) => {
             const tt = typeof d.target === "object" ? d.target.type : "";
-            return tt === "tag" ? 0.5 : tt === "category" ? 1 : 0.7;
+            return tt === "category" ? 1 : 0.6;
           })
-          .attr("stroke", (d) => {
-            const tt = typeof d.target === "object" ? d.target.type : "";
-            return tt === "tag" ? "#3a3020" : tt === "category" ? "#1a3a4a" : "#1a2a3a";
-          });
+          .attr("stroke-opacity", 0.35);
       });
 
       sim.on("tick", () => {
@@ -383,7 +396,7 @@ export default function Graph() {
 
       // Auto-fit: cuando la sim converge, encuadra todos los nodos
       sim.on("end", () => {
-        const padding = 40;
+        const padding = 60;
         const xs = nodes.map((d) => d.x).filter(Boolean);
         const ys = nodes.map((d) => d.y).filter(Boolean);
         if (!xs.length) return;
@@ -393,14 +406,11 @@ export default function Graph() {
         const y1 = Math.max(...ys) + padding;
         const scaleX = W / (x1 - x0);
         const scaleY = H / (y1 - y0);
-        const scale  = Math.min(scaleX, scaleY, 1.2); // máximo 1.2x
+        const scale  = Math.min(scaleX, scaleY, 0.9);
         const tx = W / 2 - scale * (x0 + x1) / 2;
         const ty = H / 2 - scale * (y0 + y1) / 2;
-        svg.transition().duration(600)
-          .call(
-            d3.zoom().transform,
-            d3.zoomIdentity.translate(tx, ty).scale(scale)
-          );
+        svg.transition().duration(800)
+          .call(d3.zoom().transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
       });
 
       nodeRef.current = node;
@@ -425,7 +435,7 @@ export default function Graph() {
     node.selectAll("circle").attr("opacity", (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.04);
     node.selectAll("text").attr("opacity",   (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.02);
     link.attr("stroke-opacity", (l) =>
-      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter) ? 0.8 : 0.02
+      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter) ? 0.6 : 0.02
     );
   }, [activeFilter]);
 
@@ -433,7 +443,7 @@ export default function Graph() {
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
-    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
+    link.attr("stroke-opacity", showLinks ? 0.5 : 0);
   }, [showLinks]);
 
   // ─── Animación por grupos ─────────────────────────────────────────────────
