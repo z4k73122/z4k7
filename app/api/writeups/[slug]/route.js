@@ -38,6 +38,7 @@ function buildTree(dir) {
 export async function GET(request, { params }) {
   const { slug } = await params;
 
+  // ── --tree ────────────────────────────────────────────────
   if (slug === "--tree") {
     try {
       if (!fs.existsSync(CONTENT_DIR))
@@ -49,6 +50,149 @@ export async function GET(request, { params }) {
     }
   }
 
+  // ── --graph — NUEVO ───────────────────────────────────────
+  // Devuelve todos los writeups como nodos para el grafo D3
+  if (slug === "--graph") {
+    try {
+      const allFiles = getAllMdFiles(CONTENT_DIR);
+      const writeupNodes = [];
+      const categorySet = new Set(); // todos los niveles de carpeta
+
+      for (const filePath of allFiles) {
+        const file = fs.readFileSync(filePath, "utf8");
+        const { data } = matter(file);
+
+        const relative = path.relative(CONTENT_DIR, filePath);
+        const segments = relative.split(path.sep);
+        const folderPath = segments.slice(0, -1).join("/");
+        const parts = folderPath.split("/").filter(Boolean);
+
+        const platform = parts[0] || "other";
+
+        // Registrar cada nivel de carpeta como nodo
+        // ej: portswigger/sql/blind → genera "portswigger", "portswigger/sql", "portswigger/sql/blind"
+        for (let i = 1; i <= parts.length; i++) {
+          categorySet.add(parts.slice(0, i).join("/"));
+        }
+
+        writeupNodes.push({
+          slug:       data.slug || path.basename(filePath, ".md"),
+          title:      data.title || "",
+          platform,
+          folderPath,
+          parts,
+          tags:       data.tags       || [],
+          techniques: data.techniques || [],
+          difficulty: data.difficulty || "",
+          os:         data.os         || "",
+          size:       (data.tags?.length || 0) + (data.techniques?.length || 0),
+        });
+      }
+
+      // Separar plataformas (nivel 0) de subcarpetas (nivel 1+)
+      const platformSet = new Set(writeupNodes.map((w) => w.platform));
+
+      const platformNodes = [...platformSet].map((p) => ({
+        id:       p,
+        type:     "platform",
+        platform: p,
+        size:     18,
+      }));
+
+      // Categorías = todos los niveles EXCEPTO el nivel 0 (plataforma)
+      const categoryNodes = [...categorySet]
+        .filter((c) => c.split("/").length > 1 || !platformSet.has(c))
+        .filter((c) => {
+          // excluir los que son solo plataforma (ya están en platformNodes)
+          const parts = c.split("/");
+          return parts.length > 1;
+        })
+        .map((c) => ({
+          id:       c,
+          type:     "category",
+          platform: c.split("/")[0],
+          depth:    c.split("/").length, // profundidad del nodo
+          size:     Math.max(8, 14 - c.split("/").length * 2),
+        }));
+
+      // Construir links struct encadenando cada nivel
+      const structLinks = [];
+      for (const w of writeupNodes) {
+        const parts = w.parts;
+
+        if (parts.length === 0) continue;
+
+        // encadenar niveles: plataforma → sub1 → sub2 → ... → writeup
+        for (let i = 0; i < parts.length; i++) {
+          const parent = i === 0 ? parts[0] : parts.slice(0, i).join("/");
+          const child  = parts.slice(0, i + 1).join("/");
+          if (parent !== child) {
+            structLinks.push({ source: parent, target: child, type: "struct" });
+          }
+        }
+
+        // último nivel de carpeta → writeup
+        structLinks.push({
+          source: parts.join("/"),
+          target: w.slug,
+          type:   "struct",
+        });
+      }
+
+      // Construir nodos de tags y técnicas + links tag
+      const tagMap = new Map();
+      const tagLinks = [];
+
+      for (const w of writeupNodes) {
+        const allTags = [...(w.tags || []), ...(w.techniques || [])];
+        for (const tag of allTags) {
+          if (!tagMap.has(tag)) {
+            tagMap.set(tag, { id: tag, type: "tag", count: 0, size: 6 });
+          }
+          tagMap.get(tag).count++;
+          tagMap.get(tag).size = 6 + tagMap.get(tag).count * 2;
+          tagLinks.push({ source: w.slug, target: tag, type: "tag" });
+        }
+      }
+
+      const tagNodes = [...tagMap.values()];
+
+      // Nodos finales de writeup con size calculado
+      const finalWriteupNodes = writeupNodes.map((w) => ({
+        id:         w.slug,
+        type:       "writeup",
+        title:      w.title,
+        platform:   w.platform,
+        folderPath: w.folderPath,  // "portswigger/sql/blind"
+        difficulty: w.difficulty,
+        os:         w.os,
+        size:       Math.min(7 + w.size * 0.5, 14),
+      }));
+
+      // Deduplicar links struct
+      const seenLinks = new Set();
+      const dedupedLinks = [...structLinks, ...tagLinks].filter((l) => {
+        const key = `${l.source}→${l.target}`;
+        if (seenLinks.has(key)) return false;
+        seenLinks.add(key);
+        return true;
+      });
+
+      return Response.json({
+        nodes: [...platformNodes, ...categoryNodes, ...finalWriteupNodes, ...tagNodes],
+        links: dedupedLinks,
+        meta: {
+          totalWriteups:  writeupNodes.length,
+          totalPlatforms: platformNodes.length,
+          totalTags:      tagNodes.length,
+        },
+      });
+    } catch (err) {
+      return Response.json({ error: err.message }, { status: 500 });
+    }
+  }
+
+  // ── GET por folder (check existencia) ────────────────────
   const { searchParams } = new URL(request.url);
   const folder = searchParams.get("folder");
 
@@ -56,11 +200,7 @@ export async function GET(request, { params }) {
     const segments = folder
       .split("/")
       .map((s) =>
-        s
-          .trim()
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9\-_]/g, ""),
+        s.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-_]/g, ""),
       )
       .filter(Boolean);
     const safeSlug = slug.replace(/[^a-z0-9\-]/g, "").toLowerCase();
@@ -73,7 +213,7 @@ export async function GET(request, { params }) {
     return Response.json({ error: "not found" }, { status: 404 });
   }
 
-  // Búsqueda recursiva por slug
+  // ── GET por slug — búsqueda recursiva ────────────────────
   const allFiles = getAllMdFiles(CONTENT_DIR);
   const match = allFiles.find((f) => {
     const { data } = matter(fs.readFileSync(f, "utf8"));
@@ -81,9 +221,16 @@ export async function GET(request, { params }) {
   });
 
   if (!match) return Response.json({ error: "not found" }, { status: 404 });
+
   const file = fs.readFileSync(match, "utf8");
   const { data: frontmatter } = matter(file);
-  return Response.json({ frontmatter });
+
+  // ── CAMBIO 1: agregar folderPath al response ──────────────
+  const relative = path.relative(CONTENT_DIR, match);
+  const segments = relative.split(path.sep);
+  const folderPath = segments.slice(0, -1).join("/");
+
+  return Response.json({ frontmatter, folderPath });
 }
 
 // ── POST — guarda .md via GitHub API ─────────────────────────
@@ -95,10 +242,7 @@ export async function POST(request, { params }) {
     if (!content)
       return Response.json({ error: "Falta el contenido" }, { status: 400 });
     if (!token)
-      return Response.json(
-        { error: "Falta el token de GitHub" },
-        { status: 400 },
-      );
+      return Response.json({ error: "Falta el token de GitHub" }, { status: 400 });
 
     const safeSlug = slug.replace(/[^a-z0-9\-]/g, "").toLowerCase();
     if (!safeSlug)
@@ -108,11 +252,7 @@ export async function POST(request, { params }) {
     const segments = rawFolder
       .split("/")
       .map((s) =>
-        s
-          .trim()
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9\-_]/g, ""),
+        s.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-_]/g, ""),
       )
       .filter(Boolean);
     if (!segments.length)
