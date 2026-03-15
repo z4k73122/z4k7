@@ -1,153 +1,70 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 
-const GITHUB_USER = "z4k73122";
-const GITHUB_REPO = "z4k7";
+const GITHUB_USER  = "z4k73122";
+const GITHUB_REPO  = "z4k7";
 const GITHUB_BRANCH = "main";
+const JSON_PATH    = path.join(process.cwd(), "data", "graph-colors.json");
+const API_URL      = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/data/graph-colors.json`;
 
-const TYPE_SIZE = {
-  machine: 19,
-  platform: 20,
-  os: 16,
-  difficulty: 13,
-  technique: 15,
-  tool: 13,
-  tag: 11,
-};
-
-const getAllMdFiles = (dirPath) => {
-  if (!fs.existsSync(dirPath)) return [];
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-  return entries.flatMap((entry) => {
-    const fullPath = path.join(dirPath, entry.name);
-    if (entry.isDirectory()) return getAllMdFiles(fullPath);
-    if (entry.name.endsWith(".md")) return [fullPath];
-    return [];
-  });
-};
-
+// ─── GET — devuelve nodos del nuevo endpoint + colores guardados ──────────────
 export async function GET() {
-  const jsonPath = path.join(process.cwd(), "data", "graph.json");
-  if (fs.existsSync(jsonPath)) {
-    const raw = fs.readFileSync(jsonPath, "utf8");
-    const data = JSON.parse(raw);
-    return Response.json(data);
+  try {
+    // 1. Leer estructura desde /api/writeups/--graph (interno)
+    const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const graphRes = await fetch(`${base}/api/writeups/--graph`);
+    const graphData = await graphRes.json();
+
+    if (!graphData?.nodes?.length) {
+      return Response.json({ nodes: [], links: [], colors: {}, subColors: {} });
+    }
+
+    // 2. Leer colores guardados (si existen)
+    let savedColors = {};
+    let savedSubColors = {};
+    if (fs.existsSync(JSON_PATH)) {
+      try {
+        const raw = fs.readFileSync(JSON_PATH, "utf8");
+        const parsed = JSON.parse(raw);
+        savedColors    = parsed.colors    || {};
+        savedSubColors = parsed.subColors || {};
+      } catch {}
+    }
+
+    // 3. Aplicar subColors a los nodos que tengan color custom
+    const enrichedNodes = graphData.nodes.map((n) => {
+      const custom = savedSubColors[n.id];
+      return custom ? { ...n, color: custom } : n;
+    });
+
+    return Response.json({
+      nodes:     enrichedNodes,
+      links:     graphData.links,
+      colors:    savedColors,
+      subColors: savedSubColors,
+      meta:      graphData.meta,
+    });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
   }
-
-  const dir = path.join(process.cwd(), "content");
-  const files = getAllMdFiles(dir);
-  if (!files.length) return Response.json({ nodes: [], links: [] });
-
-  const nodes = [],
-    links = [];
-  const nodeSet = new Set(),
-    linkSet = new Set();
-  const sharedMap = {};
-
-  const addNode = (id, label, type, extra = {}) => {
-    if (!nodeSet.has(id)) {
-      nodeSet.add(id);
-      nodes.push({ id, label, type, size: TYPE_SIZE[type] || 12, ...extra });
-    }
-  };
-  const addLink = (source, target, rel) => {
-    if (source === target) return;
-    const key = `${source}→${target}`;
-    if (!linkSet.has(key)) {
-      linkSet.add(key);
-      links.push({ source, target, rel });
-    }
-  };
-
-  for (const file of files) {
-    const raw = fs.readFileSync(file, "utf8");
-    const { data } = matter(raw);
-    const slug = data.slug || path.basename(file, ".md");
-    const title = data.title || slug;
-
-    addNode(slug, title, "machine", {
-      platform: data.platform || "?",
-      os: data.os || "?",
-      difficulty: data.difficulty || "?",
-      status: data.status || "unknown",
-      desc: data.summary ? data.summary.slice(0, 80) + "..." : "",
-      slug,
-    });
-
-    if (data.platform) {
-      const pid = `plat_${data.platform}`;
-      addNode(pid, data.platform, "platform");
-      addLink(pid, slug, "platform");
-    }
-    if (data.os) {
-      const oid = `os_${data.os}`;
-      addNode(oid, data.os, "os");
-      addLink(oid, slug, "os");
-    }
-    if (data.difficulty) {
-      const did = `diff_${data.difficulty}`;
-      addNode(did, data.difficulty, "difficulty");
-      addLink(did, slug, "difficulty");
-    }
-
-    (data.techniques || []).forEach((t) => {
-      if (!t || t === "Completar manualmente") return;
-      const tid = `tech_${t.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "_")}`;
-      addNode(tid, t, "technique");
-      addLink(slug, tid, "technique");
-      if (!sharedMap[tid]) sharedMap[tid] = [];
-      sharedMap[tid].push(slug);
-    });
-    (data.tools || []).forEach((tool) => {
-      if (!tool) return;
-      const tid = `tool_${tool.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "_")}`;
-      addNode(tid, tool, "tool");
-      addLink(slug, tid, "tool");
-      if (!sharedMap[tid]) sharedMap[tid] = [];
-      sharedMap[tid].push(slug);
-    });
-    (data.tags || []).forEach((tag) => {
-      if (!tag) return;
-      const tagid = `tag_${tag.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "_")}`;
-      addNode(tagid, tag, "tag");
-      addLink(slug, tagid, "tag");
-      if (!sharedMap[tagid]) sharedMap[tagid] = [];
-      sharedMap[tagid].push(slug);
-    });
-  }
-
-  Object.entries(sharedMap).forEach(([, slugs]) => {
-    const unique = [...new Set(slugs)];
-    if (unique.length < 2) return;
-    for (let i = 0; i < unique.length; i++)
-      for (let j = i + 1; j < unique.length; j++)
-        addLink(unique[i], unique[j], "related");
-  });
-
-  return Response.json({ nodes, links });
 }
 
-// ── POST — guarda via GitHub API ──────────────────────────────
+// ─── POST — guarda solo los colores en GitHub ────────────────────────────────
 export async function POST(request) {
   try {
-    const { token, ...body } = await request.json();
+    const { token, colors, subColors } = await request.json();
 
     if (!token) {
-      return Response.json(
-        { ok: false, error: "Falta el token de GitHub" },
-        { status: 400 },
-      );
+      return Response.json({ ok: false, error: "Falta el token de GitHub" }, { status: 400 });
     }
 
-    const content = Buffer.from(JSON.stringify(body, null, 2)).toString(
-      "base64",
-    );
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/data/graph.json`;
+    // Solo guardar colores — no la estructura completa
+    const body = { colors, subColors, updatedAt: new Date().toISOString() };
+    const content = Buffer.from(JSON.stringify(body, null, 2)).toString("base64");
 
-    // Obtener SHA del archivo si ya existe
+    // Obtener SHA si ya existe
     let sha;
-    const getRes = await fetch(apiUrl, {
+    const getRes = await fetch(API_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/vnd.github+json",
@@ -158,8 +75,7 @@ export async function POST(request) {
       sha = existing.sha;
     }
 
-    // Crear o actualizar
-    const putRes = await fetch(apiUrl, {
+    const putRes = await fetch(API_URL, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -167,7 +83,7 @@ export async function POST(request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message: "update graph.json",
+        message: "update graph colors",
         content,
         branch: GITHUB_BRANCH,
         ...(sha ? { sha } : {}),
@@ -185,29 +101,23 @@ export async function POST(request) {
   }
 }
 
-// ── DELETE — borra via GitHub API ─────────────────────────────
+// ─── DELETE — borra los colores guardados ────────────────────────────────────
 export async function DELETE(request) {
   try {
     const { token } = await request.json();
-    if (!token)
-      return Response.json(
-        { ok: false, error: "Falta el token" },
-        { status: 400 },
-      );
+    if (!token) return Response.json({ ok: false, error: "Falta el token" }, { status: 400 });
 
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/data/graph.json`;
-
-    const getRes = await fetch(apiUrl, {
+    const getRes = await fetch(API_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/vnd.github+json",
       },
     });
-    if (!getRes.ok) return Response.json({ ok: true }); // ya no existe
+    if (!getRes.ok) return Response.json({ ok: true });
 
     const { sha } = await getRes.json();
 
-    await fetch(apiUrl, {
+    await fetch(API_URL, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -215,7 +125,7 @@ export async function DELETE(request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message: "delete graph.json",
+        message: "reset graph colors",
         sha,
         branch: GITHUB_BRANCH,
       }),
