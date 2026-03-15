@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-// ─── Colores por tipo ─────────────────────────────────────────────────────────
 const TYPE_COLOR = {
   platform:  "#00ff88",
   category:  "#00d4ff",
@@ -36,7 +35,6 @@ const TYPE_LABEL = {
   tag:       "Tag",
 };
 
-// ─── Color resolver — usa node.color si existe (ej: difficulty) ──────────────
 const DIFFICULTY_COLORS = {
   easy:   "#00ff88",
   medium: "#ffcc00",
@@ -44,28 +42,18 @@ const DIFFICULTY_COLORS = {
   insane: "#ff3366",
 };
 
-function resolveColor(node) {
-  if (!node) return "#4a6a7a";
-  if (node.color) return node.color;
-  if (node.type === "difficulty")
-    return DIFFICULTY_COLORS[node.id?.toLowerCase()] || TYPE_COLOR.difficulty;
-  return TYPE_COLOR[node.type] || "#4a6a7a";
-}
-
-// Fuerza X por plataforma — clusters separados (disjoint)
 const PLATFORM_X = {};
-const ANIM_ORDER = ["platform", "category", "writeup", "os", "difficulty", "technique", "tool", "tag"];
+const ANIM_ORDER = ["platform","category","writeup","os","difficulty","technique","tool","tag"];
 
 export default function Graph() {
-  const router    = useRouter();
-  const svgRef    = useRef(null);
-  const nodeRef   = useRef(null);
-  const linkRef   = useRef(null);
-  const simRef    = useRef(null);
-  const gRef      = useRef(null);
-  const d3Select  = useRef(null);
-  const allNodes  = useRef([]);
-  const allLinks  = useRef([]);
+  const router   = useRouter();
+  const svgRef   = useRef(null);
+  const nodeRef  = useRef(null);
+  const linkRef  = useRef(null);
+  const simRef   = useRef(null);
+  const gRef     = useRef(null);
+  const allNodes = useRef([]);
+  const allLinks = useRef([]);
 
   const [graphData,    setGraphData]    = useState(null);
   const [loading,      setLoading]      = useState(true);
@@ -74,10 +62,23 @@ export default function Graph() {
   const [animating,    setAnimating]    = useState(false);
   const [animStep,     setAnimStep]     = useState(null);
   const [showLinks,    setShowLinks]    = useState(true);
-  const [showLabels,   setShowLabels]   = useState(false); // inician ocultos
+  const [showLabels,   setShowLabels]   = useState(false);
   const [openSection,  setOpenSection]  = useState(null);
   const [isMobile,     setIsMobile]     = useState(false);
   const [showPanel,    setShowPanel]    = useState(false);
+
+  // ─── Colores desde graph.json o defaults ─────────────────────────────────
+  const gColors   = graphData?.colors    || TYPE_COLOR;
+  const subColors = graphData?.subColors || {};
+
+  function resolveColor(node) {
+    if (!node) return "#4a6a7a";
+    if (subColors[node.id])  return subColors[node.id];
+    if (node.color)          return node.color;
+    if (node.type === "difficulty")
+      return DIFFICULTY_COLORS[node.id?.toLowerCase()] || gColors.difficulty || TYPE_COLOR.difficulty;
+    return gColors[node.type] || TYPE_COLOR[node.type] || "#4a6a7a";
+  }
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768);
@@ -86,36 +87,16 @@ export default function Graph() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // ─── Fetch /api/writeups/--graph + colores de /api/graph ────────────────
   useEffect(() => {
-    Promise.all([
-      fetch("/api/writeups/--graph").then((r) => r.json()),
-      fetch("/api/graph").then((r) => r.json()).catch(() => ({})),
-    ]).then(([graphData, colorData]) => {
-      if (!graphData?.nodes?.length) { setLoading(false); return; }
-
-      // Aplicar colores guardados si existen
-      if (colorData?.colors && Object.keys(colorData.colors).length > 0) {
-        Object.assign(TYPE_COLOR, colorData.colors);
-      }
-
-      // Aplicar subColors (colores por nodo individual)
-      if (colorData?.subColors && Object.keys(colorData.subColors).length > 0) {
-        const enriched = {
-          ...graphData,
-          nodes: graphData.nodes.map((n) =>
-            colorData.subColors[n.id] ? { ...n, color: colorData.subColors[n.id] } : n
-          ),
-        };
-        setGraphData(enriched);
-      } else {
-        setGraphData(graphData);
-      }
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    fetch("/api/writeups/--graph")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.nodes?.length) setGraphData(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
-  // ─── Grupos de filtros dinámicos ─────────────────────────────────────────
   const filterGroups = graphData
     ? [
         {
@@ -126,12 +107,11 @@ export default function Graph() {
         {
           id: "category",
           label: "Carpeta",
-          // Mostrar sin el prefijo de plataforma: "portswigger/sql/blind" → "sql/blind"
           values: [...new Set(
             graphData.nodes
               .filter((n) => n.type === "category")
               .map((n) => ({ full: n.id, display: n.id.split("/").slice(1).join("/") }))
-              .filter((n) => n.display) // excluir los que son solo plataforma
+              .filter((n) => n.display)
           )].reduce((acc, n) => {
             if (!acc.find((a) => a.display === n.display)) acc.push(n);
             return acc;
@@ -180,7 +160,6 @@ export default function Graph() {
     return false;
   }
 
-  // ─── Init D3 ─────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!graphData) return;
 
@@ -203,7 +182,6 @@ export default function Graph() {
           .on("zoom", (e) => g.attr("transform", e.transform))
       );
 
-      // Calcular posición X por plataforma para disjoint
       const platforms = [...new Set(graphData.nodes.filter((n) => n.type === "platform").map((n) => n.id))];
       platforms.forEach((p, i) => {
         PLATFORM_X[p] = W * ((i + 1) / (platforms.length + 1));
@@ -222,7 +200,6 @@ export default function Graph() {
       allNodes.current = nodes;
       allLinks.current = links;
 
-      // ── Tamaño dinámico según conexiones reales en el grafo ──────────────
       const connCount = new Map();
       links.forEach((l) => {
         const s = typeof l.source === "object" ? l.source.id : l.source;
@@ -238,24 +215,21 @@ export default function Graph() {
           platform: 35, category: 25, writeup: 18,
           os: 20, difficulty: 18, technique: 25, tool: 22, tag: 22,
         }[n.type] || 20;
-        // Calcular SOLO desde conexiones reales — ignora el size del servidor
-        // Así sqli(30 conn) > waf(10 conn) se ve claramente
         n.size = Math.min(base + conn * 1.2, maxSize);
       });
 
-      // ── Simulación disjoint — separada como Obsidian ────────────────────
       const sim = d3.forceSimulation(nodes)
         .force("link",
           d3.forceLink(links).id((d) => d.id)
             .distance((l) => {
               const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "category")  return 80;
-              if (tt === "writeup")   return 60;
-              if (tt === "os")        return 70;
-              if (tt === "difficulty")return 70;
-              if (tt === "technique") return 65;
-              if (tt === "tool")      return 60;
-              if (tt === "tag")       return 65;
+              if (tt === "category")   return 80;
+              if (tt === "writeup")    return 60;
+              if (tt === "os")         return 70;
+              if (tt === "difficulty") return 70;
+              if (tt === "technique")  return 65;
+              if (tt === "tool")       return 60;
+              if (tt === "tag")        return 65;
               return 60;
             })
             .strength((l) => {
@@ -267,13 +241,13 @@ export default function Graph() {
         .force("charge",
           d3.forceManyBody()
             .strength((d) => {
-              if (d.type === "platform")  return -800;
-              if (d.type === "category")  return -400;
-              if (d.type === "os")        return -300;
-              if (d.type === "difficulty")return -300;
-              if (d.type === "technique") return -250;
-              if (d.type === "tool")      return -250;
-              if (d.type === "tag")       return -250;
+              if (d.type === "platform")   return -800;
+              if (d.type === "category")   return -400;
+              if (d.type === "os")         return -300;
+              if (d.type === "difficulty") return -300;
+              if (d.type === "technique")  return -250;
+              if (d.type === "tool")       return -250;
+              if (d.type === "tag")        return -250;
               return -200;
             })
             .distanceMax(500)
@@ -295,21 +269,20 @@ export default function Graph() {
 
       simRef.current = sim;
 
-      // ── Links ────────────────────────────────────────────────────────────
       const link = g.append("g").attr("class", "links")
         .selectAll("line").data(links).join("line")
         .attr("stroke", (d) => {
           const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-          if (tt === "technique") return TYPE_COLOR.technique;
-          if (tt === "tag")       return TYPE_COLOR.tag;
-          if (tt === "tool")      return TYPE_COLOR.tool;
-          if (tt === "os")        return TYPE_COLOR.os;
+          if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
+          if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
+          if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
+          if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
           if (tt === "difficulty") {
             const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
-            return DIFFICULTY_COLORS[did] || TYPE_COLOR.difficulty;
+            return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
           }
-          if (tt === "category")  return TYPE_COLOR.category;
-          if (tt === "writeup")   return TYPE_COLOR.writeup;
+          if (tt === "category")   return gColors.category  || TYPE_COLOR.category;
+          if (tt === "writeup")    return gColors.writeup   || TYPE_COLOR.writeup;
           return "#2a3a4a";
         })
         .attr("stroke-width", (d) => {
@@ -325,7 +298,6 @@ export default function Graph() {
 
       linkRef.current = link;
 
-      // ── Nodes ────────────────────────────────────────────────────────────
       const node = g.append("g").attr("class", "nodes")
         .selectAll("g").data(nodes).join("g")
         .call(
@@ -335,7 +307,6 @@ export default function Graph() {
             .on("end",   (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.pinned) { d.fx = null; d.fy = null; } })
         );
 
-      // Anillo exterior para plataformas
       node.filter((d) => d.type === "platform")
         .append("circle")
         .attr("r", (d) => d.size + 7)
@@ -344,7 +315,6 @@ export default function Graph() {
         .attr("stroke-width", 0.5)
         .attr("opacity", 0.2);
 
-      // Círculo principal
       node.append("circle")
         .attr("r", (d) => d.size)
         .attr("fill", (d) => resolveColor(d) + "18")
@@ -362,45 +332,40 @@ export default function Graph() {
             if (l.target.id === d.id) conn.add(l.source.id);
           });
           node.selectAll("circle").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.05);
-          node.selectAll("text").attr("opacity", (n) => conn.has(n.id) ? 1 : 0.02);
+          node.selectAll("text").attr("opacity",   (n) => conn.has(n.id) ? 1 : 0.02);
           link
             .attr("stroke-opacity", (l) => l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02)
             .attr("stroke-width",   (l) => l.source.id === d.id || l.target.id === d.id ? 2.5 : 0.3)
             .attr("stroke", (l) => {
               const tt = typeof l.target === "object" ? l.target.type : "";
-              if (tt === "technique") return TYPE_COLOR.technique;
-              if (tt === "tag")       return TYPE_COLOR.tag;
-              if (tt === "tool")      return TYPE_COLOR.tool;
-              if (tt === "os")        return TYPE_COLOR.os;
-              if (tt === "category")  return TYPE_COLOR.category;
-              if (tt === "writeup")   return TYPE_COLOR.writeup;
+              if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
+              if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
+              if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
+              if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
+              if (tt === "category")   return gColors.category  || TYPE_COLOR.category;
+              if (tt === "writeup")    return gColors.writeup   || TYPE_COLOR.writeup;
               if (tt === "difficulty") {
                 const did = typeof l.target === "object" ? l.target.id?.toLowerCase() : "";
-                return DIFFICULTY_COLORS[did] || TYPE_COLOR.difficulty;
+                return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
               }
-              // source → plataforma u otros: usar color del source
               const st = typeof l.source === "object" ? l.source.type : "";
-              return TYPE_COLOR[st] || "#2a3a4a";
+              return gColors[st] || TYPE_COLOR[st] || "#2a3a4a";
             });
         })
         .on("dblclick", (e, d) => {
           e.stopPropagation();
-          // Writeup → navegar al write-up
           if (d.type === "writeup" && d.id) {
             router.push(`/writeups/${d.id}`);
             return;
           }
-          // Otros nodos → fijar/desfijar posición
           d.pinned = !d.pinned;
           d.fx = d.pinned ? d.x : null;
           d.fy = d.pinned ? d.y : null;
         });
 
-      // Label — inician OCULTOS (opacity 0)
       node.append("text")
         .text((d) => {
           if (d.type === "category") return d.id.split("/").pop();
-          // writeup — usar title si existe, truncado a 15 chars
           if (d.type === "writeup") {
             const label = d.title || d.id;
             return label.length > 15 ? label.slice(0, 15) + "…" : label;
@@ -414,25 +379,24 @@ export default function Graph() {
         .attr("font-size", (d) => d.type === "platform" ? "9px" : "7.5px")
         .attr("letter-spacing", "0.5px")
         .attr("pointer-events", "none")
-        .attr("opacity", 0); // ← inician ocultos, se activan con botón "labels"
+        .attr("opacity", 0);
 
-      // Click en fondo — resetear
       svg.on("click", () => {
         node.selectAll("circle").attr("opacity", 1);
         node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
         link
           .attr("stroke", (d) => {
             const tt = typeof d.target === "object" ? d.target.type : d.type || "";
-            if (tt === "technique") return TYPE_COLOR.technique;
-            if (tt === "tag")       return TYPE_COLOR.tag;
-            if (tt === "tool")      return TYPE_COLOR.tool;
-            if (tt === "os")        return TYPE_COLOR.os;
+            if (tt === "technique")  return gColors.technique  || TYPE_COLOR.technique;
+            if (tt === "tag")        return gColors.tag        || TYPE_COLOR.tag;
+            if (tt === "tool")       return gColors.tool       || TYPE_COLOR.tool;
+            if (tt === "os")         return gColors.os         || TYPE_COLOR.os;
             if (tt === "difficulty") {
               const did = typeof d.target === "object" ? d.target.id?.toLowerCase() : "";
-              return DIFFICULTY_COLORS[did] || TYPE_COLOR.difficulty;
+              return DIFFICULTY_COLORS[did] || gColors.difficulty || TYPE_COLOR.difficulty;
             }
-            if (tt === "category")  return TYPE_COLOR.category;
-            if (tt === "writeup")   return TYPE_COLOR.writeup;
+            if (tt === "category")   return gColors.category  || TYPE_COLOR.category;
+            if (tt === "writeup")    return gColors.writeup   || TYPE_COLOR.writeup;
             return "#2a3a4a";
           })
           .attr("stroke-width", (d) => {
@@ -449,7 +413,6 @@ export default function Graph() {
         node.attr("transform", (d) => `translate(${d.x},${d.y})`);
       });
 
-      // Auto-fit: cuando la sim converge, encuadra todos los nodos
       sim.on("end", () => {
         const padding = 60;
         const xs = nodes.map((d) => d.x).filter(Boolean);
@@ -474,19 +437,16 @@ export default function Graph() {
     init();
   }, [graphData]);
 
-  // ─── Filtros ─────────────────────────────────────────────────────────────
   useEffect(() => {
     const node = nodeRef.current;
     const link = linkRef.current;
     if (!node || !link) return;
-
     if (activeFilter.type === "all") {
       node.selectAll("circle").attr("opacity", 1);
       node.selectAll("text").attr("opacity", 0.9);
       link.attr("stroke-opacity", 0.7);
       return;
     }
-
     node.selectAll("circle").attr("opacity", (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.04);
     node.selectAll("text").attr("opacity",   (d) => nodeMatchesFilter(d, activeFilter) ? 1 : 0.02);
     link.attr("stroke-opacity", (l) =>
@@ -494,7 +454,6 @@ export default function Graph() {
     );
   }, [activeFilter]);
 
-  // ─── Toggle links ─────────────────────────────────────────────────────────
   useEffect(() => {
     const link = linkRef.current;
     if (!link) return;
@@ -505,27 +464,21 @@ export default function Graph() {
     });
   }, [showLinks]);
 
-  // ─── Animación por grupos ─────────────────────────────────────────────────
   const runAnimation = useCallback(async () => {
     const node = nodeRef.current;
     const link = linkRef.current;
     if (!node || !link || !graphData) return;
-
     setAnimating(true);
     node.selectAll("circle").attr("opacity", 0);
     node.selectAll("text").attr("opacity", 0);
     link.attr("stroke-opacity", 0);
-
     const delay = (ms) => new Promise((r) => setTimeout(r, ms));
     const nodes = allNodes.current;
     const links = allLinks.current;
-
     for (const groupType of ANIM_ORDER) {
       const groupNodes = nodes.filter((n) => n.type === groupType);
       if (!groupNodes.length) continue;
-
       setAnimStep(TYPE_LABEL[groupType] || groupType);
-
       for (const n of groupNodes) {
         node.filter((d) => d.id === n.id).selectAll("circle")
           .attr("opacity", 0).transition().duration(250).attr("opacity", 1);
@@ -533,21 +486,17 @@ export default function Graph() {
           .attr("opacity", 0).transition().duration(250).attr("opacity", 0.9);
         await delay(groupNodes.length > 20 ? 20 : 50);
       }
-
       const groupLinks = links.filter((l) => {
         const src = typeof l.source === "object" ? l.source : nodes.find((n) => n.id === l.source);
         const tgt = typeof l.target === "object" ? l.target : nodes.find((n) => n.id === l.target);
         return src?.type === groupType || tgt?.type === groupType;
       });
-
       for (const l of groupLinks) {
         link.filter((d) => d === l).transition().duration(200).attr("stroke-opacity", 0.7);
         await delay(groupLinks.length > 80 ? 5 : 15);
       }
-
       await delay(250);
     }
-
     setAnimating(false);
     setAnimStep(null);
   }, [graphData]);
@@ -563,7 +512,6 @@ export default function Graph() {
   const totalLinks  = graphData?.links?.length   || 0;
   const totalWrites = graphData?.meta?.totalWriteups || 0;
 
-  // ─── Panel de filtros ─────────────────────────────────────────────────────
   const FilterPanel = () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
       <button
@@ -579,7 +527,6 @@ export default function Graph() {
       >
         // Todos
       </button>
-
       {filterGroups.map((group) => (
         <div key={group.id} style={{ marginBottom: "0.2rem" }}>
           <button
@@ -587,7 +534,8 @@ export default function Graph() {
             style={{
               width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
               padding: "4px 10px", cursor: "pointer", background: "transparent",
-              border: "1px solid #1a3a4a", color: TYPE_COLOR[group.id] || "#4a6a7a",
+              border: "1px solid #1a3a4a",
+              color: gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a",
               textAlign: "left", display: "flex", justifyContent: "space-between",
               alignItems: "center", letterSpacing: "1px",
             }}
@@ -595,16 +543,15 @@ export default function Graph() {
             <span>{group.label}</span>
             <span style={{ transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "0.55rem" }}>▶</span>
           </button>
-
           {openSection === group.id && (
             <div style={{ background: "#030810", border: "1px solid #1a3a4a", borderTop: "none", maxHeight: "160px", overflowY: "auto" }}>
               {(group.id === "category" ? group.values : group.values.map((v) => ({ full: v, display: v }))).map((item) => {
                 const fullVal    = item.full    || item;
                 const displayVal = item.display || item;
                 const isActive   = activeFilter.type === group.id && activeFilter.value === fullVal;
-                  const c = group.id === "difficulty"
-                    ? (DIFFICULTY_COLORS[fullVal?.toLowerCase()] || TYPE_COLOR.difficulty)
-                    : TYPE_COLOR[group.id] || "#4a6a7a";
+                const c = group.id === "difficulty"
+                  ? (DIFFICULTY_COLORS[fullVal?.toLowerCase()] || gColors.difficulty || TYPE_COLOR.difficulty)
+                  : (gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a");
                 return (
                   <button
                     key={fullVal}
@@ -631,15 +578,7 @@ export default function Graph() {
   );
 
   return (
-    <section
-      id="graph"
-      style={{
-        background: "#050a0e",
-        padding: "2rem 0",
-        fontFamily: "monospace",
-      }}
-    >
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
+    <section id="graph" style={{ background: "#050a0e", padding: "2rem 0", fontFamily: "monospace" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem", flexWrap: "wrap" }}>
         <span style={{ color: "#00ff88", fontSize: "0.85rem", flexShrink: 0 }}>03.</span>
         <h2 style={{ fontSize: "1.4rem", fontWeight: 700, color: "#fff", letterSpacing: "3px", textTransform: "uppercase", margin: 0 }}>
@@ -657,24 +596,20 @@ export default function Graph() {
         // Mapa interactivo — plataformas, carpetas, writeups y técnicas
       </p>
 
-      {/* ── Loading ─────────────────────────────────────────────────────────── */}
       {loading && (
         <div style={{ background: "#050a0e", border: "1px solid #1a3a4a", padding: "4rem", textAlign: "center" }}>
           <p style={{ color: "#00d4ff", fontSize: "0.85rem", letterSpacing: "2px" }}>// Cargando grafo...</p>
         </div>
       )}
 
-      {/* ── Empty ────────────────────────────────────────────────────────────── */}
       {!loading && !graphData?.nodes?.length && (
         <div style={{ background: "#050a0e", border: "1px solid #1a3a4a", padding: "4rem", textAlign: "center" }}>
           <p style={{ color: "#4a6a7a", fontSize: "0.85rem", letterSpacing: "2px" }}>// No hay writeups aún</p>
         </div>
       )}
 
-      {/* ── Graph ────────────────────────────────────────────────────────────── */}
       {!loading && graphData?.nodes?.length > 0 && (
         <>
-          {/* Controles móvil */}
           {isMobile && (
             <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.8rem" }}>
               {[
@@ -696,24 +631,19 @@ export default function Graph() {
             </div>
           )}
 
-          {/* Panel filtros móvil */}
           {isMobile && showPanel && (
             <div style={{ background: "#060d14", border: "1px solid #1a3a4a", padding: "0.8rem", marginBottom: "0.8rem" }}>
               <FilterPanel />
             </div>
           )}
 
-          {/* Contenedor principal */}
           <div style={{ position: "relative", background: "#050a0e", border: "1px solid #1a3a4a", overflow: "hidden" }}>
-
-            {/* Controles top-center: buscar + reset + labels + animar + links */}
             {!isMobile && (
               <div style={{
                 position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
                 zIndex: 10, display: "flex", gap: "6px", alignItems: "center",
                 backdropFilter: "blur(8px)",
               }}>
-                {/* Búsqueda */}
                 <input
                   type="text"
                   placeholder="// buscar..."
@@ -722,31 +652,21 @@ export default function Graph() {
                     const node = nodeRef.current;
                     const link = linkRef.current;
                     if (!node || !link) return;
-                    node.selectAll("circle").attr("opacity", (d) =>
-                      !v ? 1 : d.id.toLowerCase().includes(v) ? 1 : 0.05
-                    );
-                    node.selectAll("text").attr("opacity", (d) =>
-                      !v ? 0.9 : d.id.toLowerCase().includes(v) ? 1 : 0.02
-                    );
+                    node.selectAll("circle").attr("opacity", (d) => !v ? 1 : d.id.toLowerCase().includes(v) ? 1 : 0.05);
+                    node.selectAll("text").attr("opacity",   (d) => !v ? 0.9 : d.id.toLowerCase().includes(v) ? 1 : 0.02);
                     link.attr("stroke-opacity", (l) => {
                       if (!v) return 0.7;
                       return (l.source.id?.toLowerCase().includes(v) || l.target.id?.toLowerCase().includes(v)) ? 0.9 : 0.02;
                     });
                   }}
                   style={{
-                    fontFamily: "monospace", fontSize: "0.68rem",
-                    padding: "5px 12px", width: "160px",
-                    background: "rgba(5,10,14,0.95)",
-                    border: "1px solid #1a3a4a",
-                    color: "#c8d8e8",
-                    outline: "none", letterSpacing: "0.5px",
-                    caretColor: "#00ff88",
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 12px", width: "160px",
+                    background: "rgba(5,10,14,0.95)", border: "1px solid #1a3a4a",
+                    color: "#c8d8e8", outline: "none", letterSpacing: "0.5px", caretColor: "#00ff88",
                   }}
                   onFocus={(e) => (e.target.style.borderColor = "#00d4ff")}
                   onBlur={(e)  => (e.target.style.borderColor = "#1a3a4a")}
                 />
-
-                {/* Reset */}
                 <button
                   onClick={async () => {
                     const node = nodeRef.current;
@@ -762,16 +682,13 @@ export default function Graph() {
                   style={{
                     fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
                     border: "1px solid #1a3a4a", background: "rgba(5,10,14,0.95)",
-                    color: "#c8d8e8", cursor: "pointer", letterSpacing: "1px",
-                    transition: "all 0.2s",
+                    color: "#c8d8e8", cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
                   }}
                   onMouseOver={(e) => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
                   onMouseOut={(e)  => { e.currentTarget.style.borderColor = "#1a3a4a"; e.currentTarget.style.color = "#c8d8e8"; }}
                 >
                   reset
                 </button>
-
-                {/* Labels */}
                 <button
                   onClick={() => {
                     setShowLabels((s) => {
@@ -791,8 +708,6 @@ export default function Graph() {
                 >
                   labels
                 </button>
-
-                {/* Animar */}
                 <button onClick={runAnimation} disabled={animating}
                   style={{
                     fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
@@ -804,8 +719,6 @@ export default function Graph() {
                 >
                   {animating ? `⟳ ${animStep}` : "▶ animar"}
                 </button>
-
-                {/* Links */}
                 <button onClick={() => setShowLinks((s) => !s)}
                   style={{
                     fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
@@ -820,7 +733,6 @@ export default function Graph() {
               </div>
             )}
 
-            {/* Leyenda desktop */}
             {!isMobile && (
               <div style={{
                 position: "absolute", top: 10, left: 10, zIndex: 10,
@@ -830,11 +742,14 @@ export default function Graph() {
                 <div style={{ fontSize: "0.55rem", color: "#4a6a7a", letterSpacing: "2px", marginBottom: "0.5rem" }}>// TIPOS</div>
                 {Object.entries(TYPE_LABEL).map(([type, label]) => (
                   <div key={type} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: TYPE_COLOR[type], boxShadow: `0 0 4px ${TYPE_COLOR[type]}` }} />
+                    <div style={{
+                      width: 7, height: 7, borderRadius: "50%",
+                      background: gColors[type] || TYPE_COLOR[type],
+                      boxShadow: `0 0 4px ${gColors[type] || TYPE_COLOR[type]}`
+                    }} />
                     <span style={{ fontSize: "0.62rem", color: "#c8d8e8" }}>{label}</span>
                   </div>
                 ))}
-                {/* Escala de dificultad */}
                 <div style={{ marginTop: "6px", paddingTop: "6px", borderTop: "1px solid #1a3a4a" }}>
                   {Object.entries(DIFFICULTY_COLORS).map(([diff, color]) => (
                     <div key={diff} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
@@ -846,7 +761,6 @@ export default function Graph() {
               </div>
             )}
 
-            {/* Panel filtros desktop */}
             {!isMobile && (
               <div style={{
                 position: "absolute", top: 10, right: 10, zIndex: 10, width: "160px",
@@ -869,7 +783,6 @@ export default function Graph() {
         </>
       )}
 
-      {/* ── Tooltip ───────────────────────────────────────────────────────────── */}
       {tooltip.visible && tooltip.node && (
         <div style={{
           position: "fixed", zIndex: 2000, pointerEvents: "none",
@@ -877,8 +790,7 @@ export default function Graph() {
           top: tooltip.y - 10,
           background: "rgba(8,16,26,0.97)",
           border: `1px solid ${resolveColor(tooltip.node)}44`,
-          padding: "0.8rem 1rem", minWidth: "180px",
-          fontFamily: "monospace",
+          padding: "0.8rem 1rem", minWidth: "180px", fontFamily: "monospace",
         }}>
           <div style={{ fontSize: "0.55rem", color: resolveColor(tooltip.node), letterSpacing: "2px", marginBottom: "3px" }}>
             {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
