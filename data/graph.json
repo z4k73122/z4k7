@@ -1,0 +1,2016 @@
+{
+  "nodes": [
+    {
+      "id": "burpsuiteacademy",
+      "type": "platform",
+      "platform": "burpsuiteacademy",
+      "size": 18,
+      "color": "#ff8000"
+    },
+    {
+      "id": "htb",
+      "type": "platform",
+      "platform": "htb",
+      "size": 18
+    },
+    {
+      "id": "thm",
+      "type": "platform",
+      "platform": "thm",
+      "size": 18,
+      "color": "#ff0000"
+    },
+    {
+      "id": "burpsuiteacademy/sqli",
+      "type": "category",
+      "platform": "burpsuiteacademy",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "htb/sqli",
+      "type": "category",
+      "platform": "htb",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "thm/ia",
+      "type": "category",
+      "platform": "thm",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "thm/lab",
+      "type": "category",
+      "platform": "thm",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "type": "writeup",
+      "title": "Ataque de inyección SQL, consultando el tipo y versión de la base de datos en MySQL y Microsoft",
+      "platform": "burpsuiteacademy",
+      "folderPath": "burpsuiteacademy/sqli",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 12
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "type": "writeup",
+      "title": "Ataque de inyección SQL, listando el contenido de bases de datos en bases de datos que no son Oracle",
+      "platform": "burpsuiteacademy",
+      "folderPath": "burpsuiteacademy/sqli",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 12
+    },
+    {
+      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "type": "writeup",
+      "title": "Ataque de inyección SQL, listando el contenido de la base de datos en Oracle",
+      "platform": "burpsuiteacademy",
+      "folderPath": "burpsuiteacademy/sqli",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 12.8
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "type": "writeup",
+      "title": "Ataque UNION de inyección SQL, búsqueda de una columna que contiene texto",
+      "platform": "burpsuiteacademy",
+      "folderPath": "burpsuiteacademy/sqli",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 11.6
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "type": "writeup",
+      "title": "Ataque UNION de inyección SQL, determinando el número de columnas devueltas por la consulta",
+      "platform": "burpsuiteacademy",
+      "folderPath": "burpsuiteacademy/sqli",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 11.6
+    },
+    {
+      "id": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "type": "writeup",
+      "title": "Ataque UNION de inyección SQL, recuperando datos de otras tablas",
+      "platform": "burpsuiteacademy",
+      "folderPath": "burpsuiteacademy/sqli",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 11.6
+    },
+    {
+      "id": "into-outfile-web-shell",
+      "type": "writeup",
+      "title": "INTO OUTFILE Web Shell",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 12.8
+    },
+    {
+      "id": "lab-final-rce-hash-admin",
+      "type": "writeup",
+      "title": "Lab Final RCE Hash Admin",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 13.600000000000001
+    },
+    {
+      "id": "like-and-busqueda-empleados",
+      "type": "writeup",
+      "title": "LIKE AND — Búsqueda Empleados",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "load-file-lectura-de-archivos",
+      "type": "writeup",
+      "title": "LOAD FILE Lectura de Archivos",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
+      "id": "mysql-basico-departamentos",
+      "type": "writeup",
+      "title": "MySQL Básico — Departamentos",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
+      "id": "operadores-sql",
+      "type": "writeup",
+      "title": "Operadores SQL",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 12
+    },
+    {
+      "id": "union-deteccion-de-columnas",
+      "type": "writeup",
+      "title": "UNION Detección de Columnas",
+      "platform": "htb",
+      "folderPath": "htb/sqli",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
+      "id": "model-poisoning",
+      "type": "writeup",
+      "title": "Model Poisoning",
+      "platform": "thm",
+      "folderPath": "thm/ia",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
+      "id": "farewell",
+      "type": "writeup",
+      "title": "Farewell",
+      "platform": "thm",
+      "folderPath": "thm/lab",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 14
+    },
+    {
+      "id": "padelify",
+      "type": "writeup",
+      "title": "Padelify",
+      "platform": "thm",
+      "folderPath": "thm/lab",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 12.4
+    },
+    {
+      "id": "sequence",
+      "type": "writeup",
+      "title": "Sequence",
+      "platform": "thm",
+      "folderPath": "thm/lab",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 13.600000000000001
+    },
+    {
+      "id": "linux",
+      "type": "os",
+      "count": 9,
+      "size": 20
+    },
+    {
+      "id": "easy",
+      "type": "difficulty",
+      "count": 11,
+      "size": 20,
+      "color": "#00ff88"
+    },
+    {
+      "id": "sql injection",
+      "type": "technique",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "union attack",
+      "type": "technique",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "fingerprint mysql",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "comentario #",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "@@version",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "burpsuite",
+      "type": "tool",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "sqli",
+      "type": "tag",
+      "count": 13,
+      "size": 20
+    },
+    {
+      "id": "web",
+      "type": "tag",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "union",
+      "type": "tag",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "mysql",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "apprentice",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "information_schema",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "enumeración de tablas y columnas",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "extracción de credenciales",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "practitioner",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "oracle",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "from dual",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "all_tables",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "all_tab_columns",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "enumeración completa de bd",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "identificación de columna string",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "order by",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "union select null",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "conteo de columnas",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "medium",
+      "type": "difficulty",
+      "count": 6,
+      "size": 18,
+      "color": "#ffcc00"
+    },
+    {
+      "id": "union select",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "windows",
+      "type": "os",
+      "count": 8,
+      "size": 20
+    },
+    {
+      "id": "union injection",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "into outfile",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "file write",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "web shell php",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "rce",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "browser",
+      "type": "tool",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "lab",
+      "type": "tag",
+      "count": 8,
+      "size": 20
+    },
+    {
+      "id": "htb",
+      "type": "tag",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "academy",
+      "type": "tag",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "file",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "webshell",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "login bypass sqli",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "information_schema enum",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "load_file",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "login",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "like",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "and",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "filtrado de resultados sql",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "mysql",
+      "type": "tool",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "file read",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "privilege enumeration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "sql básico",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "select",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "show databases",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "show tables",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "operadores sql",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "or",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "not",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "count",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "detección de columnas",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "extracción de datos",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "data poisoning",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "model retraining",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "seq2seq training",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "envenenamiento de datos de entrenamiento",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "manipulación de modelo de lenguaje",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "navegador web",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "interfaz chat/contribute/train del lab",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "thm",
+      "type": "tag",
+      "count": 1,
+      "size": 8,
+      "color": "#ff0000"
+    },
+    {
+      "id": "data",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "medium",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "xss",
+      "type": "technique",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "cookie",
+      "type": "technique",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "waf",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "bruteforce",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "xforwardedfor",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "[[nmap]]",
+      "type": "tool",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "[[ffuf]]",
+      "type": "tool",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "[[burp suite]]",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "[[python http server]]",
+      "type": "tool",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "limitingbypass",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "bypass",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "eval",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "redteam",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "userenumeration",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "informationdisclosure",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "httponly",
+      "type": "technique",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "redteam",
+      "type": "technique",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "[[feroxbuster]]",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "lfi",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "ssrf",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "csrf",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "[[netcat]]",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "fileupload",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "dockerescape",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "reverseshell",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    }
+  ],
+  "links": [
+    {
+      "source": "burpsuiteacademy",
+      "target": "burpsuiteacademy/sqli",
+      "type": "struct"
+    },
+    {
+      "source": "burpsuiteacademy/sqli",
+      "target": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "type": "struct"
+    },
+    {
+      "source": "burpsuiteacademy/sqli",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "type": "struct"
+    },
+    {
+      "source": "burpsuiteacademy/sqli",
+      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "type": "struct"
+    },
+    {
+      "source": "burpsuiteacademy/sqli",
+      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "type": "struct"
+    },
+    {
+      "source": "burpsuiteacademy/sqli",
+      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "type": "struct"
+    },
+    {
+      "source": "burpsuiteacademy/sqli",
+      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "type": "struct"
+    },
+    {
+      "source": "htb",
+      "target": "htb/sqli",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "into-outfile-web-shell",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "lab-final-rce-hash-admin",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "like-and-busqueda-empleados",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "load-file-lectura-de-archivos",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "mysql-basico-departamentos",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "operadores-sql",
+      "type": "struct"
+    },
+    {
+      "source": "htb/sqli",
+      "target": "union-deteccion-de-columnas",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "thm/ia",
+      "type": "struct"
+    },
+    {
+      "source": "thm/ia",
+      "target": "model-poisoning",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "thm/lab",
+      "type": "struct"
+    },
+    {
+      "source": "thm/lab",
+      "target": "farewell",
+      "type": "struct"
+    },
+    {
+      "source": "thm/lab",
+      "target": "padelify",
+      "type": "struct"
+    },
+    {
+      "source": "thm/lab",
+      "target": "sequence",
+      "type": "struct"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "sql injection",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "union attack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "fingerprint mysql",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "comentario #",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "@@version",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "mysql",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
+      "target": "apprentice",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "sql injection",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "union attack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "information_schema",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "enumeración de tablas y columnas",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "extracción de credenciales",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
+      "target": "practitioner",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "sql injection",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "union attack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "oracle",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "from dual",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "all_tables",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "all_tab_columns",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "enumeración completa de bd",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
+      "target": "practitioner",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "sql injection",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "union attack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "identificación de columna string",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "order by",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "union select null",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
+      "target": "apprentice",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "sql injection",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "union attack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "order by",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "conteo de columnas",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "union select null",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
+      "target": "apprentice",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "sql injection",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "union attack",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "extracción de credenciales",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "order by",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "union select",
+      "type": "technique"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
+      "target": "practitioner",
+      "type": "tag"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "union injection",
+      "type": "technique"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "into outfile",
+      "type": "technique"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "file write",
+      "type": "technique"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "web shell php",
+      "type": "technique"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "rce",
+      "type": "technique"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "file",
+      "type": "tag"
+    },
+    {
+      "source": "into-outfile-web-shell",
+      "target": "webshell",
+      "type": "tag"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "login bypass sqli",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "union injection",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "information_schema enum",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "load_file",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "into outfile",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "web shell php",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "rce",
+      "type": "technique"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "login",
+      "type": "tag"
+    },
+    {
+      "source": "lab-final-rce-hash-admin",
+      "target": "file",
+      "type": "tag"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "like",
+      "type": "technique"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "and",
+      "type": "technique"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "filtrado de resultados sql",
+      "type": "technique"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "mysql",
+      "type": "tool"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "like-and-busqueda-empleados",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "union injection",
+      "type": "technique"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "load_file",
+      "type": "technique"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "file read",
+      "type": "technique"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "privilege enumeration",
+      "type": "technique"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "load-file-lectura-de-archivos",
+      "target": "file",
+      "type": "tag"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "sql básico",
+      "type": "technique"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "select",
+      "type": "technique"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "show databases",
+      "type": "technique"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "show tables",
+      "type": "technique"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "mysql",
+      "type": "tool"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "mysql-basico-departamentos",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "operadores sql",
+      "type": "technique"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "and",
+      "type": "technique"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "or",
+      "type": "technique"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "not",
+      "type": "technique"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "count",
+      "type": "technique"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "mysql",
+      "type": "tool"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "operadores-sql",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "union injection",
+      "type": "technique"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "order by",
+      "type": "technique"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "detección de columnas",
+      "type": "technique"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "extracción de datos",
+      "type": "technique"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "htb",
+      "type": "tag"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "academy",
+      "type": "tag"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "sqli",
+      "type": "tag"
+    },
+    {
+      "source": "union-deteccion-de-columnas",
+      "target": "union",
+      "type": "tag"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "data poisoning",
+      "type": "technique"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "model retraining",
+      "type": "technique"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "seq2seq training",
+      "type": "technique"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "envenenamiento de datos de entrenamiento",
+      "type": "technique"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "manipulación de modelo de lenguaje",
+      "type": "technique"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "navegador web",
+      "type": "tool"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "interfaz chat/contribute/train del lab",
+      "type": "tool"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "lab",
+      "type": "tag"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "thm",
+      "type": "tag"
+    },
+    {
+      "source": "model-poisoning",
+      "target": "data",
+      "type": "tag"
+    },
+    {
+      "source": "farewell",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "farewell",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "farewell",
+      "target": "xss",
+      "type": "technique"
+    },
+    {
+      "source": "farewell",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "farewell",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "farewell",
+      "target": "bruteforce",
+      "type": "technique"
+    },
+    {
+      "source": "farewell",
+      "target": "xforwardedfor",
+      "type": "technique"
+    },
+    {
+      "source": "farewell",
+      "target": "[[nmap]]",
+      "type": "tool"
+    },
+    {
+      "source": "farewell",
+      "target": "[[ffuf]]",
+      "type": "tool"
+    },
+    {
+      "source": "farewell",
+      "target": "[[burp suite]]",
+      "type": "tool"
+    },
+    {
+      "source": "farewell",
+      "target": "[[python http server]]",
+      "type": "tool"
+    },
+    {
+      "source": "farewell",
+      "target": "limitingbypass",
+      "type": "tag"
+    },
+    {
+      "source": "farewell",
+      "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "farewell",
+      "target": "eval",
+      "type": "tag"
+    },
+    {
+      "source": "farewell",
+      "target": "redteam",
+      "type": "tag"
+    },
+    {
+      "source": "farewell",
+      "target": "userenumeration",
+      "type": "tag"
+    },
+    {
+      "source": "farewell",
+      "target": "informationdisclosure",
+      "type": "tag"
+    },
+    {
+      "source": "padelify",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "padelify",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "padelify",
+      "target": "xss",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "httponly",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "redteam",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "waf",
+      "type": "technique"
+    },
+    {
+      "source": "padelify",
+      "target": "[[nmap]]",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "[[feroxbuster]]",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "[[ffuf]]",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "[[python http server]]",
+      "type": "tool"
+    },
+    {
+      "source": "padelify",
+      "target": "lfi",
+      "type": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "sequence",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "sequence",
+      "target": "xss",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "ssrf",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "cookie",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "httponly",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "[[nmap]]",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "[[ffuf]]",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "[[netcat]]",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "[[python http server]]",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "[[burp suite]]",
+      "type": "tool"
+    },
+    {
+      "source": "sequence",
+      "target": "redteam",
+      "type": "technique"
+    },
+    {
+      "source": "sequence",
+      "target": "fileupload",
+      "type": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "dockerescape",
+      "type": "tag"
+    },
+    {
+      "source": "sequence",
+      "target": "reverseshell",
+      "type": "tag"
+    }
+  ],
+  "colors": {
+    "platform": "#00ff88",
+    "category": "#00d4ff",
+    "writeup": "#7F77DD",
+    "os": "#ffcc00",
+    "difficulty": "#b06aff",
+    "technique": "#ff3366",
+    "tool": "#00ffcc",
+    "tag": "#EF9F27"
+  },
+  "subColors": {
+    "burpsuiteacademy": "#ff8000",
+    "thm": "#ff0000"
+  },
+  "meta": {
+    "totalWriteups": 17,
+    "totalPlatforms": 3,
+    "totalMeta": 95
+  }
+}
