@@ -94,7 +94,7 @@ const PLATFORM_RING_CSS = `
   to   { stroke-dashoffset: -502; }
 }
 .graph-platform-ring-outer {
-  stroke-dasharray: 6 10;
+  stroke-dasharray: 4 6;
   animation: graphSpinDash 6s linear infinite;
 }
 .graph-hub-ring-outer {
