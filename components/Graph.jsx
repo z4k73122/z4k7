@@ -298,22 +298,45 @@ export default function Graph() {
 
       /* ── Asignar tamaño dinámico y rol de hub ── */
       nodes.forEach(n => {
-        const conn    = connCount.get(n.id) || 0;
-        const base    = TYPE_SIZE[n.type] || 7;
-        const maxSize = {
-          platform:35, category:25, writeup:18,
-          os:20, difficulty:18, technique:25, tool:22, tag:22,
-        }[n.type] || 20;
-
-        n.size    = Math.min(base + conn * 1.2, maxSize);
+        const conn  = connCount.get(n.id) || 0;
+        const base  = TYPE_SIZE[n.type] || 7;
         n.connCount = conn;
 
-        /*
-         * ROL HUB:
-         *  - platform → siempre hub (nodo central)
-         *  - cualquier otro tipo → hub si tiene > HUB_THRESHOLD conexiones
-         */
-        n.isHub = n.type === "platform" || conn > HUB_THRESHOLD;
+        if (n.type === "writeup") {
+          /*
+           * Writeup: tamaño fijo, NUNCA hub.
+           * Tendrá muchas conexiones a tags/tools por diseño
+           * así que excluirlo evita que todo se convierta en hub.
+           */
+          const maxW = 18;
+          n.size  = Math.min(base + conn * 0.4, maxW);
+          n.isHub = false;
+        } else {
+          /*
+           * Todos los demás (platform, category, os, difficulty,
+           * technique, tool, tag): tamaño crece más agresivamente
+           * con conexiones. El techo varía por tipo.
+           */
+          const maxSize = {
+            platform:  40,
+            category:  28,
+            os:        26,
+            difficulty:24,
+            technique: 30,
+            tool:      28,
+            tag:       28,
+          }[n.type] || 24;
+
+          /* Escala de crecimiento: +2px por cada conexión adicional */
+          n.size = Math.min(base + conn * 2, maxSize);
+
+          /*
+           * ROL HUB:
+           *  - platform  → siempre hub (nodo central único)
+           *  - resto     → hub si supera HUB_THRESHOLD conexiones
+           */
+          n.isHub = n.type === "platform" || conn > HUB_THRESHOLD;
+        }
       });
 
       /* ── Color de link según tipo de target ── */
@@ -509,30 +532,7 @@ export default function Graph() {
           d.fy     = d.pinned ? d.y : null;
         });
 
-      /* ── Badge "HUB" para nodos secundarios con > HUB_THRESHOLD conexiones ── */
-      node.filter(d => d.isHub && d.type !== "platform")
-        .append("rect")
-        .attr("x", d =>  d.size - 2)
-        .attr("y", d => -d.size - 10)
-        .attr("width", 24)
-        .attr("height", 11)
-        .attr("rx", 5)
-        .attr("fill", d => resolveColor(d, gColors, subColors) + "30")
-        .attr("stroke", d => resolveColor(d, gColors, subColors))
-        .attr("stroke-width", 0.5)
-        .attr("pointer-events", "none");
-
-      node.filter(d => d.isHub && d.type !== "platform")
-        .append("text")
-        .text("HUB")
-        .attr("x", d =>  d.size + 10)
-        .attr("y", d => -d.size - 4)
-        .attr("text-anchor", "middle")
-        .attr("font-family", "monospace")
-        .attr("font-size", "6.5px")
-        .attr("letter-spacing", "0.5px")
-        .attr("fill", d => resolveColor(d, gColors, subColors))
-        .attr("pointer-events", "none");
+      /* ── Badge HUB eliminado — solo los anillos indican el rol ── */
 
       /* ── Etiquetas de texto ── */
       node.append("text")
@@ -1153,16 +1153,6 @@ export default function Graph() {
             letterSpacing: "2px", marginBottom: "3px",
           }}>
             {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
-            {tooltip.node.isHub && (
-              <span style={{
-                marginLeft: "6px", fontSize: "0.5rem",
-                background: resolveColor(tooltip.node, gColors, subColors) + "22",
-                border: `1px solid ${resolveColor(tooltip.node, gColors, subColors)}`,
-                padding: "1px 5px", borderRadius: "4px",
-              }}>
-                HUB
-              </span>
-            )}
           </div>
 
           {/* Nombre */}
@@ -1205,11 +1195,6 @@ export default function Graph() {
             <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
               {tooltip.node.connCount || tooltip.node.count || 1} conexión
               {(tooltip.node.connCount || tooltip.node.count || 1) > 1 ? "es" : ""}
-              {tooltip.node.isHub && (
-                <span style={{ color: "#EF9F27", marginLeft: "4px" }}>
-                  · nodo hub
-                </span>
-              )}
             </div>
           )}
         </div>
