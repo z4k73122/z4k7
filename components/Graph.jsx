@@ -93,17 +93,13 @@ const PLATFORM_RING_CSS = `
   from { stroke-dashoffset: 0; }
   to   { stroke-dashoffset: -502; }
 }
-@keyframes graphSpinDashRev {
-  from { stroke-dashoffset: 0; }
-  to   { stroke-dashoffset: 376; }
-}
 .graph-platform-ring-outer {
   stroke-dasharray: 6 10;
   animation: graphSpinDash 6s linear infinite;
 }
-.graph-platform-ring-outer2 {
-  stroke-dasharray: 3 16;
-  animation: graphSpinDashRev 10s linear infinite;
+.graph-hub-ring-outer {
+  stroke-dasharray: 4 6;
+  animation: graphSpinDash 22s linear infinite;
 }
 `;
 
@@ -393,12 +389,11 @@ export default function Graph() {
       /* ── Anillos para nodos HUB secundarios ── */
       node.filter(d => d.isHub && d.type !== "platform")
         .append("circle")
-        .attr("class", "hub-outer-ring")
+        .attr("class", "graph-hub-ring-outer")
         .attr("r", d => d.size + 14)
         .attr("fill", "none")
         .attr("stroke", d => resolveColor(d, gColors, subColors))
         .attr("stroke-width", 0.5)
-        .attr("stroke-dasharray", "4 6")
         .attr("opacity", 0.3);
 
       node.filter(d => d.isHub && d.type !== "platform")
