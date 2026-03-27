@@ -1,2016 +1,1219 @@
-{
-  "nodes": [
-    {
-      "id": "burpsuiteacademy",
-      "type": "platform",
-      "platform": "burpsuiteacademy",
-      "size": 18,
-      "color": "#ff8000"
-    },
-    {
-      "id": "htb",
-      "type": "platform",
-      "platform": "htb",
-      "size": 18
-    },
-    {
-      "id": "thm",
-      "type": "platform",
-      "platform": "thm",
-      "size": 18,
-      "color": "#ff0000"
-    },
-    {
-      "id": "burpsuiteacademy/sqli",
-      "type": "category",
-      "platform": "burpsuiteacademy",
-      "depth": 2,
-      "size": 10
-    },
-    {
-      "id": "htb/sqli",
-      "type": "category",
-      "platform": "htb",
-      "depth": 2,
-      "size": 10
-    },
-    {
-      "id": "thm/ia",
-      "type": "category",
-      "platform": "thm",
-      "depth": 2,
-      "size": 10
-    },
-    {
-      "id": "thm/lab",
-      "type": "category",
-      "platform": "thm",
-      "depth": 2,
-      "size": 10
-    },
-    {
-      "id": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "type": "writeup",
-      "title": "Ataque de inyección SQL, consultando el tipo y versión de la base de datos en MySQL y Microsoft",
-      "platform": "burpsuiteacademy",
-      "folderPath": "burpsuiteacademy/sqli",
-      "difficulty": "easy",
-      "os": "linux",
-      "size": 12
-    },
-    {
-      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "type": "writeup",
-      "title": "Ataque de inyección SQL, listando el contenido de bases de datos en bases de datos que no son Oracle",
-      "platform": "burpsuiteacademy",
-      "folderPath": "burpsuiteacademy/sqli",
-      "difficulty": "easy",
-      "os": "linux",
-      "size": 12
-    },
-    {
-      "id": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "type": "writeup",
-      "title": "Ataque de inyección SQL, listando el contenido de la base de datos en Oracle",
-      "platform": "burpsuiteacademy",
-      "folderPath": "burpsuiteacademy/sqli",
-      "difficulty": "easy",
-      "os": "linux",
-      "size": 12.8
-    },
-    {
-      "id": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "type": "writeup",
-      "title": "Ataque UNION de inyección SQL, búsqueda de una columna que contiene texto",
-      "platform": "burpsuiteacademy",
-      "folderPath": "burpsuiteacademy/sqli",
-      "difficulty": "easy",
-      "os": "linux",
-      "size": 11.6
-    },
-    {
-      "id": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "type": "writeup",
-      "title": "Ataque UNION de inyección SQL, determinando el número de columnas devueltas por la consulta",
-      "platform": "burpsuiteacademy",
-      "folderPath": "burpsuiteacademy/sqli",
-      "difficulty": "easy",
-      "os": "linux",
-      "size": 11.6
-    },
-    {
-      "id": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "type": "writeup",
-      "title": "Ataque UNION de inyección SQL, recuperando datos de otras tablas",
-      "platform": "burpsuiteacademy",
-      "folderPath": "burpsuiteacademy/sqli",
-      "difficulty": "medium",
-      "os": "linux",
-      "size": 11.6
-    },
-    {
-      "id": "into-outfile-web-shell",
-      "type": "writeup",
-      "title": "INTO OUTFILE Web Shell",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "easy",
-      "os": "windows",
-      "size": 12.8
-    },
-    {
-      "id": "lab-final-rce-hash-admin",
-      "type": "writeup",
-      "title": "Lab Final RCE Hash Admin",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "medium",
-      "os": "windows",
-      "size": 13.600000000000001
-    },
-    {
-      "id": "like-and-busqueda-empleados",
-      "type": "writeup",
-      "title": "LIKE AND — Búsqueda Empleados",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "easy",
-      "os": "windows",
-      "size": 11.2
-    },
-    {
-      "id": "load-file-lectura-de-archivos",
-      "type": "writeup",
-      "title": "LOAD FILE Lectura de Archivos",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "easy",
-      "os": "windows",
-      "size": 11.6
-    },
-    {
-      "id": "mysql-basico-departamentos",
-      "type": "writeup",
-      "title": "MySQL Básico — Departamentos",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "easy",
-      "os": "windows",
-      "size": 11.6
-    },
-    {
-      "id": "operadores-sql",
-      "type": "writeup",
-      "title": "Operadores SQL",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "easy",
-      "os": "windows",
-      "size": 12
-    },
-    {
-      "id": "union-deteccion-de-columnas",
-      "type": "writeup",
-      "title": "UNION Detección de Columnas",
-      "platform": "htb",
-      "folderPath": "htb/sqli",
-      "difficulty": "easy",
-      "os": "windows",
-      "size": 11.6
-    },
-    {
-      "id": "model-poisoning",
-      "type": "writeup",
-      "title": "Model Poisoning",
-      "platform": "thm",
-      "folderPath": "thm/ia",
-      "difficulty": "medium",
-      "os": "windows",
-      "size": 11.6
-    },
-    {
-      "id": "farewell",
-      "type": "writeup",
-      "title": "Farewell",
-      "platform": "thm",
-      "folderPath": "thm/lab",
-      "difficulty": "medium",
-      "os": "linux",
-      "size": 14
-    },
-    {
-      "id": "padelify",
-      "type": "writeup",
-      "title": "Padelify",
-      "platform": "thm",
-      "folderPath": "thm/lab",
-      "difficulty": "medium",
-      "os": "linux",
-      "size": 12.4
-    },
-    {
-      "id": "sequence",
-      "type": "writeup",
-      "title": "Sequence",
-      "platform": "thm",
-      "folderPath": "thm/lab",
-      "difficulty": "medium",
-      "os": "linux",
-      "size": 13.600000000000001
-    },
-    {
-      "id": "linux",
-      "type": "os",
-      "count": 9,
-      "size": 20
-    },
-    {
-      "id": "easy",
-      "type": "difficulty",
-      "count": 11,
-      "size": 20,
-      "color": "#00ff88"
-    },
-    {
-      "id": "sql injection",
-      "type": "technique",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "union attack",
-      "type": "technique",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "fingerprint mysql",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "comentario #",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "@@version",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "burpsuite",
-      "type": "tool",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "sqli",
-      "type": "tag",
-      "count": 13,
-      "size": 20
-    },
-    {
-      "id": "web",
-      "type": "tag",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "union",
-      "type": "tag",
-      "count": 7,
-      "size": 20
-    },
-    {
-      "id": "mysql",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "apprentice",
-      "type": "tag",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "information_schema",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "enumeración de tablas y columnas",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "extracción de credenciales",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "practitioner",
-      "type": "tag",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "oracle",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "from dual",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "all_tables",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "all_tab_columns",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "enumeración completa de bd",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "identificación de columna string",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "order by",
-      "type": "technique",
-      "count": 4,
-      "size": 14
-    },
-    {
-      "id": "union select null",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "conteo de columnas",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "medium",
-      "type": "difficulty",
-      "count": 6,
-      "size": 18,
-      "color": "#ffcc00"
-    },
-    {
-      "id": "union select",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "windows",
-      "type": "os",
-      "count": 8,
-      "size": 20
-    },
-    {
-      "id": "union injection",
-      "type": "technique",
-      "count": 4,
-      "size": 14
-    },
-    {
-      "id": "into outfile",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "file write",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "web shell php",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "rce",
-      "type": "technique",
-      "count": 4,
-      "size": 14
-    },
-    {
-      "id": "browser",
-      "type": "tool",
-      "count": 4,
-      "size": 14
-    },
-    {
-      "id": "lab",
-      "type": "tag",
-      "count": 8,
-      "size": 20
-    },
-    {
-      "id": "htb",
-      "type": "tag",
-      "count": 7,
-      "size": 20
-    },
-    {
-      "id": "academy",
-      "type": "tag",
-      "count": 7,
-      "size": 20
-    },
-    {
-      "id": "file",
-      "type": "tag",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "webshell",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "login bypass sqli",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "information_schema enum",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "load_file",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "login",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "like",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "and",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "filtrado de resultados sql",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "mysql",
-      "type": "tool",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "file read",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "privilege enumeration",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "sql básico",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "select",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "show databases",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "show tables",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "operadores sql",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "or",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "not",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "count",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "detección de columnas",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "extracción de datos",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "data poisoning",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "model retraining",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "seq2seq training",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "envenenamiento de datos de entrenamiento",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "manipulación de modelo de lenguaje",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "navegador web",
-      "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "interfaz chat/contribute/train del lab",
-      "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "thm",
-      "type": "tag",
-      "count": 1,
-      "size": 8,
-      "color": "#ff0000"
-    },
-    {
-      "id": "data",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "medium",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "xss",
-      "type": "technique",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "cookie",
-      "type": "technique",
-      "count": 6,
-      "size": 18
-    },
-    {
-      "id": "waf",
-      "type": "technique",
-      "count": 4,
-      "size": 14
-    },
-    {
-      "id": "bruteforce",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "xforwardedfor",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "[[nmap]]",
-      "type": "tool",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "[[ffuf]]",
-      "type": "tool",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "[[burp suite]]",
-      "type": "tool",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "[[python http server]]",
-      "type": "tool",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "limitingbypass",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "bypass",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "eval",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "redteam",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "userenumeration",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "informationdisclosure",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "httponly",
-      "type": "technique",
-      "count": 4,
-      "size": 14
-    },
-    {
-      "id": "redteam",
-      "type": "technique",
-      "count": 3,
-      "size": 12
-    },
-    {
-      "id": "[[feroxbuster]]",
-      "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "lfi",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "ssrf",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "csrf",
-      "type": "technique",
-      "count": 2,
-      "size": 10
-    },
-    {
-      "id": "[[netcat]]",
-      "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "fileupload",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "dockerescape",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "reverseshell",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    }
-  ],
-  "links": [
-    {
-      "source": "burpsuiteacademy",
-      "target": "burpsuiteacademy/sqli",
-      "type": "struct"
-    },
-    {
-      "source": "burpsuiteacademy/sqli",
-      "target": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "type": "struct"
-    },
-    {
-      "source": "burpsuiteacademy/sqli",
-      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "type": "struct"
-    },
-    {
-      "source": "burpsuiteacademy/sqli",
-      "target": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "type": "struct"
-    },
-    {
-      "source": "burpsuiteacademy/sqli",
-      "target": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "type": "struct"
-    },
-    {
-      "source": "burpsuiteacademy/sqli",
-      "target": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "type": "struct"
-    },
-    {
-      "source": "burpsuiteacademy/sqli",
-      "target": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "type": "struct"
-    },
-    {
-      "source": "htb",
-      "target": "htb/sqli",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "into-outfile-web-shell",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "lab-final-rce-hash-admin",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "like-and-busqueda-empleados",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "load-file-lectura-de-archivos",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "mysql-basico-departamentos",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "operadores-sql",
-      "type": "struct"
-    },
-    {
-      "source": "htb/sqli",
-      "target": "union-deteccion-de-columnas",
-      "type": "struct"
-    },
-    {
-      "source": "thm",
-      "target": "thm/ia",
-      "type": "struct"
-    },
-    {
-      "source": "thm/ia",
-      "target": "model-poisoning",
-      "type": "struct"
-    },
-    {
-      "source": "thm",
-      "target": "thm/lab",
-      "type": "struct"
-    },
-    {
-      "source": "thm/lab",
-      "target": "farewell",
-      "type": "struct"
-    },
-    {
-      "source": "thm/lab",
-      "target": "padelify",
-      "type": "struct"
-    },
-    {
-      "source": "thm/lab",
-      "target": "sequence",
-      "type": "struct"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "sql injection",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "union attack",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "fingerprint mysql",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "comentario #",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "@@version",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "burpsuite",
-      "type": "tool"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "web",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "mysql",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
-      "target": "apprentice",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "sql injection",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "union attack",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "information_schema",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "enumeración de tablas y columnas",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "extracción de credenciales",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "burpsuite",
-      "type": "tool"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "web",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-bases-de-datos-en-bases-de-datos-que-no-son-oracle",
-      "target": "practitioner",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "sql injection",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "union attack",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "oracle",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "from dual",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "all_tables",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "all_tab_columns",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "enumeración completa de bd",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "burpsuite",
-      "type": "tool"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "web",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-de-inyeccion-sql-listando-el-contenido-de-la-base-de-datos-en-oracle",
-      "target": "practitioner",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "sql injection",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "union attack",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "identificación de columna string",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "order by",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "union select null",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "burpsuite",
-      "type": "tool"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "web",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-busqueda-de-una-columna-que-contiene-texto",
-      "target": "apprentice",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "sql injection",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "union attack",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "order by",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "conteo de columnas",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "union select null",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "burpsuite",
-      "type": "tool"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "web",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-determinando-el-numero-de-columnas-devueltas-por-la-consulta",
-      "target": "apprentice",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "medium",
-      "type": "difficulty"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "sql injection",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "union attack",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "extracción de credenciales",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "order by",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "union select",
-      "type": "technique"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "burpsuite",
-      "type": "tool"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "web",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "ataque-union-de-inyeccion-sql-recuperando-datos-de-otras-tablas",
-      "target": "practitioner",
-      "type": "tag"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "union injection",
-      "type": "technique"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "into outfile",
-      "type": "technique"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "file write",
-      "type": "technique"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "web shell php",
-      "type": "technique"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "rce",
-      "type": "technique"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "browser",
-      "type": "tool"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "file",
-      "type": "tag"
-    },
-    {
-      "source": "into-outfile-web-shell",
-      "target": "webshell",
-      "type": "tag"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "medium",
-      "type": "difficulty"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "login bypass sqli",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "union injection",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "information_schema enum",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "load_file",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "into outfile",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "web shell php",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "rce",
-      "type": "technique"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "browser",
-      "type": "tool"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "login",
-      "type": "tag"
-    },
-    {
-      "source": "lab-final-rce-hash-admin",
-      "target": "file",
-      "type": "tag"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "like",
-      "type": "technique"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "and",
-      "type": "technique"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "filtrado de resultados sql",
-      "type": "technique"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "mysql",
-      "type": "tool"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "like-and-busqueda-empleados",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "union injection",
-      "type": "technique"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "load_file",
-      "type": "technique"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "file read",
-      "type": "technique"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "privilege enumeration",
-      "type": "technique"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "browser",
-      "type": "tool"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "load-file-lectura-de-archivos",
-      "target": "file",
-      "type": "tag"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "sql básico",
-      "type": "technique"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "select",
-      "type": "technique"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "show databases",
-      "type": "technique"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "show tables",
-      "type": "technique"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "mysql",
-      "type": "tool"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "mysql-basico-departamentos",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "operadores sql",
-      "type": "technique"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "and",
-      "type": "technique"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "or",
-      "type": "technique"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "not",
-      "type": "technique"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "count",
-      "type": "technique"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "mysql",
-      "type": "tool"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "operadores-sql",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "easy",
-      "type": "difficulty"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "union injection",
-      "type": "technique"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "order by",
-      "type": "technique"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "detección de columnas",
-      "type": "technique"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "extracción de datos",
-      "type": "technique"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "browser",
-      "type": "tool"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "htb",
-      "type": "tag"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "academy",
-      "type": "tag"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "sqli",
-      "type": "tag"
-    },
-    {
-      "source": "union-deteccion-de-columnas",
-      "target": "union",
-      "type": "tag"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "windows",
-      "type": "os"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "medium",
-      "type": "difficulty"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "data poisoning",
-      "type": "technique"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "model retraining",
-      "type": "technique"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "seq2seq training",
-      "type": "technique"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "envenenamiento de datos de entrenamiento",
-      "type": "technique"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "manipulación de modelo de lenguaje",
-      "type": "technique"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "navegador web",
-      "type": "tool"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "interfaz chat/contribute/train del lab",
-      "type": "tool"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "lab",
-      "type": "tag"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "thm",
-      "type": "tag"
-    },
-    {
-      "source": "model-poisoning",
-      "target": "data",
-      "type": "tag"
-    },
-    {
-      "source": "farewell",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "farewell",
-      "target": "medium",
-      "type": "difficulty"
-    },
-    {
-      "source": "farewell",
-      "target": "xss",
-      "type": "technique"
-    },
-    {
-      "source": "farewell",
-      "target": "cookie",
-      "type": "technique"
-    },
-    {
-      "source": "farewell",
-      "target": "waf",
-      "type": "technique"
-    },
-    {
-      "source": "farewell",
-      "target": "bruteforce",
-      "type": "technique"
-    },
-    {
-      "source": "farewell",
-      "target": "xforwardedfor",
-      "type": "technique"
-    },
-    {
-      "source": "farewell",
-      "target": "[[nmap]]",
-      "type": "tool"
-    },
-    {
-      "source": "farewell",
-      "target": "[[ffuf]]",
-      "type": "tool"
-    },
-    {
-      "source": "farewell",
-      "target": "[[burp suite]]",
-      "type": "tool"
-    },
-    {
-      "source": "farewell",
-      "target": "[[python http server]]",
-      "type": "tool"
-    },
-    {
-      "source": "farewell",
-      "target": "limitingbypass",
-      "type": "tag"
-    },
-    {
-      "source": "farewell",
-      "target": "bypass",
-      "type": "tag"
-    },
-    {
-      "source": "farewell",
-      "target": "eval",
-      "type": "tag"
-    },
-    {
-      "source": "farewell",
-      "target": "redteam",
-      "type": "tag"
-    },
-    {
-      "source": "farewell",
-      "target": "userenumeration",
-      "type": "tag"
-    },
-    {
-      "source": "farewell",
-      "target": "informationdisclosure",
-      "type": "tag"
-    },
-    {
-      "source": "padelify",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "padelify",
-      "target": "medium",
-      "type": "difficulty"
-    },
-    {
-      "source": "padelify",
-      "target": "xss",
-      "type": "technique"
-    },
-    {
-      "source": "padelify",
-      "target": "cookie",
-      "type": "technique"
-    },
-    {
-      "source": "padelify",
-      "target": "httponly",
-      "type": "technique"
-    },
-    {
-      "source": "padelify",
-      "target": "redteam",
-      "type": "technique"
-    },
-    {
-      "source": "padelify",
-      "target": "waf",
-      "type": "technique"
-    },
-    {
-      "source": "padelify",
-      "target": "[[nmap]]",
-      "type": "tool"
-    },
-    {
-      "source": "padelify",
-      "target": "[[feroxbuster]]",
-      "type": "tool"
-    },
-    {
-      "source": "padelify",
-      "target": "[[ffuf]]",
-      "type": "tool"
-    },
-    {
-      "source": "padelify",
-      "target": "[[python http server]]",
-      "type": "tool"
-    },
-    {
-      "source": "padelify",
-      "target": "lfi",
-      "type": "tag"
-    },
-    {
-      "source": "sequence",
-      "target": "linux",
-      "type": "os"
-    },
-    {
-      "source": "sequence",
-      "target": "medium",
-      "type": "difficulty"
-    },
-    {
-      "source": "sequence",
-      "target": "xss",
-      "type": "technique"
-    },
-    {
-      "source": "sequence",
-      "target": "ssrf",
-      "type": "technique"
-    },
-    {
-      "source": "sequence",
-      "target": "cookie",
-      "type": "technique"
-    },
-    {
-      "source": "sequence",
-      "target": "httponly",
-      "type": "technique"
-    },
-    {
-      "source": "sequence",
-      "target": "csrf",
-      "type": "technique"
-    },
-    {
-      "source": "sequence",
-      "target": "[[nmap]]",
-      "type": "tool"
-    },
-    {
-      "source": "sequence",
-      "target": "[[ffuf]]",
-      "type": "tool"
-    },
-    {
-      "source": "sequence",
-      "target": "[[netcat]]",
-      "type": "tool"
-    },
-    {
-      "source": "sequence",
-      "target": "[[python http server]]",
-      "type": "tool"
-    },
-    {
-      "source": "sequence",
-      "target": "[[burp suite]]",
-      "type": "tool"
-    },
-    {
-      "source": "sequence",
-      "target": "redteam",
-      "type": "technique"
-    },
-    {
-      "source": "sequence",
-      "target": "fileupload",
-      "type": "tag"
-    },
-    {
-      "source": "sequence",
-      "target": "dockerescape",
-      "type": "tag"
-    },
-    {
-      "source": "sequence",
-      "target": "reverseshell",
-      "type": "tag"
-    }
-  ],
-  "colors": {
-    "platform": "#00ff88",
-    "category": "#00d4ff",
-    "writeup": "#7F77DD",
-    "os": "#ffcc00",
-    "difficulty": "#b06aff",
-    "technique": "#ff3366",
-    "tool": "#00ffcc",
-    "tag": "#EF9F27"
-  },
-  "subColors": {
-    "burpsuiteacademy": "#ff8000",
-    "thm": "#ff0000"
-  },
-  "meta": {
-    "totalWriteups": 17,
-    "totalPlatforms": 3,
-    "totalMeta": 95
+"use client";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+
+/* ═══════════════════════════════════════════════
+   CONSTANTES GLOBALES
+   ═══════════════════════════════════════════════ */
+const TYPE_COLOR = {
+  platform:  "#00ff88",
+  category:  "#00d4ff",
+  writeup:   "#7F77DD",
+  os:        "#ffcc00",
+  difficulty:"#b06aff",
+  technique: "#ff3366",
+  tool:      "#00ffcc",
+  tag:       "#EF9F27",
+};
+
+const TYPE_SIZE = {
+  platform:  18,
+  category:  10,
+  writeup:   7,
+  os:        10,
+  difficulty:9,
+  technique: 8,
+  tool:      8,
+  tag:       7,
+};
+
+const TYPE_LABEL = {
+  platform:  "Plataforma",
+  category:  "Carpeta",
+  writeup:   "Writeup",
+  os:        "Sistema OS",
+  difficulty:"Dificultad",
+  technique: "Técnica",
+  tool:      "Herramienta",
+  tag:       "Tag",
+};
+
+const DIFFICULTY_COLORS = {
+  easy:   "#00ff88",
+  medium: "#ffcc00",
+  hard:   "#ff8c00",
+  insane: "#ff3366",
+};
+
+/* Umbral de conexiones para adquirir rol de hub */
+const HUB_THRESHOLD = 10;
+
+/* Orden de aparición en animación */
+const ANIM_ORDER = ["platform","category","writeup","os","difficulty","technique","tool","tag"];
+
+/* IDs de posición horizontal por plataforma (se llena dinámicamente) */
+const PLATFORM_X = {};
+
+/* ═══════════════════════════════════════════════
+   UTILIDADES
+   ═══════════════════════════════════════════════ */
+
+/**
+ * Resuelve el color de un nodo considerando:
+ * 1. subColors por ID (override manual)
+ * 2. color directo en el nodo
+ * 3. color especial para difficulty
+ * 4. color por tipo
+ */
+function resolveColor(node, gColors = TYPE_COLOR, subColors = {}) {
+  if (!node) return "#4a6a7a";
+  if (subColors[node.id])   return subColors[node.id];
+  if (node.color)           return node.color;
+  if (node.type === "difficulty")
+    return DIFFICULTY_COLORS[node.id?.toLowerCase()] || gColors.difficulty || TYPE_COLOR.difficulty;
+  return gColors[node.type] || TYPE_COLOR[node.type] || "#4a6a7a";
+}
+
+/**
+ * Normaliza IDs duplicados entre tipos distintos.
+ * Añade prefijo "tag:", "tech:", "tool:" para evitar
+ * colisiones con nodos platform/category/writeup.
+ *
+ * Reglas:
+ *  - platform, category, writeup → sin prefijo (son únicos)
+ *  - os, difficulty              → prefijo "os:", "diff:"
+ *  - technique                   → prefijo "tech:"
+ *  - tool                        → prefijo "tool:"
+ *  - tag                         → prefijo "tag:"
+ */
+function normalizeGraphData(raw) {
+  const PREFIXED = new Set(["os","difficulty","technique","tool","tag"]);
+
+  const prefixId = (id, type) => {
+    if (!PREFIXED.has(type)) return id;
+    const map = { os:"os:", difficulty:"diff:", technique:"tech:", tool:"tool:", tag:"tag:" };
+    const p = map[type] || `${type}:`;
+    return id.startsWith(p) ? id : `${p}${id}`;
+  };
+
+  const nodes = raw.nodes.map(n => ({
+    ...n,
+    id: prefixId(n.id, n.type),
+  }));
+
+  const nodeIds = new Set(nodes.map(n => n.id));
+
+  const links = raw.links
+    .map(l => {
+      // Intenta resolver source/target con y sin prefijo
+      const resolveEnd = (val) => {
+        if (nodeIds.has(val)) return val;
+        // Busca el nodo original para saber su tipo y prefijarlo
+        const orig = raw.nodes.find(n => n.id === val);
+        if (!orig) return val;
+        return prefixId(val, orig.type);
+      };
+      return { ...l, source: resolveEnd(l.source), target: resolveEnd(l.target) };
+    })
+    .filter(l => l.source !== l.target && nodeIds.has(l.source) && nodeIds.has(l.target));
+
+  return { ...raw, nodes, links };
+}
+
+/* ═══════════════════════════════════════════════
+   COMPONENTE PRINCIPAL
+   ═══════════════════════════════════════════════ */
+export default function Graph() {
+  const router = useRouter();
+
+  /* Refs D3 */
+  const svgRef   = useRef(null);
+  const nodeRef  = useRef(null);
+  const linkRef  = useRef(null);
+  const simRef   = useRef(null);
+  const gRef     = useRef(null);
+  const allNodes = useRef([]);
+  const allLinks = useRef([]);
+
+  /* Estado React */
+  const [graphData,    setGraphData]    = useState(null);
+  const [loading,      setLoading]      = useState(true);
+  const [tooltip,      setTooltip]      = useState({ visible: false, x: 0, y: 0, node: null });
+  const [activeFilter, setActiveFilter] = useState({ type: "all", value: null });
+  const [animating,    setAnimating]    = useState(false);
+  const [animStep,     setAnimStep]     = useState(null);
+  const [showLinks,    setShowLinks]    = useState(true);
+  const [showLabels,   setShowLabels]   = useState(false);
+  const [openSection,  setOpenSection]  = useState(null);
+  const [isMobile,     setIsMobile]     = useState(false);
+  const [showPanel,    setShowPanel]    = useState(false);
+
+  /* Colores efectivos (pueden ser override del JSON) */
+  const gColors   = graphData?.colors    || TYPE_COLOR;
+  const subColors = graphData?.subColors || {};
+
+  /* ──────────────────────────────────────────────
+     Responsive check
+     ────────────────────────────────────────────── */
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  /* ──────────────────────────────────────────────
+     Carga de datos
+     ────────────────────────────────────────────── */
+  useEffect(() => {
+    fetch("/api/writeups/--graph")
+      .then(r => r.json())
+      .then(data => {
+        if (data?.nodes?.length) {
+          // Normalizar IDs duplicados antes de guardar
+          setGraphData(normalizeGraphData(data));
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  /* ──────────────────────────────────────────────
+     Grupos de filtros
+     ────────────────────────────────────────────── */
+  const filterGroups = graphData ? [
+    {
+      id: "platform",
+      label: "Plataforma",
+      values: [...new Set(graphData.nodes.filter(n => n.type === "platform").map(n => n.id))],
+    },
+    {
+      id: "category",
+      label: "Carpeta",
+      values: [...new Set(
+        graphData.nodes.filter(n => n.type === "category")
+          .map(n => ({ full: n.id, display: n.id.split("/").slice(1).join("/") }))
+          .filter(n => n.display)
+      )].reduce((acc, n) => {
+        if (!acc.find(a => a.display === n.display)) acc.push(n);
+        return acc;
+      }, []),
+    },
+    {
+      id: "os",
+      label: "Sistema OS",
+      values: [...new Set(graphData.nodes.filter(n => n.type === "os").map(n => n.id))],
+    },
+    {
+      id: "difficulty",
+      label: "Dificultad",
+      values: [...new Set(graphData.nodes.filter(n => n.type === "difficulty").map(n => n.id))],
+    },
+    {
+      id: "technique",
+      label: "Técnica",
+      values: [...new Set(graphData.nodes.filter(n => n.type === "technique").map(n => n.id))],
+    },
+    {
+      id: "tool",
+      label: "Herramienta",
+      values: [...new Set(graphData.nodes.filter(n => n.type === "tool").map(n => n.id))],
+    },
+    {
+      id: "tag",
+      label: "Tag",
+      values: [...new Set(graphData.nodes.filter(n => n.type === "tag").map(n => n.id))],
+    },
+  ] : [];
+
+  /* ──────────────────────────────────────────────
+     Lógica de filtrado
+     ────────────────────────────────────────────── */
+  function nodeMatchesFilter(node, filter) {
+    if (filter.type === "all") return true;
+    if (filter.type === "platform")
+      return node.id === filter.value || node.platform === filter.value;
+    if (filter.type === "category")
+      return node.id === filter.value || node.folderPath?.startsWith(filter.value);
+    if (filter.type === "os")
+      return node.id === filter.value || `os:${node.os}` === filter.value;
+    if (filter.type === "difficulty")
+      return node.id === filter.value || `diff:${node.difficulty}` === filter.value;
+    if (["technique", "tool", "tag"].includes(filter.type))
+      return node.id === filter.value || node.type === "writeup";
+    return false;
   }
+
+  /* ══════════════════════════════════════════════
+     INICIALIZACIÓN D3
+     ══════════════════════════════════════════════ */
+  useEffect(() => {
+    if (!graphData) return;
+
+    async function init() {
+      const d3        = await import("d3");
+      const container = svgRef.current?.parentElement;
+      if (!container) return;
+
+      const W = container.clientWidth;
+      const H = Math.max(500, Math.min(900, graphData.nodes.length * 3));
+
+      const svg = d3.select(svgRef.current).attr("width", W).attr("height", H);
+      svg.selectAll("*").remove();
+
+      /* Capa principal con zoom */
+      const g = svg.append("g");
+      gRef.current = g;
+      svg.call(
+        d3.zoom()
+          .scaleExtent([0.05, 5])
+          .on("zoom", e => g.attr("transform", e.transform))
+      );
+
+      /* Posiciones X por plataforma */
+      const platforms = [...new Set(graphData.nodes.filter(n => n.type === "platform").map(n => n.id))];
+      platforms.forEach((p, i) => {
+        PLATFORM_X[p] = W * ((i + 1) / (platforms.length + 1));
+      });
+
+      /* ── Preparar nodos y links ── */
+      const nodeIds = new Set(graphData.nodes.map(n => n.id));
+      const nodes   = graphData.nodes.map(n => ({ ...n, size: n.size || TYPE_SIZE[n.type] || 8 }));
+      const links   = graphData.links
+        .filter(l => l.source !== l.target)
+        .filter(l => nodeIds.has(l.source) && nodeIds.has(l.target))
+        .map(l => ({ ...l }));
+
+      allNodes.current = nodes;
+      allLinks.current = links;
+
+      /* ── Contar conexiones por nodo ── */
+      const connCount = new Map();
+      links.forEach(l => {
+        const s = typeof l.source === "object" ? l.source.id : l.source;
+        const t = typeof l.target === "object" ? l.target.id : l.target;
+        connCount.set(s, (connCount.get(s) || 0) + 1);
+        connCount.set(t, (connCount.get(t) || 0) + 1);
+      });
+
+      /* ── Asignar tamaño dinámico y rol de hub ── */
+      nodes.forEach(n => {
+        const conn    = connCount.get(n.id) || 0;
+        const base    = TYPE_SIZE[n.type] || 7;
+        const maxSize = {
+          platform:35, category:25, writeup:18,
+          os:20, difficulty:18, technique:25, tool:22, tag:22,
+        }[n.type] || 20;
+
+        n.size    = Math.min(base + conn * 1.2, maxSize);
+        n.connCount = conn;
+
+        /*
+         * ROL HUB:
+         *  - platform → siempre hub (nodo central)
+         *  - cualquier otro tipo → hub si tiene > HUB_THRESHOLD conexiones
+         */
+        n.isHub = n.type === "platform" || conn > HUB_THRESHOLD;
+      });
+
+      /* ── Color de link según tipo de target ── */
+      const linkStrokeColor = d => {
+        const target = typeof d.target === "object" ? d.target : nodes.find(n => n.id === d.target);
+        if (!target) return "#2a3a4a";
+        return resolveColor(target, gColors, subColors);
+      };
+
+      /* ── Simulación de fuerzas ── */
+      const sim = d3.forceSimulation(nodes)
+        .force("link",
+          d3.forceLink(links).id(d => d.id)
+            .distance(l => {
+              const tt = typeof l.target === "object" ? l.target.type : "";
+              if (tt === "category")   return 90;
+              if (tt === "writeup")    return 65;
+              if (tt === "os")         return 75;
+              if (tt === "difficulty") return 75;
+              if (tt === "technique")  return 70;
+              if (tt === "tool")       return 65;
+              if (tt === "tag")        return 70;
+              return 65;
+            })
+            .strength(l => {
+              const tt = typeof l.target === "object" ? l.target.type : "";
+              return ["tag","technique","tool","os","difficulty"].includes(tt) ? 0.08 : 0.6;
+            })
+        )
+        .force("charge",
+          d3.forceManyBody()
+            .strength(d => {
+              /* Hubs secundarios repelen más fuerte para crear espacio orbital */
+              if (d.type === "platform")   return -1000;
+              if (d.type === "category")   return -450;
+              if (d.isHub)                 return -600;   // hub secundario
+              if (d.type === "os")         return -300;
+              if (d.type === "difficulty") return -300;
+              if (d.type === "technique")  return -250;
+              if (d.type === "tool")       return -250;
+              if (d.type === "tag")        return -250;
+              return -200;
+            })
+            .distanceMax(600)
+        )
+        .force("x",
+          d3.forceX(d => PLATFORM_X[d.platform || d.id] || W / 2)
+            .strength(d => {
+              if (d.type === "platform") return 0.08;
+              if (["tag","technique","tool"].includes(d.type)) return 0.01;
+              return 0.05;
+            })
+        )
+        .force("y", d3.forceY(H / 2).strength(0.03))
+        .force("collision",
+          d3.forceCollide()
+            .radius(d => {
+              /* Los hubs necesitan más espacio libre a su alrededor */
+              const extra = d.isHub ? 18 : 10;
+              return (d.size || 6) + extra;
+            })
+            .strength(1)
+        )
+        .alphaDecay(0.01)
+        .velocityDecay(0.4);
+
+      simRef.current = sim;
+
+      /* ══════════════════════════════
+         RENDER: Links
+         ══════════════════════════════ */
+      const link = g.append("g").attr("class", "links")
+        .selectAll("line").data(links).join("line")
+        .attr("stroke", linkStrokeColor)
+        .attr("stroke-width", d => {
+          const tt = typeof d.target === "object" ? d.target.type : "";
+          return (tt === "category" || tt === "platform") ? 1 : 0.5;
+        })
+        .attr("stroke-opacity", d => {
+          const tt = typeof d.target === "object" ? d.target.type : "";
+          return (tt === "category" || tt === "writeup") ? 0.5 : 0.3;
+        });
+
+      linkRef.current = link;
+
+      /* ══════════════════════════════
+         RENDER: Nodos
+         ══════════════════════════════ */
+      const node = g.append("g").attr("class", "nodes")
+        .selectAll("g").data(nodes).join("g")
+        .call(
+          d3.drag()
+            .on("start", (e, d) => {
+              if (!e.active) sim.alphaTarget(0.3).restart();
+              d.fx = d.x; d.fy = d.y;
+            })
+            .on("drag", (e, d) => { d.fx = e.x; d.fy = e.y; })
+            .on("end",  (e, d) => {
+              if (!e.active) sim.alphaTarget(0);
+              if (!d.pinned) { d.fx = null; d.fy = null; }
+            })
+        );
+
+      /* ── Anillo externo para HUBS secundarios (tag/tool/technique con >10 links) ── */
+      node.filter(d => d.isHub && d.type !== "platform")
+        .append("circle")
+        .attr("class", "hub-outer-ring")
+        .attr("r", d => d.size + 14)
+        .attr("fill", "none")
+        .attr("stroke", d => resolveColor(d, gColors, subColors))
+        .attr("stroke-width", 0.5)
+        .attr("stroke-dasharray", "4 6")
+        .attr("opacity", 0.3);
+
+      node.filter(d => d.isHub && d.type !== "platform")
+        .append("circle")
+        .attr("class", "hub-inner-ring")
+        .attr("r", d => d.size + 7)
+        .attr("fill", "none")
+        .attr("stroke", d => resolveColor(d, gColors, subColors))
+        .attr("stroke-width", 0.4)
+        .attr("opacity", 0.2);
+
+      /* ── Anillo externo para PLATAFORMAS ── */
+      node.filter(d => d.type === "platform")
+        .append("circle")
+        .attr("r", d => d.size + 12)
+        .attr("fill", "none")
+        .attr("stroke", d => resolveColor(d, gColors, subColors))
+        .attr("stroke-width", 0.6)
+        .attr("stroke-dasharray", "5 8")
+        .attr("opacity", 0.2);
+
+      node.filter(d => d.type === "platform")
+        .append("circle")
+        .attr("r", d => d.size + 6)
+        .attr("fill", "none")
+        .attr("stroke", d => resolveColor(d, gColors, subColors))
+        .attr("stroke-width", 0.4)
+        .attr("opacity", 0.15);
+
+      /* ── Círculo principal del nodo ── */
+      node.append("circle")
+        .attr("r", d => d.size)
+        .attr("fill", d => resolveColor(d, gColors, subColors) + "18")
+        .attr("stroke", d => resolveColor(d, gColors, subColors))
+        .attr("stroke-width", d => {
+          if (d.type === "platform") return 1.8;
+          if (d.type === "category") return 1.2;
+          if (d.isHub)               return 1.4;
+          return 0.8;
+        })
+        .style("cursor", "pointer")
+        .on("mouseover", (e, d) =>
+          setTooltip({ visible: true, x: e.clientX, y: e.clientY, node: d })
+        )
+        .on("mousemove", e =>
+          setTooltip(t => ({ ...t, x: e.clientX, y: e.clientY }))
+        )
+        .on("mouseout", () =>
+          setTooltip(t => ({ ...t, visible: false }))
+        )
+        .on("click", (e, d) => {
+          e.stopPropagation();
+          /* Resaltar nodo + vecinos directos */
+          const connected = new Set([d.id]);
+          links.forEach(l => {
+            if (l.source.id === d.id) connected.add(l.target.id);
+            if (l.target.id === d.id) connected.add(l.source.id);
+          });
+          node.selectAll("circle")
+            .attr("opacity", n => connected.has(n.id) ? 1 : 0.05);
+          node.selectAll("text")
+            .attr("opacity", n => connected.has(n.id) ? 1 : 0.02);
+          link
+            .attr("stroke-opacity", l =>
+              l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.02
+            )
+            .attr("stroke-width", l =>
+              l.source.id === d.id || l.target.id === d.id ? 2.5 : 0.3
+            )
+            .attr("stroke", linkStrokeColor);
+        })
+        .on("dblclick", (e, d) => {
+          e.stopPropagation();
+          if (d.type === "writeup" && d.id) {
+            router.push(`/writeups/${d.id}`);
+            return;
+          }
+          /* Toggle pin */
+          d.pinned = !d.pinned;
+          d.fx     = d.pinned ? d.x : null;
+          d.fy     = d.pinned ? d.y : null;
+        });
+
+      /* ── Badge "HUB" para nodos secundarios con > HUB_THRESHOLD conexiones ── */
+      node.filter(d => d.isHub && d.type !== "platform")
+        .append("rect")
+        .attr("x", d =>  d.size - 2)
+        .attr("y", d => -d.size - 10)
+        .attr("width", 24)
+        .attr("height", 11)
+        .attr("rx", 5)
+        .attr("fill", d => resolveColor(d, gColors, subColors) + "30")
+        .attr("stroke", d => resolveColor(d, gColors, subColors))
+        .attr("stroke-width", 0.5)
+        .attr("pointer-events", "none");
+
+      node.filter(d => d.isHub && d.type !== "platform")
+        .append("text")
+        .text("HUB")
+        .attr("x", d =>  d.size + 10)
+        .attr("y", d => -d.size - 4)
+        .attr("text-anchor", "middle")
+        .attr("font-family", "monospace")
+        .attr("font-size", "6.5px")
+        .attr("letter-spacing", "0.5px")
+        .attr("fill", d => resolveColor(d, gColors, subColors))
+        .attr("pointer-events", "none");
+
+      /* ── Etiquetas de texto ── */
+      node.append("text")
+        .text(d => {
+          if (d.type === "category") return d.id.split("/").pop();
+          if (d.type === "writeup") {
+            const label = d.title || d.id;
+            return label.length > 15 ? label.slice(0, 15) + "…" : label;
+          }
+          // Para nodos prefijados, mostrar sin prefijo
+          const prefixes = ["os:","diff:","tech:","tool:","tag:"];
+          let label = d.id;
+          prefixes.forEach(p => { if (label.startsWith(p)) label = label.slice(p.length); });
+          return label;
+        })
+        .attr("dy", d => d.size + 11)
+        .attr("text-anchor", "middle")
+        .attr("fill", d => resolveColor(d, gColors, subColors))
+        .attr("font-family", "monospace")
+        .attr("font-size", d => d.type === "platform" ? "9px" : d.isHub ? "8px" : "7.5px")
+        .attr("letter-spacing", "0.5px")
+        .attr("pointer-events", "none")
+        .attr("opacity", 0);
+
+      /* ── Click en fondo: resetear selección ── */
+      svg.on("click", () => {
+        node.selectAll("circle").attr("opacity", 1);
+        node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
+        link
+          .attr("stroke", linkStrokeColor)
+          .attr("stroke-width", d => {
+            const tt = typeof d.target === "object" ? d.target.type : "";
+            return tt === "category" ? 1 : 0.6;
+          })
+          .attr("stroke-opacity", 0.35);
+      });
+
+      /* ── Tick: actualizar posiciones ── */
+      sim.on("tick", () => {
+        link
+          .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+        node.attr("transform", d => `translate(${d.x},${d.y})`);
+      });
+
+      /* ── Al finalizar: auto-zoom para encuadrar el grafo ── */
+      sim.on("end", () => {
+        const padding = 60;
+        const xs = nodes.map(d => d.x).filter(Boolean);
+        const ys = nodes.map(d => d.y).filter(Boolean);
+        if (!xs.length) return;
+        const x0 = Math.min(...xs) - padding, x1 = Math.max(...xs) + padding;
+        const y0 = Math.min(...ys) - padding, y1 = Math.max(...ys) + padding;
+        const scale = Math.min(W / (x1 - x0), H / (y1 - y0), 0.9);
+        const tx    = W / 2 - scale * (x0 + x1) / 2;
+        const ty    = H / 2 - scale * (y0 + y1) / 2;
+        svg.transition().duration(800)
+          .call(d3.zoom().transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+      });
+
+      nodeRef.current = node;
+    }
+
+    init();
+  }, [graphData]);
+
+  /* ──────────────────────────────────────────────
+     Efecto: sincronizar filtro activo con D3
+     ────────────────────────────────────────────── */
+  useEffect(() => {
+    const node = nodeRef.current;
+    const link = linkRef.current;
+    if (!node || !link) return;
+
+    if (activeFilter.type === "all") {
+      node.selectAll("circle").attr("opacity", 1);
+      node.selectAll("text").attr("opacity", 0.9);
+      link.attr("stroke-opacity", 0.7);
+      return;
+    }
+    node.selectAll("circle")
+      .attr("opacity", d => nodeMatchesFilter(d, activeFilter) ? 1 : 0.04);
+    node.selectAll("text")
+      .attr("opacity", d => nodeMatchesFilter(d, activeFilter) ? 1 : 0.02);
+    link.attr("stroke-opacity", l =>
+      nodeMatchesFilter(l.source, activeFilter) || nodeMatchesFilter(l.target, activeFilter)
+        ? 0.6 : 0.02
+    );
+  }, [activeFilter]);
+
+  /* ──────────────────────────────────────────────
+     Efecto: toggle visibilidad de links
+     ────────────────────────────────────────────── */
+  useEffect(() => {
+    const link = linkRef.current;
+    if (!link) return;
+    link.attr("stroke-opacity", d => {
+      if (!showLinks) return 0;
+      const tt = typeof d.target === "object" ? d.target.type : "";
+      return (tt === "category" || tt === "writeup") ? 0.5 : 0.3;
+    });
+  }, [showLinks]);
+
+  /* ──────────────────────────────────────────────
+     Animación de aparición por capas
+     ────────────────────────────────────────────── */
+  const runAnimation = useCallback(async () => {
+    const node = nodeRef.current;
+    const link = linkRef.current;
+    if (!node || !link || !graphData) return;
+
+    setAnimating(true);
+    node.selectAll("circle").attr("opacity", 0);
+    node.selectAll("text").attr("opacity", 0);
+    link.attr("stroke-opacity", 0);
+
+    const delay  = ms => new Promise(r => setTimeout(r, ms));
+    const nodes  = allNodes.current;
+    const links  = allLinks.current;
+
+    for (const groupType of ANIM_ORDER) {
+      const groupNodes = nodes.filter(n => n.type === groupType);
+      if (!groupNodes.length) continue;
+
+      setAnimStep(TYPE_LABEL[groupType] || groupType);
+
+      for (const n of groupNodes) {
+        node.filter(d => d.id === n.id).selectAll("circle")
+          .attr("opacity", 0).transition().duration(250).attr("opacity", 1);
+        node.filter(d => d.id === n.id).selectAll("text")
+          .attr("opacity", 0).transition().duration(250).attr("opacity", 0.9);
+        await delay(groupNodes.length > 20 ? 20 : 50);
+      }
+
+      /* Aparecer los links del grupo */
+      const groupLinks = links.filter(l => {
+        const src = typeof l.source === "object" ? l.source : nodes.find(n => n.id === l.source);
+        const tgt = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
+        return src?.type === groupType || tgt?.type === groupType;
+      });
+      for (const l of groupLinks) {
+        link.filter(d => d === l).transition().duration(200).attr("stroke-opacity", 0.7);
+        await delay(groupLinks.length > 80 ? 5 : 15);
+      }
+      await delay(250);
+    }
+
+    setAnimating(false);
+    setAnimStep(null);
+  }, [graphData]);
+
+  /* ──────────────────────────────────────────────
+     Helpers UI
+     ────────────────────────────────────────────── */
+  const setFilter = (type, value) => {
+    if (activeFilter.type === type && activeFilter.value === value)
+      setActiveFilter({ type: "all", value: null });
+    else
+      setActiveFilter({ type, value });
+  };
+
+  const totalNodes  = graphData?.nodes?.length      || 0;
+  const totalLinks  = graphData?.links?.length       || 0;
+  const totalWrites = graphData?.meta?.totalWriteups || 0;
+  const totalHubs   = graphData?.nodes?.filter(n =>
+    n.type !== "platform" && (allNodes.current.find(a => a.id === n.id)?.isHub)
+  ).length || 0;
+
+  /* ──────────────────────────────────────────────
+     Panel de filtros (reutilizable mobile/desktop)
+     ────────────────────────────────────────────── */
+  const FilterPanel = () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+      {/* Botón "Todos" */}
+      <button
+        onClick={() => setActiveFilter({ type: "all", value: null })}
+        style={{
+          fontFamily: "monospace", fontSize: "0.68rem", padding: "4px 10px",
+          cursor: "pointer", textAlign: "left", letterSpacing: "1px",
+          background: activeFilter.type === "all" ? "rgba(0,255,136,0.1)" : "transparent",
+          border: `1px solid ${activeFilter.type === "all" ? "#00ff88" : "#1a3a4a"}`,
+          color: activeFilter.type === "all" ? "#00ff88" : "#4a6a7a",
+          marginBottom: "0.3rem",
+        }}
+      >
+        // Todos
+      </button>
+
+      {filterGroups.map(group => (
+        <div key={group.id} style={{ marginBottom: "0.2rem" }}>
+          {/* Cabecera del grupo */}
+          <button
+            onClick={() => setOpenSection(openSection === group.id ? null : group.id)}
+            style={{
+              width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
+              padding: "4px 10px", cursor: "pointer", background: "transparent",
+              border: "1px solid #1a3a4a",
+              color: gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a",
+              textAlign: "left", display: "flex", justifyContent: "space-between",
+              alignItems: "center", letterSpacing: "1px",
+            }}
+          >
+            <span>{group.label}</span>
+            <span style={{
+              transform: openSection === group.id ? "rotate(90deg)" : "rotate(0deg)",
+              transition: "transform 0.2s", fontSize: "0.55rem",
+            }}>▶</span>
+          </button>
+
+          {/* Valores del grupo */}
+          {openSection === group.id && (
+            <div style={{
+              background: "#030810", border: "1px solid #1a3a4a",
+              borderTop: "none", maxHeight: "160px", overflowY: "auto",
+            }}>
+              {(group.id === "category"
+                ? group.values
+                : group.values.map(v => ({ full: v, display: v }))
+              ).map(item => {
+                const fullVal    = item.full    || item;
+                const displayVal = item.display || item;
+                // Mostrar label sin prefijo
+                const prefixes = ["os:","diff:","tech:","tool:","tag:"];
+                let cleanLabel = displayVal;
+                prefixes.forEach(p => { if (cleanLabel.startsWith(p)) cleanLabel = cleanLabel.slice(p.length); });
+
+                const isActive = activeFilter.type === group.id && activeFilter.value === fullVal;
+                const c = group.id === "difficulty"
+                  ? (DIFFICULTY_COLORS[fullVal?.toLowerCase().replace("diff:","")] || gColors.difficulty || TYPE_COLOR.difficulty)
+                  : (gColors[group.id] || TYPE_COLOR[group.id] || "#4a6a7a");
+
+                return (
+                  <button
+                    key={fullVal}
+                    onClick={() => setFilter(group.id, fullVal)}
+                    style={{
+                      width: "100%", fontFamily: "monospace", fontSize: "0.62rem",
+                      padding: "3px 12px", cursor: "pointer",
+                      background: isActive ? c + "18" : "transparent",
+                      border: "none",
+                      borderLeft: `2px solid ${isActive ? c : "transparent"}`,
+                      color: isActive ? c : "#4a6a7a",
+                      textAlign: "left", display: "flex", alignItems: "center", gap: "0.5rem",
+                    }}
+                  >
+                    <div style={{
+                      width: 4, height: 4, borderRadius: "50%",
+                      background: c, flexShrink: 0,
+                    }} />
+                    {cleanLabel}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  /* ══════════════════════════════════════════════
+     RENDER
+     ══════════════════════════════════════════════ */
+  return (
+    <section
+      id="graph"
+      style={{ background: "#050a0e", padding: "2rem 0", fontFamily: "monospace" }}
+    >
+      {/* ── Título ── */}
+      <div style={{
+        display: "flex", alignItems: "center", gap: "0.8rem",
+        marginBottom: "0.5rem", flexWrap: "wrap",
+      }}>
+        <span style={{ color: "#00ff88", fontSize: "0.85rem", flexShrink: 0 }}>03.</span>
+        <h2 style={{
+          fontSize: "1.4rem", fontWeight: 700, color: "#fff",
+          letterSpacing: "3px", textTransform: "uppercase", margin: 0,
+        }}>
+          Knowledge Graph
+        </h2>
+        <div style={{
+          flex: 1, height: "1px",
+          background: "linear-gradient(to right,#1a3a4a,transparent)",
+          minWidth: "20px",
+        }} />
+        {!loading && (
+          <span style={{ fontSize: "0.62rem", color: "#4a6a7a", flexShrink: 0 }}>
+            {totalWrites} writeups · {totalNodes} nodos · {totalLinks} links
+            {totalHubs > 0 && ` · ${totalHubs} hubs`}
+          </span>
+        )}
+      </div>
+
+      <p style={{ fontSize: "0.75rem", color: "#4a6a7a", marginBottom: "1.2rem" }}>
+        // Mapa interactivo — plataformas, carpetas, writeups, técnicas y hubs dinámicos
+      </p>
+
+      {/* ── Estado: cargando ── */}
+      {loading && (
+        <div style={{
+          background: "#050a0e", border: "1px solid #1a3a4a",
+          padding: "4rem", textAlign: "center",
+        }}>
+          <p style={{ color: "#00d4ff", fontSize: "0.85rem", letterSpacing: "2px" }}>
+            // Cargando grafo...
+          </p>
+        </div>
+      )}
+
+      {/* ── Estado: sin datos ── */}
+      {!loading && !graphData?.nodes?.length && (
+        <div style={{
+          background: "#050a0e", border: "1px solid #1a3a4a",
+          padding: "4rem", textAlign: "center",
+        }}>
+          <p style={{ color: "#4a6a7a", fontSize: "0.85rem", letterSpacing: "2px" }}>
+            // No hay writeups aún
+          </p>
+        </div>
+      )}
+
+      {/* ── Grafo principal ── */}
+      {!loading && graphData?.nodes?.length > 0 && (
+        <>
+          {/* Controles mobile */}
+          {isMobile && (
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.8rem" }}>
+              {[
+                {
+                  label:  animating ? `⟳ ${animStep}` : "▶ Animar",
+                  action: runAnimation,
+                  active: animating,
+                },
+                {
+                  label:  showLinks ? "⋯ Ocultar links" : "⋯ Links",
+                  action: () => setShowLinks(s => !s),
+                  active: showLinks,
+                },
+                {
+                  label:  "⊞ Filtros" + (activeFilter.type !== "all" ? " ●" : ""),
+                  action: () => setShowPanel(s => !s),
+                  active: showPanel,
+                },
+              ].map((btn, i) => (
+                <button
+                  key={i}
+                  onClick={btn.action}
+                  disabled={animating && i === 0}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.65rem", padding: "5px 12px",
+                    border: `1px solid ${btn.active ? "#00ff88" : "#1a3a4a"}`,
+                    background: btn.active ? "rgba(0,255,136,0.08)" : "transparent",
+                    color: btn.active ? "#00ff88" : "#4a6a7a",
+                    cursor: "pointer", letterSpacing: "1px",
+                  }}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Panel de filtros mobile */}
+          {isMobile && showPanel && (
+            <div style={{
+              background: "#060d14", border: "1px solid #1a3a4a",
+              padding: "0.8rem", marginBottom: "0.8rem",
+            }}>
+              <FilterPanel />
+            </div>
+          )}
+
+          {/* Contenedor del SVG */}
+          <div style={{
+            position: "relative", background: "#050a0e",
+            border: "1px solid #1a3a4a", overflow: "hidden",
+          }}>
+
+            {/* ── Barra de controles desktop (top-center) ── */}
+            {!isMobile && (
+              <div style={{
+                position: "absolute", top: 10, left: "50%",
+                transform: "translateX(-50%)", zIndex: 10,
+                display: "flex", gap: "6px", alignItems: "center",
+                backdropFilter: "blur(8px)",
+              }}>
+                {/* Buscador */}
+                <input
+                  type="text"
+                  placeholder="// buscar..."
+                  onChange={e => {
+                    const v    = e.target.value.toLowerCase();
+                    const node = nodeRef.current;
+                    const link = linkRef.current;
+                    if (!node || !link) return;
+                    node.selectAll("circle")
+                      .attr("opacity", d => !v ? 1 : d.id.toLowerCase().includes(v) ? 1 : 0.05);
+                    node.selectAll("text")
+                      .attr("opacity", d => !v ? 0.9 : d.id.toLowerCase().includes(v) ? 1 : 0.02);
+                    link.attr("stroke-opacity", l => {
+                      if (!v) return 0.7;
+                      return (l.source.id?.toLowerCase().includes(v) || l.target.id?.toLowerCase().includes(v))
+                        ? 0.9 : 0.02;
+                    });
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem",
+                    padding: "5px 12px", width: "160px",
+                    background: "rgba(5,10,14,0.95)", border: "1px solid #1a3a4a",
+                    color: "#c8d8e8", outline: "none",
+                    letterSpacing: "0.5px", caretColor: "#00ff88",
+                  }}
+                  onFocus={e  => (e.target.style.borderColor = "#00d4ff")}
+                  onBlur={e   => (e.target.style.borderColor = "#1a3a4a")}
+                />
+
+                {/* Reset zoom */}
+                <button
+                  onClick={async () => {
+                    const node = nodeRef.current;
+                    const link = linkRef.current;
+                    if (!node || !link) return;
+                    node.selectAll("circle").attr("opacity", 1);
+                    node.selectAll("text").attr("opacity", showLabels ? 0.9 : 0);
+                    link.attr("stroke-opacity", showLinks ? 0.7 : 0);
+                    const d3 = await import("d3");
+                    d3.select(svgRef.current).transition().duration(400)
+                      .call(d3.zoom().transform, d3.zoomIdentity);
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: "1px solid #1a3a4a", background: "rgba(5,10,14,0.95)",
+                    color: "#c8d8e8", cursor: "pointer", letterSpacing: "1px",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.borderColor = "#00d4ff"; e.currentTarget.style.color = "#00d4ff"; }}
+                  onMouseOut={e  => { e.currentTarget.style.borderColor = "#1a3a4a"; e.currentTarget.style.color = "#c8d8e8"; }}
+                >
+                  reset
+                </button>
+
+                {/* Toggle labels */}
+                <button
+                  onClick={() => {
+                    setShowLabels(s => {
+                      const next = !s;
+                      if (nodeRef.current)
+                        nodeRef.current.selectAll("text").attr("opacity", next ? 0.9 : 0);
+                      return next;
+                    });
+                  }}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${showLabels ? "#00ff88" : "#1a3a4a"}`,
+                    background: showLabels ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
+                    color: showLabels ? "#00ff88" : "#c8d8e8",
+                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  labels
+                </button>
+
+                {/* Animación */}
+                <button
+                  onClick={runAnimation}
+                  disabled={animating}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${animating ? "#00ff88" : "#1a3a4a"}`,
+                    background: animating ? "rgba(0,255,136,0.08)" : "rgba(5,10,14,0.95)",
+                    color: animating ? "#00ff88" : "#c8d8e8",
+                    cursor: animating ? "not-allowed" : "pointer",
+                    letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  {animating ? `⟳ ${animStep}` : "▶ animar"}
+                </button>
+
+                {/* Toggle links */}
+                <button
+                  onClick={() => setShowLinks(s => !s)}
+                  style={{
+                    fontFamily: "monospace", fontSize: "0.68rem", padding: "5px 14px",
+                    border: `1px solid ${showLinks ? "#00d4ff" : "#1a3a4a"}`,
+                    background: showLinks ? "rgba(0,212,255,0.08)" : "rgba(5,10,14,0.95)",
+                    color: showLinks ? "#00d4ff" : "#c8d8e8",
+                    cursor: "pointer", letterSpacing: "1px", transition: "all 0.2s",
+                  }}
+                >
+                  {showLinks ? "⋯ links" : "⋯ links"}
+                </button>
+              </div>
+            )}
+
+            {/* ── Leyenda de tipos (top-left) ── */}
+            {!isMobile && (
+              <div style={{
+                position: "absolute", top: 10, left: 10, zIndex: 10,
+                background: "rgba(5,10,14,0.92)", border: "1px solid #1a3a4a",
+                padding: "0.7rem 0.9rem", backdropFilter: "blur(8px)",
+              }}>
+                <div style={{
+                  fontSize: "0.55rem", color: "#4a6a7a",
+                  letterSpacing: "2px", marginBottom: "0.5rem",
+                }}>
+                  // TIPOS
+                </div>
+
+                {Object.entries(TYPE_LABEL).map(([type, label]) => (
+                  <div key={type} style={{
+                    display: "flex", alignItems: "center",
+                    gap: "6px", marginBottom: "4px",
+                  }}>
+                    <div style={{
+                      width: 7, height: 7, borderRadius: "50%",
+                      background: gColors[type] || TYPE_COLOR[type],
+                    }} />
+                    <span style={{ fontSize: "0.62rem", color: "#c8d8e8" }}>{label}</span>
+                  </div>
+                ))}
+
+                {/* Sub-leyenda dificultad */}
+                <div style={{
+                  marginTop: "6px", paddingTop: "6px",
+                  borderTop: "1px solid #1a3a4a",
+                }}>
+                  {Object.entries(DIFFICULTY_COLORS).map(([diff, color]) => (
+                    <div key={diff} style={{
+                      display: "flex", alignItems: "center",
+                      gap: "6px", marginBottom: "3px",
+                    }}>
+                      <div style={{ width: 7, height: 7, borderRadius: "50%", background: color }} />
+                      <span style={{
+                        fontSize: "0.60rem", color: "#4a6a7a",
+                        textTransform: "capitalize",
+                      }}>{diff}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Indicador hub */}
+                <div style={{
+                  marginTop: "6px", paddingTop: "6px",
+                  borderTop: "1px solid #1a3a4a",
+                }}>
+                  <div style={{
+                    display: "flex", alignItems: "center",
+                    gap: "6px", marginBottom: "2px",
+                  }}>
+                    <div style={{
+                      width: 9, height: 9, borderRadius: "50%",
+                      background: "transparent",
+                      border: "1.2px solid #EF9F27",
+                    }} />
+                    <span style={{ fontSize: "0.58rem", color: "#4a6a7a" }}>
+                      hub (&gt;{HUB_THRESHOLD} links)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── Panel de filtros desktop (top-right) ── */}
+            {!isMobile && (
+              <div style={{
+                position: "absolute", top: 10, right: 10, zIndex: 10, width: "160px",
+                background: "rgba(5,10,14,0.92)", border: "1px solid #1a3a4a",
+                padding: "0.7rem 0.9rem", backdropFilter: "blur(8px)",
+              }}>
+                <div style={{
+                  fontSize: "0.55rem", color: "#4a6a7a",
+                  letterSpacing: "2px", marginBottom: "0.5rem",
+                }}>
+                  // FILTRAR
+                </div>
+                <FilterPanel />
+              </div>
+            )}
+
+            {/* ── SVG principal ── */}
+            <svg ref={svgRef} style={{ width: "100%", display: "block" }} />
+
+            {/* ── Hint de controles ── */}
+            <div style={{
+              fontFamily: "monospace", fontSize: "0.6rem",
+              color: "#2a4a5a", textAlign: "center",
+              padding: "0.4rem", borderTop: "1px solid #1a3a4a",
+            }}>
+              {isMobile
+                ? "pinch → zoom · drag → mover · tap → conexiones"
+                : "scroll → zoom · drag → mover · click → resaltar · doble click writeup → abrir · doble click nodo → fijar"
+              }
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ══════════════════════════════════════════
+          TOOLTIP flotante
+          ══════════════════════════════════════════ */}
+      {tooltip.visible && tooltip.node && (
+        <div style={{
+          position: "fixed", zIndex: 2000, pointerEvents: "none",
+          left: Math.min(
+            tooltip.x + 14,
+            (typeof window !== "undefined" ? window.innerWidth : 800) - 230
+          ),
+          top: tooltip.y - 10,
+          background: "rgba(8,16,26,0.97)",
+          border: `1px solid ${resolveColor(tooltip.node, gColors, subColors)}44`,
+          padding: "0.8rem 1rem", minWidth: "180px",
+          fontFamily: "monospace",
+        }}>
+          {/* Tipo */}
+          <div style={{
+            fontSize: "0.55rem",
+            color: resolveColor(tooltip.node, gColors, subColors),
+            letterSpacing: "2px", marginBottom: "3px",
+          }}>
+            {TYPE_LABEL[tooltip.node.type]?.toUpperCase() || tooltip.node.type?.toUpperCase()}
+            {tooltip.node.isHub && (
+              <span style={{
+                marginLeft: "6px", fontSize: "0.5rem",
+                background: resolveColor(tooltip.node, gColors, subColors) + "22",
+                border: `1px solid ${resolveColor(tooltip.node, gColors, subColors)}`,
+                padding: "1px 5px", borderRadius: "4px",
+              }}>
+                HUB
+              </span>
+            )}
+          </div>
+
+          {/* Nombre */}
+          <div style={{
+            fontSize: "0.95rem", fontWeight: 700,
+            color: "#fff", marginBottom: "4px",
+          }}>
+            {tooltip.node.type === "writeup"
+              ? (tooltip.node.title || tooltip.node.id)
+              : tooltip.node.type === "category"
+              ? tooltip.node.id.split("/").pop()
+              : (() => {
+                  const prefixes = ["os:","diff:","tech:","tool:","tag:"];
+                  let label = tooltip.node.id;
+                  prefixes.forEach(p => { if (label.startsWith(p)) label = label.slice(p.length); });
+                  return label;
+                })()
+            }
+          </div>
+
+          {/* Info writeup */}
+          {tooltip.node.type === "writeup" && (
+            <>
+              {(tooltip.node.difficulty || tooltip.node.os) && (
+                <div style={{ fontSize: "0.62rem", color: "#4a6a7a", marginBottom: "4px" }}>
+                  {[tooltip.node.difficulty, tooltip.node.os].filter(Boolean).join(" · ")}
+                </div>
+              )}
+              <div style={{
+                fontSize: "0.6rem", color: "#00ff88", marginTop: "4px",
+                borderTop: "1px solid #1a3a4a", paddingTop: "4px",
+              }}>
+                doble click → ver write-up ↗
+              </div>
+            </>
+          )}
+
+          {/* Contador de conexiones */}
+          {["os","difficulty","technique","tool","tag"].includes(tooltip.node.type) && (
+            <div style={{ fontSize: "0.62rem", color: "#4a6a7a" }}>
+              {tooltip.node.connCount || tooltip.node.count || 1} conexión
+              {(tooltip.node.connCount || tooltip.node.count || 1) > 1 ? "es" : ""}
+              {tooltip.node.isHub && (
+                <span style={{ color: "#EF9F27", marginLeft: "4px" }}>
+                  · nodo hub
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
 }
