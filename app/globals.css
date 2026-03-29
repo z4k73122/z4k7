@@ -525,7 +525,7 @@ body::before {
   border: 1px solid #ff6b00;
 }
 .lab-platform.fortinet,
-.tryhackMe {
+.tryhackme {
   background: rgba(238, 49, 36, 0.1);
   color: #ee3124;
   border: 1px solid #ee3124;
