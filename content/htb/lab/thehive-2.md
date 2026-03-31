@@ -25,7 +25,7 @@ tools:
   - "Mimikatz"
 flags_list:
   - label: "etapa"
-    value: "insight\svc_deployer"
+    value: "insig-svc_deployer"
 summary: "Lab de HackTheBox categoría Blue Team / Defensive Security. Investigación de incidente utilizando TheHive SOAR platform. Análisis de timeline de eventos de seguridad para identificar al usuario que ejecutó Mimikatz. La tarea requiere acceder a la plataforma TheHive como analista, revisar la alerta de Mimikatz (ID 169066584), analizar la cronología de eventos y extraer el nombre de usuario del atacante en formato 'dominio\nombre_usuario'.  ---"
 steps:
 
@@ -123,7 +123,7 @@ steps:
     type: "flag"
     flag_items:
       - label: "etapa"
-        value: "insight\svc_deployer"
+        value: "insight-svc_deployer"
 
 lessons:
   - 'TheHive centraliza alertas de múltiples fuentes para investigación forense'
