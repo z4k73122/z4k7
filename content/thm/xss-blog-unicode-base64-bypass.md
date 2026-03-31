@@ -78,7 +78,7 @@ steps:
           `document.cookie`
           Sin embargo, no decodifica:
       - kind: "bullet"
-        text: "Unicode escapes (\uXXXX)"
+        text: "Unicode escapes (uXXXX)"
       - kind: "bullet"
         text: "HTML entities (&#xXX;)"
       - kind: "bullet"
