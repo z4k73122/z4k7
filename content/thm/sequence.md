@@ -19,10 +19,10 @@ tags:
   - "FileUpload"
   - "DockerEscape"
 techniques:
-  - "[[XSS#XSS almacenado]]"
-  - "[[CSRF Token Débil]]"
-  - "[[SSRF]]"
-  - "[[File Upload Sin Restricciones]]"
+  - "XSS#XSS almacenado"
+  - "CSRF Token Débil"
+  - "SSRF"
+  - "File Upload Sin Restricciones"
 tools:
   - "Nmap"
   - "ffuf"
