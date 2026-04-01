@@ -14,11 +14,11 @@ tags:
   - "Unicode"
   - "Base64"
   - "Blog"
+  - "WAF"
   - "redteam"
   - "x0D"
 techniques:
   - "XSS"
-  - "WAF"
   - "Unicode Encoding"
   - "Base64 Encoding"
   - "HTML Entity Encoding"
