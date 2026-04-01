@@ -15,10 +15,10 @@ tags:
   - "Bypass"
   - "Templates"
   - "redteam"
+  - "WAF"
 techniques:
   - "SSTI"
   - "Server-Side Template Injection"
-  - "WAF"
   - "RCE"
 tools:
   - "Burp Suite"
