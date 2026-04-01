@@ -10,14 +10,13 @@ date: "2026-03-13"
 year: "2026"
 status: "pwned"
 tags:
-  - "XSS"
   - "Cookie"
   - "HttpOnly"
   - "redteam"
   - "WAF"
   - "LFI"
 techniques:
-  - "XSS#XSS almacenado"
+  - "XSS almacenado"
   - "LFI - WAF Bypass URL Encoding"
 tools:
   - "Nmap"
