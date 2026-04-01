@@ -11,7 +11,6 @@ year: "2026"
 status: "pwned"
 tags:
   - "data"
-  - "medium"
 techniques:
   - "Data Poisoning"
   - "Model Retraining"
