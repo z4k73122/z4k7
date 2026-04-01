@@ -10,7 +10,6 @@ date: "2026-03-29"
 year: "2026"
 status: "pwned"
 tags:
-  - "SSTI"
   - "RCE"
   - "Bypass"
   - "Templates"
