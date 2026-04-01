@@ -13,7 +13,6 @@ tags:
   - "SQLi"
   - "UNION"
   - "Bypass"
-  - "WAF"
   - "Search"
   - "redteam"
 techniques:
