@@ -22,11 +22,11 @@ tags:
   - "UserEnumeration"
   - "InformationDisclosure"
 techniques:
-  - "[[User Enumeration via JSON Response]]"
-  - "[[Brute Force Script Python WAF Bypass]]"
-  - "[[WAF Bypass X-Forwarded-For]]"
-  - "[[XSS#XSS almacenado]]"
-  - "[[WAF Bypass XSS Base64 eval]]"
+  - "User Enumeration via JSON Response"
+  - "Brute Force Script Python WAF Bypass"
+  - "WAF Bypass X-Forwarded-For"
+  - "XSS#XSS almacenado"
+  - "WAF Bypass XSS Base64 eval"
 tools:
   - "Nmap"
   - "ffuf"
