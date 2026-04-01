@@ -10,7 +10,6 @@ date: "2026-03-21"
 year: "2026"
 status: "pwned"
 tags:
-  - "XSS"
   - "Cookie"
   - "WAF"
   - "BruteForce"
@@ -25,7 +24,7 @@ techniques:
   - "User Enumeration via JSON Response"
   - "Brute Force Script Python WAF Bypass"
   - "WAF Bypass X-Forwarded-For"
-  - "XSS#XSS almacenado"
+  - "XSS almacenado"
   - "WAF Bypass XSS Base64 eval"
 tools:
   - "Nmap"
