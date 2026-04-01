@@ -10,7 +10,6 @@ date: "2026-03-10"
 year: "2026"
 status: "pwned"
 tags:
-  - "SSRF"
   - "Cookie"
   - "HttpOnly"
   - "CSRF"
