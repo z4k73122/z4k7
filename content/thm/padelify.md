@@ -17,8 +17,8 @@ tags:
   - "WAF"
   - "LFI"
 techniques:
-  - "[[XSS#XSS almacenado]]"
-  - "[[LFI - WAF Bypass URL Encoding]]"
+  - "XSS#XSS almacenado"
+  - "LFI - WAF Bypass URL Encoding"
 tools:
   - "Nmap"
   - "Feroxbuster"
