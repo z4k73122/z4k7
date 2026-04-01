@@ -13,7 +13,6 @@ tags:
   - "SSTI"
   - "RCE"
   - "Bypass"
-  - "WAF"
   - "Templates"
   - "redteam"
 techniques:
