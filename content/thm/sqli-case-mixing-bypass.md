@@ -17,7 +17,6 @@ tags:
   - "redteam"
 techniques:
   - "SQL Injection"
-  - "WAF"
   - "Case Mixing"
 tools:
   - "Burp Suite"
