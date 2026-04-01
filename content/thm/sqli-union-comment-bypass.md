@@ -15,10 +15,10 @@ tags:
   - "Bypass"
   - "Search"
   - "redteam"
+  - "WAF"
 techniques:
   - "SQL Injection"
   - "UNION SELECT"
-  - "WAF"
   - "Comment Injection"
   - "Database Enumeration"
 tools:
