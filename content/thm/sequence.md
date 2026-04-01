@@ -10,7 +10,6 @@ date: "2026-03-10"
 year: "2026"
 status: "pwned"
 tags:
-  - "XSS"
   - "SSRF"
   - "Cookie"
   - "HttpOnly"
@@ -19,7 +18,7 @@ tags:
   - "FileUpload"
   - "DockerEscape"
 techniques:
-  - "XSS#XSS almacenado"
+  - "XSS almacenado"
   - "CSRF Token Débil"
   - "SSRF"
   - "File Upload Sin Restricciones"
