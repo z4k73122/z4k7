@@ -13,7 +13,6 @@ tags:
   - "Bypass"
   - "Unicode"
   - "Base64"
-  - "WAF"
   - "Blog"
   - "redteam"
   - "x0D"
