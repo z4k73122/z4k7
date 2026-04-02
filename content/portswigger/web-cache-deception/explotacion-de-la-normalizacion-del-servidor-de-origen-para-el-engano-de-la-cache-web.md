@@ -3,7 +3,7 @@ title: "Explotación de la normalización del servidor de origen para el engaño
 platform: "PortSwigger"
 os: "Windows"
 difficulty: "Medium"
-ip: "0a49009703e072eb80ce0352009500c8"
+ip: "0a490097"
 slug: "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web"
 author: "Z4k7"
 date: "2026-04-01"
