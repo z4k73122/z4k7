@@ -14,13 +14,13 @@ tags:
   - "BurpSuite_Academy"
   - "Explotaci"
 techniques:
-  - "[[Web Cache Deception]]"
+  - "Web Cache Deception"
   - "Normalización de delimitadores"
   - "Cache poisoning"
 tools:
-  - "[[Burp Suite]]"
+  - "Burp Suite"
   - "Intruder"
-  - "Repeater)"
+  - "Repeater"
 flags_list:
   - label: "API Key"
     value: "G2qpwjQ039AYT7ZpW90sU6pQOf03Zp8O"
