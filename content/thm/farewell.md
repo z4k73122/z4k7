@@ -29,7 +29,7 @@ techniques:
 tools:
   - "Nmap"
   - "ffuf"
-  - "Burp Suite"
+  - "BurpSuite"
   - "Python HTTP Server"
 flags_list:
   - label: "Usuario"
