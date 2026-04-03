@@ -22,7 +22,7 @@ techniques:
   - "HTTP Method Change"
   - "Database Enumeration"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Curl"
   - "Python"
 flags_list:
