@@ -19,7 +19,7 @@ techniques:
   - "SQL Injection"
   - "Case Mixing"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Curl"
 flags_list:
   - label: "user"
