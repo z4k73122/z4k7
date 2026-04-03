@@ -18,7 +18,7 @@ tags:
 techniques:
   - "Web Cache Deception"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
 flags_list:
   - label: "API Key"
     value: "3G1dpWg6oe4cbi97Cffwmp64WCgeT9pW"
