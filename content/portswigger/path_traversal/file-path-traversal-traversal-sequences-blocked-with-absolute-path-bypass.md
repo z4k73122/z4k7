@@ -18,7 +18,7 @@ techniques:
   - "Absolute Path Bypass"
   - "Rutas Absolutas"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Browser"
 flags_list:
   - label: "user"
