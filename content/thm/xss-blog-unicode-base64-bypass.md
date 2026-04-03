@@ -23,7 +23,7 @@ techniques:
   - "Base64 Encoding"
   - "HTML Entity Encoding"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Curl"
   - "Python"
 flags_list:
