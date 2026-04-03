@@ -18,7 +18,7 @@ techniques:
   - "Normalización de delimitadores"
   - "Cache poisoning"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Intruder"
   - "Repeater"
 flags_list:
