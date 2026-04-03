@@ -12,13 +12,12 @@ status: "pwned"
 tags:
   - "Path_Traversal"
   - "Web_Vulnerability"
-  - "BurpSuite"
 techniques:
   - "Path Traversal"
   - "Directory Traversal"
   - "Secuencias de Recorrido Básicas"
 tools:
-  - "[[Burp Suite]]"
+  - "Burp Suite"
   - "Browser"
 flags_list:
   - label: "user"
