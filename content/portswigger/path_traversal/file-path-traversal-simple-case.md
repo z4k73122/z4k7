@@ -17,7 +17,7 @@ techniques:
   - "Directory Traversal"
   - "Secuencias de Recorrido Básicas"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Browser"
 flags_list:
   - label: "user"
