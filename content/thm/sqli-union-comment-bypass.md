@@ -22,7 +22,7 @@ techniques:
   - "Comment Injection"
   - "Database Enumeration"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Curl"
   - "Python"
 flags_list:
