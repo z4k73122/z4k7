@@ -18,7 +18,7 @@ techniques:
   - "URL Encoding"
   - "Double URL Encoding"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Browser"
   - "CyberChef"
 flags_list:
