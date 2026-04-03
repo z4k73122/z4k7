@@ -17,7 +17,7 @@ techniques:
   - "Path Traversal"
   - "Start Path Validation Bypass"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Browser"
 flags_list:
   - label: "user"
