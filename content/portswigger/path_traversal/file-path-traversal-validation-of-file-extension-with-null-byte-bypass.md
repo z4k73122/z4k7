@@ -18,7 +18,7 @@ techniques:
   - "Null Byte Injection"
   - "Extension Validation Bypass"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Browser"
 flags_list:
   - label: "user"
