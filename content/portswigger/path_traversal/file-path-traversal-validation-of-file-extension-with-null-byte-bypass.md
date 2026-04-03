@@ -12,7 +12,6 @@ status: "pwned"
 tags:
   - "Path_Traversal"
   - "Web_Vulnerability"
-  - "BurpSuite"
   - "Bypass"
 techniques:
   - "Path Traversal"
