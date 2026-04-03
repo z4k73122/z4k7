@@ -20,7 +20,7 @@ techniques:
   - "Server-Side Template Injection"
   - "RCE"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Python"
   - "Curl"
 flags_list:
