@@ -18,7 +18,7 @@ techniques:
   - "Nested Sequences"
   - "Non-Recursive Stripping"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Browser"
 flags_list:
   - label: "user"
