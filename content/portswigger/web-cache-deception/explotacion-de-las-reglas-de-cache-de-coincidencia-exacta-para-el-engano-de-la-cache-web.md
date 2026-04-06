@@ -1,6 +1,6 @@
 ---
 title: "Explotación de las reglas de caché de coincidencia exacta para el engaño de la caché web"
-platform: "HackTheBox"
+platform: "PortSwigger"
 os: "Windows"
 difficulty: "Insane"
 ip: "10.10.10.XXX"
