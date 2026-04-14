@@ -10,7 +10,6 @@ date: "2026-04-14"
 year: "2026"
 status: "pwned"
 tags:
-  - "XSS"
   - "Web_Security"
 techniques:
   - "Stored XSS"
