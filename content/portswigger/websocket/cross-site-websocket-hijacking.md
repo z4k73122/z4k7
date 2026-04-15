@@ -20,7 +20,7 @@ techniques:
   - "JavaScript WebSocket API"
   - "Fetch API"
 tools:
-  - "Burp Suite"
+  - "BurpSuite"
   - "Exploit Server"
   - "Browser DevTools"
 flags_list:
