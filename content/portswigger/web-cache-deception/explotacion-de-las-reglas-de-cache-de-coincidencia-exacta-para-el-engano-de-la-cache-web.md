@@ -22,7 +22,7 @@ techniques:
   - "Delimiter Manipulation"
 tools:
   - "BurpSuite"
-  - "Burp Intruder"
+  - "Intruder"
 flags_list:
   - label: "user"
     value: "hash_aqui"
