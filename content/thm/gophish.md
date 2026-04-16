@@ -12,15 +12,12 @@ status: "pwned"
 tags:
   - "phishing"
   - "social"
-  - "ececec"
-  - "f4f4f4"
-  - "ffffff"
 techniques:
   - "Phishing"
   - "Suplantación de identidad"
   - "Ingeniería social"
 tools:
-  - "GoPhish"
+  - "GoPhish-"
 flags_list:
   - label: "user"
     value: "martin@acmeitsupport.thm"
