@@ -29,7 +29,7 @@ flags_list:
     value: "hash_aqui"
   - label: "root"
     value: "hash_aqui"
-summary: "Lab de BurpSuite Academy que explota DOM XSS mediante eval() inseguro de JSON. La aplicación realiza AJAX request a un endpoint que devuelve JSON con datos de búsqueda. El código vulnerable usa eval('var searchResultsObj = ' + this.responseText) para parsear la respuesta. Cadena de ataque: enviar payload con escape de quotes (\') para salir del JSON → inyectar código JavaScript → cerrar JSON con } → comentar resto con // → ejecutar alert(). Técnicas: JSON injection, eval() RCE, quote escaping, comment injection."
+summary: "Lab de BurpSuite Academy que explota DOM XSS mediante eval() inseguro de JSON. La aplicación realiza AJAX request a un endpoint que devuelve JSON con datos de búsqueda. El código vulnerable usa eval('var searchResultsObj = ' + this.responseText) para parsear la respuesta. Cadena de ataque: enviar payload con escape de quotes (\\') para salir del JSON → inyectar código JavaScript → cerrar JSON con } → comentar resto con // → ejecutar alert(). Técnicas: JSON injection, eval() RCE, quote escaping, comment injection."
 steps:
 
   - id: "exploit_1"
