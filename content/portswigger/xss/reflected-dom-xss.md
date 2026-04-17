@@ -187,7 +187,7 @@ steps:
       - kind: "callout"
         type: "warning"
         label: "Análisis de quote escaping"
-        text: "El servidor escapa las comillas dobles en el JSON con un backslash `\`. Esto es correcto para JSON válido. Sin embargo, cuando eval() procesa la cadena, el backslash se consume como carácter de escape — lo que significa que el quote se convierte en un quote literal en el código JavaScript que se evalúa. Este es el vector de explotación."
+        text: "El servidor escapa las comillas dobles en el JSON con un backslash `\\`. Esto es correcto para JSON válido. Sin embargo, cuando eval() procesa la cadena, el backslash se consume como carácter de escape — lo que significa que el quote se convierte en un quote literal en el código JavaScript que se evalúa. Este es el vector de explotación."
 
   - id: "exploit_1"
     num: "04"
