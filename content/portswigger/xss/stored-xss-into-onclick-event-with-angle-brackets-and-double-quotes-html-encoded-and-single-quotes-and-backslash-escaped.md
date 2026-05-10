@@ -65,7 +65,7 @@ steps:
       - kind: "callout"
         type: "tip"
         label: "Agente"
-        text: "Este laboratorio es más restrictivo que el anterior: - `<` y `>` están codificados en HTML - `'` está codificado en HTML (`&quot;`) - `'` está escapado (convertido a `\'`) - `\` está escapado (convertido a `\\`) El truco es que si enviamos `&apos;` (entidad HTML para comilla simple), el servidor lo decodificará a `'` cuando sea almacenado, pero lo escapará a `\'` para proteger. Sin embargo, la doble transformación puede resultar en una comilla simple literal."
+        text: "Este laboratorio es más restrictivo que el anterior: - `<` y `>` están codificados en HTML - `'` está codificado en HTML (`&quot;`) - `'` está escapado (convertido a `\\'`) - `\\` está escapado (convertido a `\\`) El truco es que si enviamos `&apos;` (entidad HTML para comilla simple), el servidor lo decodificará a `'` cuando sea almacenado, pero lo escapará a `\\'` para proteger. Sin embargo, la doble transformación puede resultar en una comilla simple literal."
 
   - id: "enum_1"
     num: "03"
