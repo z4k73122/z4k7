@@ -98,7 +98,7 @@ steps:
       - kind: "callout"
         type: "tip"
         label: "Agente"
-        text: "El payload `\';alert(document.domain)//` funciona así: - `\` escapa la barra invertida que el servidor añadió - `'` cierra la cadena JavaScript - `;alert(document.domain)` ejecuta nuestro código - `//` comenta el resto  Explicación técnica: El servidor escapa comillas simples a `\'`, pero cuando nosotros enviamos `\'`, el servidor lo escapa nuevamente a `\\'`. Sin embargo, en JavaScript, `\\` es una barra invertida literal, por lo que la comilla simple siguiente es interpretada como fin de cadena, no como carácter escapado."
+        text: "El payload `\\';alert(document.domain)//` funciona así: - `\\` escapa la barra invertida que el servidor añadió - `'` cierra la cadena JavaScript - `;alert(document.domain)` ejecuta nuestro código - `//` comenta el resto  Explicación técnica: El servidor escapa comillas simples a `\\'`, pero cuando nosotros enviamos `\\'`, el servidor lo escapa nuevamente a `\\'`. Sin embargo, en JavaScript, `\\` es una barra invertida literal, por lo que la comilla simple siguiente es interpretada como fin de cadena, no como carácter escapado."
 
   - id: "exploit_1"
     num: "04"
@@ -114,7 +114,7 @@ steps:
           document.write('<img src="/resources/images/tracker.gif?searchTerms='+encodeURIComponent(searchTerms)+'">');
       - kind: "note"
         text: |
-          Cuando el servidor recibe `\';alert(document.domain)//`, lo escapa a:
+          Cuando el servidor recibe `\\';alert(document.domain)//`, lo escapa a:
       - kind: "code"
         lang: "JAVASCRIPT"
         code: |
