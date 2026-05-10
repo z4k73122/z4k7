@@ -26,7 +26,7 @@ tools:
   - "ffuf"
   - "Netcat"
   - "Python HTTP Server"
-  - "Burp Suite"
+  - "BurpSuite"
 flags_list:
   - label: "Email"
     value: "software@review.thm"
