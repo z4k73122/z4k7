@@ -57,7 +57,7 @@ steps:
       - kind: "callout"
         type: "tip"
         label: "Agente"
-        text: "Este laboratorio añade una capa adicional de protección: las comillas simples están escapadas (convertidas a `\'`). Esto previene el simple `'` escape del laboratorio anterior. Necesitamos un bypass diferente."
+        text: "Este laboratorio añade una capa adicional de protección: las comillas simples están escapadas (convertidas a `\\'`). Esto previene el simple `'` escape del laboratorio anterior. Necesitamos un bypass diferente."
 
   - id: "enum_1"
     num: "03"
