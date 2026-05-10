@@ -5,7 +5,6 @@ import Labs from "@/components/Labs";
 import Graph from "@/components/Graph";
 import Certs from "@/components/Certs";
 import Contact from "@/components/Contact";
-import TrafficValidator from "@/components/TrafficValidator";
 export default function Home() {
   return (
     <main>
@@ -15,7 +14,6 @@ export default function Home() {
       <Labs />
       <Graph />
       <Certs />
-      <TrafficValidator />
       <Contact />
     </main>
   );

@@ -1,3 +1,4 @@
+import { trackPageVisit } from "@/lib/traffic-tracker";
 import { Rajdhani, Share_Tech_Mono } from "next/font/google";
 import "./globals.css";
 
