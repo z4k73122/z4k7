@@ -138,7 +138,7 @@ steps:
       - kind: "callout"
         type: "tip"
         label: "Agente"
-        text: "Las protecciones Unicode-encoding no protegen contra template literals porque: - Unicode-encoding se aplica a caracteres de texto (< > ' ' \) - No se aplica a la sintaxis de JavaScript como `${}` - Las llaves y dólar no necesitan escaparse en template literals - La interpolación ocurre automáticamente sin necesidad de delimitadores adicionales"
+        text: "Las protecciones Unicode-encoding no protegen contra template literals porque: - Unicode-encoding se aplica a caracteres de texto (< > ' ' \\) - No se aplica a la sintaxis de JavaScript como `${}` - Las llaves y dólar no necesitan escaparse en template literals - La interpolación ocurre automáticamente sin necesidad de delimitadores adicionales"
 
   - id: "exploit"
     num: "05"
