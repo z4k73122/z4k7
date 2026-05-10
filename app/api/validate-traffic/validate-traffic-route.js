@@ -2,7 +2,12 @@
 import { NextResponse } from "next/server";
 
 // Datos de IPs conocidas como sospechosas (base de datos simulada)
-const SUSPICIOUS_IPS = ["10.0.0.1", "192.168.100.50", "172.16.0.1"];
+const SUSPICIOUS_IPS = [
+  "10.0.0.1",
+  "192.168.100.50",
+  "172.16.0.1",
+  "172.16.0.1",
+];
 
 // Límites para detección de anomalías
 const ANOMALY_THRESHOLDS = {
