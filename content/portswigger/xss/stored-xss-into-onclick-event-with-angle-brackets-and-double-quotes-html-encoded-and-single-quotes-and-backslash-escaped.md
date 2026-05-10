@@ -118,7 +118,7 @@ steps:
       - kind: "callout"
         type: "tip"
         label: "Agente"
-        text: "El bypass de doble transformación funciona así: 1. Atacante envía: `&apos;-alert(document.domain)-&apos;` 2. Servidor decodifica HTML entities: `'-alert(document.domain)-'` 3. Servidor intenta proteger comillas escapándolas: `\'-alert(document.domain)-\'` 4. En JavaScript, `\` seguido de `'` es una comilla escapada DENTRO de una cadena 5. Pero el contexto es: `tracker.track('URL_AQUÍ')` 6. Si URL_AQUÍ contiene `\'-alert(...)-\'`, JavaScript lo interpreta como: - `\'` = comilla literal escapada (dentro de la cadena) - `-alert(document.domain)-` = código fuera de la cadena - `\'` = comilla literal escapada (cierre) 7. El `-` actúa como operador unario negación, lo que fuerza evaluación del código 8. `alert(document.domain)` se ejecuta"
+        text: "El bypass de doble transformación funciona así: 1. Atacante envía: `&apos;-alert(document.domain)-&apos;` 2. Servidor decodifica HTML entities: `'-alert(document.domain)-'` 3. Servidor intenta proteger comillas escapándolas: `\\'-alert(document.domain)-\\'` 4. En JavaScript, `\\` seguido de `'` es una comilla escapada DENTRO de una cadena 5. Pero el contexto es: `tracker.track('URL_AQUÍ')` 6. Si URL_AQUÍ contiene `\\'-alert(...)-\'`, JavaScript lo interpreta como: - `\\'` = comilla literal escapada (dentro de la cadena) - `-alert(document.domain)-` = código fuera de la cadena - `\\'` = comilla literal escapada (cierre) 7. El `-` actúa como operador unario negación, lo que fuerza evaluación del código 8. `alert(document.domain)` se ejecuta"
 
   - id: "exploit_1"
     num: "04"
