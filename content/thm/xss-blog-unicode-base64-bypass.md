@@ -18,7 +18,6 @@ tags:
   - "redteam"
   - "x0D"
 techniques:
-  - "XSS"
   - "Unicode Encoding"
   - "Base64 Encoding"
   - "HTML Entity Encoding"
@@ -33,7 +32,6 @@ flags_list:
     value: "hash_aqui"
 summary: "Aplicación web de blog vulnerable a XSS Reflejado protegida por WAF ModSecurity CRS v3.3.5. El WAF bloquea payloads directos de XSS. Bypass exitoso usando combinación de Unicode escapes, HTML entities y Base64 encoding. Objetivo: capturar cookie del administrador a través de inyección en comentarios que visualiza el admin, resultando en acceso a cuenta administrativa.  ---"
 steps:
-
   - id: "recon_1"
     num: "01"
     title: "Reconocimiento"
@@ -186,16 +184,16 @@ steps:
         text: "Nota que el flag no está explícitamente aquí porque este lab es sobre técnica de bypass, no sobre obtener flag. En engagements reales, una vez tienes acceso admin, continúas lateralmente."
 
 lessons:
-  - 'Discrepancia de parsing: WAF analiza texto plano, navegador decodifica múltiples capas'
+  - "Discrepancia de parsing: WAF analiza texto plano, navegador decodifica múltiples capas"
   - 'Unicode escapes (`\uXXXX`) se decodifican en runtime JavaScript, WAF no las entiende'
-  - 'HTML entities (`&#x...;`) se decodifican en HTML parsing antes de JavaScript'
-  - 'Base64 aparece como string inofensivo al WAF pero `eval(atob(...))` lo ejecuta'
-  - 'HttpOnly flag ausente permitió acceso directo a cookie vía XSS'
-  - 'Combinación de técnicas es exponencialmente más efectiva que una sola'
+  - "HTML entities (`&#x...;`) se decodifican en HTML parsing antes de JavaScript"
+  - "Base64 aparece como string inofensivo al WAF pero `eval(atob(...))` lo ejecuta"
+  - "HttpOnly flag ausente permitió acceso directo a cookie vía XSS"
+  - "Combinación de técnicas es exponencialmente más efectiva que una sola"
 mitigation:
-  - 'Establecer `HttpOnly` y `Secure` flags en TODAS las cookies administrativas'
-  - 'WAF debe decodificar Unicode, HTML entities, Base64 ANTES de buscar patrones peligrosos'
-  - 'Content Security Policy (CSP): `script-src ''self''` bloquea eval() directamente'
-  - 'Sanitización server-side con librerías dedicadas (DOMPurify, no blacklists)'
-  - 'Validación en servidor: rechazar `eval`, `atob`, `document.cookie` en comentarios'
+  - "Establecer `HttpOnly` y `Secure` flags en TODAS las cookies administrativas"
+  - "WAF debe decodificar Unicode, HTML entities, Base64 ANTES de buscar patrones peligrosos"
+  - "Content Security Policy (CSP): `script-src 'self'` bloquea eval() directamente"
+  - "Sanitización server-side con librerías dedicadas (DOMPurify, no blacklists)"
+  - "Validación en servidor: rechazar `eval`, `atob`, `document.cookie` en comentarios"
 ---

