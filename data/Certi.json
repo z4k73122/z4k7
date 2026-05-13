@@ -30,6 +30,46 @@
   {
     "platform": "Certiprof",
     "platformClass": "certiprof",
+    "Certificacion": "I27001LA",
+    "title": "Certified ISO 27001 Lead Auditor - I27001LA™",
+    "desc": "Earners of the ISO/IEC 27001 Lead Auditor have demonstrated an understanding of the standard and the general concepts and requirements of ISO/IEC 27001. They have developed skills to perform the audit process and know the responsibilities of being a lead auditor and understand how to develop an ISMS.",
+    "img": "https://images.credly.com/size/340x340/images/f099b1e3-76b5-42a2-a4b8-1d56d77c577c/blob",
+    "credlyUrl": "https://www.credly.com/badges/b6640c45-dbc3-4e74-883f-e9cb71a4b48b/public_url",
+    "tags": [
+      "Compliance",
+      "Continual Improvement",
+      "Customer Confidence",
+      "Data Protection",
+      "Frameworks",
+      "Information Management & Analysis",
+      "ISMS",
+      "ISO27001 Certification",
+      "Risk Management"
+    ],
+    "soon": false
+  },
+  {
+    "platform": "Certiprof",
+    "platformClass": "certiprof",
+    "Certificacion": "I27001IA",
+    "title": "Certified ISO 27001 Internal Auditor - I27001IA",
+    "desc": "Earners of the ISO/IEC 27001 Internal Auditor have demonstrated a general knowledge of the standard and general concepts to develop an audit in compliance with ISO 27001 and how to evaluate the effectiveness of corrective actions applied to maintain and continuously improve an information security management system (ISMS).",
+    "img": "https://images.credly.com/size/340x340/images/e282614e-b9c9-46d1-b263-db491b34d415/blob",
+    "credlyUrl": "https://www.credly.com/badges/ce59f5b8-22e9-464c-8087-70b1f6f5dc01/public_url",
+    "tags": [
+      "Auditing",
+      "Continual Improvement",
+      "Customer Confidence",
+      "Data Protection",
+      "Information Management & Analysis",
+      "ISMS",
+      "Risk Management"
+    ],
+    "soon": false
+  },
+  {
+    "platform": "Certiprof",
+    "platformClass": "certiprof",
     "Certificacion": "CEHPC",
     "title": "Ethical Hacking Professional Certification",
     "desc": "This badge holder has demonstrated the knowledge and skills to identify information system vulnerabilities, use the same tools and techniques as malicious hackers, and lawfully and legitimately conduct ethical hacking activities to improve system security by proactively identifying and addressing security weaknesses before adversaries exploit them.",
