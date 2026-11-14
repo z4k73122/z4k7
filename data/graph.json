@@ -4,22 +4,19 @@
       "id": "htb",
       "type": "platform",
       "platform": "htb",
-      "size": 18,
-      "color": "#008000"
+      "size": 18
     },
     {
       "id": "portswigger",
       "type": "platform",
       "platform": "portswigger",
-      "size": 18,
-      "color": "#ff8000"
+      "size": 18
     },
     {
       "id": "thm",
       "type": "platform",
       "platform": "thm",
-      "size": 18,
-      "color": "#ae0000"
+      "size": 18
     },
     {
       "id": "htb/lab",
@@ -36,6 +33,27 @@
       "size": 8
     },
     {
+      "id": "portswigger/clickjacking",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "portswigger/csrf",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "portswigger/path_traversal",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10
+    },
+    {
       "id": "portswigger/sqli",
       "type": "category",
       "platform": "portswigger",
@@ -44,6 +62,20 @@
     },
     {
       "id": "portswigger/web-cache-deception",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "portswigger/websocket",
+      "type": "category",
+      "platform": "portswigger",
+      "depth": 2,
+      "size": 10
+    },
+    {
+      "id": "portswigger/xss",
       "type": "category",
       "platform": "portswigger",
       "depth": 2,
@@ -122,12 +154,12 @@
     {
       "id": "thehive-2",
       "type": "writeup",
-      "title": "thehive-2",
+      "title": "TheHive 2",
       "platform": "htb",
       "folderPath": "htb/lab",
-      "difficulty": "",
-      "os": "",
-      "size": 8
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.6
     },
     {
       "id": "thehives",
@@ -138,6 +170,206 @@
       "difficulty": "easy",
       "os": "windows",
       "size": 10.8
+    },
+    {
+      "id": "basic-clickjacking-with-csrf-token-protection",
+      "type": "writeup",
+      "title": "Basic clickjacking with CSRF token protection",
+      "platform": "portswigger",
+      "folderPath": "portswigger/clickjacking",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 12
+    },
+    {
+      "id": "clickjacking-with-a-frame-buster-scrip",
+      "type": "writeup",
+      "title": "Clickjacking with a frame buster scrip",
+      "platform": "portswigger",
+      "folderPath": "portswigger/clickjacking",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 12
+    },
+    {
+      "id": "csrf-vulnerability-with-no-defenses",
+      "type": "writeup",
+      "title": "CSRF vulnerability with no defenses",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "csrf-where-referer-validation-depends-on-header-being-present",
+      "type": "writeup",
+      "title": "CSRF where Referer validation depends on header being present",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "csrf-where-token-is-duplicated-in-cookie",
+      "type": "writeup",
+      "title": "CSRF where token is duplicated in cookie",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "csrf-where-token-is-not-tied-to-user-session",
+      "type": "writeup",
+      "title": "CSRF where token is not tied to user session",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "csrf-where-token-is-tied-to-non-session-cookie",
+      "type": "writeup",
+      "title": "CSRF where token is tied to non-session cookie",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "csrf-where-token-validation-depends-on-request-method",
+      "type": "writeup",
+      "title": "CSRF where token validation depends on request method",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "csrf-where-token-validation-depends-on-token-being-present",
+      "type": "writeup",
+      "title": "CSRF where token validation depends on token being present",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "csrf-with-broken-referer-validation",
+      "type": "writeup",
+      "title": "CSRF with broken Referer validation",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "samesite-lax-bypass-via-cookie-refresh",
+      "type": "writeup",
+      "title": "SameSite Lax bypass via cookie refresh",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "samesite-lax-bypass-via-method-override",
+      "type": "writeup",
+      "title": "SameSite Lax bypass via method override",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "insane",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "samesite-strict-bypass-via-client-side-redirect",
+      "type": "writeup",
+      "title": "SameSite Strict bypass via client-side redirect",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "samesite-strict-bypass-via-sibling-domain",
+      "type": "writeup",
+      "title": "SameSite Strict bypass via sibling domain",
+      "platform": "portswigger",
+      "folderPath": "portswigger/csrf",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "file-path-traversal-simple-case",
+      "type": "writeup",
+      "title": "File path traversal, simple case",
+      "platform": "portswigger",
+      "folderPath": "portswigger/path_traversal",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 10
+    },
+    {
+      "id": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "type": "writeup",
+      "title": "File path traversal, traversal sequences blocked with absolute path bypass",
+      "platform": "portswigger",
+      "folderPath": "portswigger/path_traversal",
+      "difficulty": "easy",
+      "os": "linux",
+      "size": 10.4
+    },
+    {
+      "id": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "type": "writeup",
+      "title": "File path traversal, traversal sequences stripped non-recursively",
+      "platform": "portswigger",
+      "folderPath": "portswigger/path_traversal",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 10.4
+    },
+    {
+      "id": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "type": "writeup",
+      "title": "File path traversal, traversal sequences stripped with superfluous URL-decode",
+      "platform": "portswigger",
+      "folderPath": "portswigger/path_traversal",
+      "difficulty": "medium",
+      "os": "linux",
+      "size": 10.4
+    },
+    {
+      "id": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "type": "writeup",
+      "title": "File path traversal, validation of file extension with null byte bypass",
+      "platform": "portswigger",
+      "folderPath": "portswigger/path_traversal",
+      "difficulty": "hard",
+      "os": "linux",
+      "size": 10.4
+    },
+    {
+      "id": "file-path-traversal-validation-of-start-of-path",
+      "type": "writeup",
+      "title": "File path traversal, validation of start of path",
+      "platform": "portswigger",
+      "folderPath": "portswigger/path_traversal",
+      "difficulty": "hard",
+      "os": "linux",
+      "size": 10
     },
     {
       "id": "ataque-de-inyeccion-sql-consultando-el-tipo-y-version-de-la-base-de-datos-en-mysql-y-microsoft",
@@ -290,6 +522,46 @@
       "size": 11.6
     },
     {
+      "id": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "type": "writeup",
+      "title": "Explotación de delimitadores de ruta para el engaño de la caché web",
+      "platform": "portswigger",
+      "folderPath": "portswigger/web-cache-deception",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "type": "writeup",
+      "title": "Explotación de la normalización del servidor de caché para el engaño de la caché web",
+      "platform": "portswigger",
+      "folderPath": "portswigger/web-cache-deception",
+      "difficulty": "hard",
+      "os": "linux",
+      "size": 10
+    },
+    {
+      "id": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "type": "writeup",
+      "title": "Explotación de la normalización del servidor de origen para el engaño de la caché web",
+      "platform": "portswigger",
+      "folderPath": "portswigger/web-cache-deception",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "type": "writeup",
+      "title": "Explotación de las reglas de caché de coincidencia exacta para el engaño de la caché web",
+      "platform": "portswigger",
+      "folderPath": "portswigger/web-cache-deception",
+      "difficulty": "insane",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
       "id": "explotacion-del-mapeo-de-rutas-para-el-engano-de-la-cache-web",
       "type": "writeup",
       "title": "Explotación del mapeo de rutas para el engaño de la caché web",
@@ -298,6 +570,346 @@
       "difficulty": "easy",
       "os": "linux",
       "size": 10.4
+    },
+    {
+      "id": "cross-site-websocket-hijacking",
+      "type": "writeup",
+      "title": "Cross site WebSocket hijacking",
+      "platform": "portswigger",
+      "folderPath": "portswigger/websocket",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "type": "writeup",
+      "title": "Manipulating the WebSocket handshake to exploit vulnerabilities",
+      "platform": "portswigger",
+      "folderPath": "portswigger/websocket",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "type": "writeup",
+      "title": "Manipulating WebSocket messages to exploit vulnerabilities",
+      "platform": "portswigger",
+      "folderPath": "portswigger/websocket",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "type": "writeup",
+      "title": "DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "type": "writeup",
+      "title": "DOM XSS in document.write sink using source location.search inside a select element",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "type": "writeup",
+      "title": "DOM XSS in document.write sink using source location.search",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "type": "writeup",
+      "title": "DOM XSS in innerHTML sink using source location.search",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "type": "writeup",
+      "title": "DOM XSS in jQuery anchor href attribute sink using location.search source",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "type": "writeup",
+      "title": "DOM XSS in jQuery selector sink using a hashchange event",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "exploiting-cross-site-scripting-to-capture-passwords",
+      "type": "writeup",
+      "title": "Exploiting cross-site scripting to capture passwords",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "exploiting-cross-site-scripting-to-steal-cookies",
+      "type": "writeup",
+      "title": "Exploiting cross-site scripting to steal cookies",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
+      "id": "exploiting-xss-to-bypass-csrf-defenses",
+      "type": "writeup",
+      "title": "Exploiting XSS to bypass CSRF defenses",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 12.4
+    },
+    {
+      "id": "reflected-dom-xss",
+      "type": "writeup",
+      "title": "Reflected DOM XSS",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.6
+    },
+    {
+      "id": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "type": "writeup",
+      "title": "Reflected XSS in a JavaScript URL with some characters blocked",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 12.4
+    },
+    {
+      "id": "reflected-xss-in-canonical-link-tag",
+      "type": "writeup",
+      "title": "Reflected XSS in canonical link tag",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 12.8
+    },
+    {
+      "id": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "type": "writeup",
+      "title": "Reflected XSS into a JavaScript string with angle brackets and double quotes HTML-encoded and single quotes escaped",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "type": "writeup",
+      "title": "Reflected XSS into a JavaScript string with angle brackets HTML encoded",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "type": "writeup",
+      "title": "Reflected XSS into a JavaScript string with single quote and backslash escaped",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "type": "writeup",
+      "title": "Reflected XSS into a template literal with angle brackets, single, double quotes, backslash and backticks Unicode-escaped",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "type": "writeup",
+      "title": "Reflected XSS into attribute with angle brackets HTML-encoded",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "type": "writeup",
+      "title": "Reflected XSS into HTML context with all tags blocked except custom ones",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "type": "writeup",
+      "title": "Reflected XSS into HTML context with most tags and attributes blocked",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "reflected-xss-into-html-context-with-nothing-encoded",
+      "type": "writeup",
+      "title": "Reflected XSS into HTML context with nothing encoded",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 10
+    },
+    {
+      "id": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "type": "writeup",
+      "title": "Reflected XSS protected by CSP, with CSP bypass",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "type": "writeup",
+      "title": "Reflected XSS protected by very strict CSP, with dangling markup attack",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "type": "writeup",
+      "title": "Reflected XSS with AngularJS sandbox escape and CSP",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "insane",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "type": "writeup",
+      "title": "Reflected XSS with AngularJS sandbox escape without strings",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "insane",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "type": "writeup",
+      "title": "Reflected XSS with event handlers and href attributes blocked",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "reflected-xss-with-some-svg-markup-allowed",
+      "type": "writeup",
+      "title": "Reflected XSS with some SVG markup allowed",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "stored-dom-xss",
+      "type": "writeup",
+      "title": "Stored DOM XSS",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
+    },
+    {
+      "id": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "type": "writeup",
+      "title": "Stored XSS into anchor href attribute with double quotes HTML-encoded",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.4
+    },
+    {
+      "id": "stored-xss-into-html-context-with-nothing-encoded",
+      "type": "writeup",
+      "title": "Stored XSS into HTML context with nothing encoded",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "easy",
+      "os": "windows",
+      "size": 9.6
+    },
+    {
+      "id": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "type": "writeup",
+      "title": "Stored XSS into onclick event with angle brackets and double quotes HTML-encoded and single quotes and backslash escaped",
+      "platform": "portswigger",
+      "folderPath": "portswigger/xss",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.8
+    },
+    {
+      "id": "cve-2023-23752joomlaapiauthbypass",
+      "type": "writeup",
+      "title": "CVE-2023-23752_Joomla_API_Auth_Bypass",
+      "platform": "thm",
+      "folderPath": "thm",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 11.2
     },
     {
       "id": "farewell",
@@ -310,6 +922,16 @@
       "size": 14
     },
     {
+      "id": "gophish",
+      "type": "writeup",
+      "title": "GoPhish",
+      "platform": "thm",
+      "folderPath": "thm",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10
+    },
+    {
       "id": "model-poisoning",
       "type": "writeup",
       "title": "Model Poisoning",
@@ -317,7 +939,7 @@
       "folderPath": "thm",
       "difficulty": "medium",
       "os": "windows",
-      "size": 10.8
+      "size": 10.4
     },
     {
       "id": "padelify",
@@ -327,7 +949,7 @@
       "folderPath": "thm",
       "difficulty": "medium",
       "os": "linux",
-      "size": 11.2
+      "size": 10.8
     },
     {
       "id": "sequence",
@@ -337,7 +959,7 @@
       "folderPath": "thm",
       "difficulty": "medium",
       "os": "linux",
-      "size": 12.8
+      "size": 12
     },
     {
       "id": "sqli-case-mixing-bypass",
@@ -347,7 +969,7 @@
       "folderPath": "thm",
       "difficulty": "hard",
       "os": "windows",
-      "size": 11.2
+      "size": 10.8
     },
     {
       "id": "sqli-protocol-manipulation",
@@ -367,7 +989,7 @@
       "folderPath": "thm",
       "difficulty": "hard",
       "os": "windows",
-      "size": 12.4
+      "size": 12
     },
     {
       "id": "ssti-hex-encoding-bypass",
@@ -377,30 +999,40 @@
       "folderPath": "thm",
       "difficulty": "hard",
       "os": "windows",
-      "size": 12
+      "size": 11.2
+    },
+    {
+      "id": "tampering-with-unprivileged-accounts",
+      "type": "writeup",
+      "title": "Tampering With Unprivileged Accounts",
+      "platform": "thm",
+      "folderPath": "thm",
+      "difficulty": "medium",
+      "os": "windows",
+      "size": 10.8
     },
     {
       "id": "xss-blog-unicode-base64-bypass",
       "type": "writeup",
-      "title": "xss-blog-unicode-base64-bypass",
+      "title": "XSS Blog Unicode Base64 Bypass",
       "platform": "thm",
       "folderPath": "thm",
-      "difficulty": "",
-      "os": "",
-      "size": 8
+      "difficulty": "hard",
+      "os": "windows",
+      "size": 12
     },
     {
       "id": "linux",
       "type": "os",
-      "count": 11,
+      "count": 18,
       "size": 20
     },
     {
       "id": "hard",
       "type": "difficulty",
-      "count": 8,
+      "count": 20,
       "size": 20,
-      "color": "#ff0000"
+      "color": "#ff8c00"
     },
     {
       "id": "union injection",
@@ -435,8 +1067,8 @@
     {
       "id": "browser",
       "type": "tool",
-      "count": 4,
-      "size": 14
+      "count": 12,
+      "size": 20
     },
     {
       "id": "lab",
@@ -465,8 +1097,8 @@
     {
       "id": "insane",
       "type": "difficulty",
-      "count": 1,
-      "size": 8,
+      "count": 5,
+      "size": 16,
       "color": "#ff3366"
     },
     {
@@ -496,7 +1128,7 @@
     {
       "id": "easy",
       "type": "difficulty",
-      "count": 14,
+      "count": 27,
       "size": 20,
       "color": "#00ff88"
     },
@@ -527,7 +1159,7 @@
     {
       "id": "medium",
       "type": "difficulty",
-      "count": 9,
+      "count": 42,
       "size": 20,
       "color": "#ffcc00"
     },
@@ -618,8 +1250,68 @@
     {
       "id": "windows",
       "type": "os",
-      "count": 21,
+      "count": 76,
       "size": 20
+    },
+    {
+      "id": "incident investigation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "timeline analysis",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "credential access",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "thehive",
+      "type": "tool",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "mimikatz",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "blueteam",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "forense",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "soar",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "incidentresponse",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "timeline",
+      "type": "tag",
+      "count": 1,
+      "size": 8
     },
     {
       "id": "incident analysis",
@@ -640,20 +1332,8 @@
       "size": 8
     },
     {
-      "id": "thehive",
-      "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
       "id": "mitre att&ck framework",
       "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "soar",
-      "type": "tag",
       "count": 1,
       "size": 8
     },
@@ -664,14 +1344,464 @@
       "size": 8
     },
     {
-      "id": "incidentresponse",
+      "id": "[[clickjacking]]",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "iframe overlay",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "opacity manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "[[exploit server portswigger]]",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "[[browser devtools]]",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "clickjacking",
       "type": "tag",
       "count": 1,
       "size": 8
     },
     {
-      "id": "blueteam",
+      "id": "csrf",
       "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "web",
+      "type": "tag",
+      "count": 23,
+      "size": 20
+    },
+    {
+      "id": "ui_redressing",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "target_website",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "decoy_website",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "fff",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "clickjacking",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "iframe sandbox bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "frame buster evasion",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "exploit server portswigger",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "browser devtools",
+      "type": "tool",
+      "count": 16,
+      "size": 20
+    },
+    {
+      "id": "sandboxbypass",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csrf",
+      "type": "technique",
+      "count": 18,
+      "size": 20
+    },
+    {
+      "id": "html injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "formulario auto-enviado",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "burpsuite",
+      "type": "tool",
+      "count": 70,
+      "size": 20
+    },
+    {
+      "id": "exploit server",
+      "type": "tool",
+      "count": 16,
+      "size": 20
+    },
+    {
+      "id": "referer bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "meta tag manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "double submit cookies",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "token duplication",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "weak validation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csrf token reuse",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "token reutilización",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "tokens no vinculados a sesión",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "cookie injection",
+      "type": "technique",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "http response splitting",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "search parameter injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csrf token bypass",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "method override (post→get)",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "incomplete validation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "omitir parámetro csrf",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "validación de presencia",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "referer spoofing",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "history.pushstate",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "broken referer validation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "samesite lax bypass",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "cookie refresh",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "window.open()",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "oauth flow exploitation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "oauth",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "samesite",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "method override",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "get to post",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "lax",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "client-side redirect",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "path traversal",
+      "type": "technique",
+      "count": 9,
+      "size": 20
+    },
+    {
+      "id": "samesite strict bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "strict",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "websocket hijacking",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "cswsh",
+      "type": "technique",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "xss via parameter injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "base64 exfiltration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "websocket client",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "websocket",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "hijacking",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "directory traversal",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "secuencias de recorrido básicas",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "path_traversal",
+      "type": "tag",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "web_vulnerability",
+      "type": "tag",
+      "count": 6,
+      "size": 18
+    },
+    {
+      "id": "absolute path bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "rutas absolutas",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "bypass",
+      "type": "tag",
+      "count": 13,
+      "size": 20
+    },
+    {
+      "id": "nested sequences",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "non-recursive stripping",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "url encoding",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "double url encoding",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "cyberchef",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "null byte injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "extension validation bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "start path validation bypass",
+      "type": "technique",
       "count": 1,
       "size": 8
     },
@@ -704,18 +1834,6 @@
       "type": "technique",
       "count": 1,
       "size": 8
-    },
-    {
-      "id": "burpsuite",
-      "type": "tool",
-      "count": 16,
-      "size": 20
-    },
-    {
-      "id": "web",
-      "type": "tag",
-      "count": 15,
-      "size": 20
     },
     {
       "id": "apprentice",
@@ -826,12 +1944,6 @@
       "size": 8
     },
     {
-      "id": "cookie injection",
-      "type": "technique",
-      "count": 5,
-      "size": 16
-    },
-    {
       "id": "substr",
       "type": "technique",
       "count": 2,
@@ -852,8 +1964,8 @@
     {
       "id": "python",
       "type": "tool",
-      "count": 6,
-      "size": 18
+      "count": 7,
+      "size": 20
     },
     {
       "id": "blind",
@@ -1006,12 +2118,6 @@
       "size": 8
     },
     {
-      "id": "bypass",
-      "type": "tag",
-      "count": 7,
-      "size": 20
-    },
-    {
       "id": "bypass de autenticación",
       "type": "technique",
       "count": 1,
@@ -1020,23 +2126,101 @@
     {
       "id": "web cache deception",
       "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "burp suite",
-      "type": "tool",
-      "count": 7,
-      "size": 20
+      "count": 5,
+      "size": 16
     },
     {
       "id": "webcache",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "cachedeception",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "pathdelimiters",
       "type": "tag",
       "count": 1,
       "size": 8
     },
     {
-      "id": "cachedeception",
+      "id": "websecurity",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "delimiter manipulation",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "curl",
+      "type": "tool",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "vulnerabilidad",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "normalización de delimitadores",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "cache poisoning",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "intruder",
+      "type": "tool",
+      "count": 5,
+      "size": 16
+    },
+    {
+      "id": "repeater",
+      "type": "tool",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "web_cache_deception",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "burpsuite_academy",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "explotaci",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "tecnica",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "explotacion",
       "type": "tag",
       "count": 1,
       "size": 8
@@ -1048,37 +2232,883 @@
       "size": 8
     },
     {
-      "id": "websecurity",
+      "id": "cross-site websocket hijacking",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "data exfiltration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "base64 encoding",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "javascript websocket api",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "fetch api",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "exfiltration",
       "type": "tag",
       "count": 1,
       "size": 8
     },
     {
-      "id": "[[user enumeration via json response]]",
+      "id": "websocket handshake manipulation",
       "type": "technique",
       "count": 1,
       "size": 8
     },
     {
-      "id": "[[brute force script python waf bypass]]",
+      "id": "waf bypass via x-forwarded-for",
       "type": "technique",
       "count": 1,
       "size": 8
     },
     {
-      "id": "[[waf bypass x-forwarded-for]]",
+      "id": "xss filter evasion",
       "type": "technique",
       "count": 1,
       "size": 8
     },
     {
-      "id": "[[xss#xss almacenado]]",
+      "id": "case mixing",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "waf_bypass",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "websocket message manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "stored xss in websocket",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "input validation bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "stored",
+      "type": "tag",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "dom xss",
+      "type": "technique",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "angularjs expression interpolation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "prototype chain pollution",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "javascript function() constructor",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "constructor.constructor() exploitation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "angularjs",
+      "type": "tool",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "dom",
+      "type": "tag",
+      "count": 8,
+      "size": 20
+    },
+    {
+      "id": "document.write sink",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "location.search source",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "context escape in select element",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "web_security",
+      "type": "tag",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "waf bypass",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "source location.search",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "sink innerhtml",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "javascript",
+      "type": "tool",
+      "count": 5,
+      "size": 16
+    },
+    {
+      "id": "sink setattribute",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "jquery",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "backlink",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "event handlers (onload)",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "jquery selector injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "hash manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "stored xss",
+      "type": "technique",
+      "count": 7,
+      "size": 20
+    },
+    {
+      "id": "dom manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "credential exfiltration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csrf bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "burp collaborator",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "burp suite",
+      "type": "tool",
+      "count": 9,
+      "size": 20
+    },
+    {
+      "id": "xss",
+      "type": "tag",
+      "count": 20,
+      "size": 20
+    },
+    {
+      "id": "stored_xss",
+      "type": "tag",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "credential_exfiltration",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "document.cookie api",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "session hijacking",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "automated exfiltration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "cookie_stealing",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "session_hijacking",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csrf token extraction",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "dom querying",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "account modification",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "domcontentloaded event",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "burp repeater",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "csrf_bypass",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "account_takeover",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "json injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "eval() exploitation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "quote escaping",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "comment injection",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "eval()",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "reflected",
+      "type": "tag",
+      "count": 14,
+      "size": 20
+    },
+    {
+      "id": "json",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "reflected xss",
       "type": "technique",
       "count": 3,
       "size": 12
     },
     {
-      "id": "[[waf bypass xss base64 eval]]",
+      "id": "character filtering bypass",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "tostring override",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "error handling",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "javascript tricks",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "reflected_xss",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "character_filtering",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "javascript_tricks",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "x27",
+      "type": "tag",
+      "count": 4,
+      "size": 14
+    },
+    {
+      "id": "attribute injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "accesskey abuse",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "browser hotkeys",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "burp intruder",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "attribute_injection",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "accesskey",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "browser_hotkeys",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "backslash escape bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "javascript string breakout",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "javascript string escape",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "script context breakout",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "javascript tag closure",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "template literal injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "expression interpolation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "templateliteral",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "x5c",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "html attribute injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "event handler in attributes",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "htmlattribute",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "custom tag injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "onfocus event",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "tag enumeration",
+      "type": "technique",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "event handler abuse",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "waf",
+      "type": "tag",
+      "count": 8,
+      "size": 20
+    },
+    {
+      "id": "parameter pollution",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "url-based payload injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csp bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "directive fallback",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "token manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csp",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "dangling markup attack",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "form hijacking",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csrf token exfiltration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "danglingmarkup",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "angularjs sandbox escape",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "filter chain abuse",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "csp bypass via framework",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "sandbox",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "string.fromcharcode bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "angularjs sandbox escape without strings",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "prototype pollution",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "nostrings",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "svg element abuse",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "attribute name manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "svg",
+      "type": "tag",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "eventblocked",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "svg event handlers",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "animation events",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "sanitización bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "escapehtml() vulnerability",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "double tag injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "innerhtml assignment",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "anchor href injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "data persistence",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "anchorhref",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "dom injection",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "html context exploitation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "onclick event escape",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "quote bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "html entity encoding",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "onclickevent",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "authentication bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "parameter tampering",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "api enumeration",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "access control bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "navegador web",
+      "type": "tool",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "joomla",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "authbypass",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "api",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "user enumeration via json response",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "brute force script python waf bypass",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "waf bypass x-forwarded-for",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "xss almacenado",
+      "type": "technique",
+      "count": 3,
+      "size": 12
+    },
+    {
+      "id": "waf bypass xss base64 eval",
       "type": "technique",
       "count": 1,
       "size": 8
@@ -1102,22 +3132,10 @@
       "size": 12
     },
     {
-      "id": "xss",
-      "type": "tag",
-      "count": 3,
-      "size": 12
-    },
-    {
       "id": "cookie",
       "type": "tag",
       "count": 3,
       "size": 12
-    },
-    {
-      "id": "waf",
-      "type": "tag",
-      "count": 2,
-      "size": 10
     },
     {
       "id": "bruteforce",
@@ -1146,7 +3164,7 @@
     {
       "id": "redteam",
       "type": "tag",
-      "count": 7,
+      "count": 8,
       "size": 20
     },
     {
@@ -1157,6 +3175,36 @@
     },
     {
       "id": "informationdisclosure",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "phishing",
+      "type": "technique",
+      "count": 2,
+      "size": 10
+    },
+    {
+      "id": "suplantación de identidad",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "ingeniería social",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "gophish-",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "social",
       "type": "tag",
       "count": 1,
       "size": 8
@@ -1192,12 +3240,6 @@
       "size": 8
     },
     {
-      "id": "navegador web",
-      "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
       "id": "interfaz chat/contribute/train del lab",
       "type": "tool",
       "count": 1,
@@ -1210,13 +3252,7 @@
       "size": 8
     },
     {
-      "id": "medium",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "[[lfi - waf bypass url encoding]]",
+      "id": "lfi - waf bypass url encoding",
       "type": "technique",
       "count": 1,
       "size": 8
@@ -1240,19 +3276,19 @@
       "size": 8
     },
     {
-      "id": "[[csrf token débil]]",
+      "id": "csrf token débil",
       "type": "technique",
       "count": 1,
       "size": 8
     },
     {
-      "id": "[[ssrf]]",
+      "id": "ssrf",
       "type": "technique",
       "count": 1,
       "size": 8
     },
     {
-      "id": "[[file upload sin restricciones]]",
+      "id": "file upload sin restricciones",
       "type": "technique",
       "count": 1,
       "size": 8
@@ -1260,18 +3296,6 @@
     {
       "id": "netcat",
       "type": "tool",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "ssrf",
-      "type": "tag",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "csrf",
-      "type": "tag",
       "count": 1,
       "size": 8
     },
@@ -1286,24 +3310,6 @@
       "type": "tag",
       "count": 1,
       "size": 8
-    },
-    {
-      "id": "waf",
-      "type": "technique",
-      "count": 7,
-      "size": 20
-    },
-    {
-      "id": "case mixing",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
-      "id": "curl",
-      "type": "tool",
-      "count": 4,
-      "size": 14
     },
     {
       "id": "protocol manipulation",
@@ -1336,12 +3342,6 @@
       "size": 8
     },
     {
-      "id": "comment injection",
-      "type": "technique",
-      "count": 1,
-      "size": 8
-    },
-    {
       "id": "search",
       "type": "tag",
       "count": 1,
@@ -1350,8 +3350,8 @@
     {
       "id": "ssti",
       "type": "technique",
-      "count": 2,
-      "size": 10
+      "count": 1,
+      "size": 8
     },
     {
       "id": "server-side template injection",
@@ -1361,6 +3361,102 @@
     },
     {
       "id": "templates",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "backup operator abuse",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "rid hijacking",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "pass-the-hash",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "registry manipulation",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "evil-winrm",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "secretsdump.py",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "psexec",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "regedit",
+      "type": "tool",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "privesc",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "usermanipulation",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "remote",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "unicode encoding",
+      "type": "technique",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "unicode",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "base64",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "blog",
+      "type": "tag",
+      "count": 1,
+      "size": 8
+    },
+    {
+      "id": "x0d",
       "type": "tag",
       "count": 1,
       "size": 8
@@ -1420,6 +3516,121 @@
     {
       "source": "htb/lab",
       "target": "thehives",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger",
+      "target": "portswigger/clickjacking",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/clickjacking",
+      "target": "basic-clickjacking-with-csrf-token-protection",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/clickjacking",
+      "target": "clickjacking-with-a-frame-buster-scrip",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger",
+      "target": "portswigger/csrf",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-vulnerability-with-no-defenses",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-where-referer-validation-depends-on-header-being-present",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-where-token-is-duplicated-in-cookie",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-where-token-is-not-tied-to-user-session",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-where-token-is-tied-to-non-session-cookie",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-where-token-validation-depends-on-request-method",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-where-token-validation-depends-on-token-being-present",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "csrf-with-broken-referer-validation",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "samesite-lax-bypass-via-cookie-refresh",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "samesite-lax-bypass-via-method-override",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "samesite-strict-bypass-via-client-side-redirect",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/csrf",
+      "target": "samesite-strict-bypass-via-sibling-domain",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger",
+      "target": "portswigger/path_traversal",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/path_traversal",
+      "target": "file-path-traversal-simple-case",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/path_traversal",
+      "target": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/path_traversal",
+      "target": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/path_traversal",
+      "target": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/path_traversal",
+      "target": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/path_traversal",
+      "target": "file-path-traversal-validation-of-start-of-path",
       "type": "struct"
     },
     {
@@ -1509,12 +3720,217 @@
     },
     {
       "source": "portswigger/web-cache-deception",
+      "target": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/web-cache-deception",
+      "target": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/web-cache-deception",
+      "target": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/web-cache-deception",
+      "target": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/web-cache-deception",
       "target": "explotacion-del-mapeo-de-rutas-para-el-engano-de-la-cache-web",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger",
+      "target": "portswigger/websocket",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/websocket",
+      "target": "cross-site-websocket-hijacking",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/websocket",
+      "target": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/websocket",
+      "target": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger",
+      "target": "portswigger/xss",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "exploiting-cross-site-scripting-to-capture-passwords",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "exploiting-cross-site-scripting-to-steal-cookies",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "exploiting-xss-to-bypass-csrf-defenses",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-dom-xss",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-in-canonical-link-tag",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-into-html-context-with-nothing-encoded",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "reflected-xss-with-some-svg-markup-allowed",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "stored-dom-xss",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "stored-xss-into-html-context-with-nothing-encoded",
+      "type": "struct"
+    },
+    {
+      "source": "portswigger/xss",
+      "target": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "cve-2023-23752joomlaapiauthbypass",
       "type": "struct"
     },
     {
       "source": "thm",
       "target": "farewell",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "gophish",
       "type": "struct"
     },
     {
@@ -1550,6 +3966,11 @@
     {
       "source": "thm",
       "target": "ssti-hex-encoding-bypass",
+      "type": "struct"
+    },
+    {
+      "source": "thm",
+      "target": "tampering-with-unprivileged-accounts",
       "type": "struct"
     },
     {
@@ -1923,6 +4344,66 @@
       "type": "tag"
     },
     {
+      "source": "thehive-2",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "thehive-2",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "thehive-2",
+      "target": "incident investigation",
+      "type": "technique"
+    },
+    {
+      "source": "thehive-2",
+      "target": "timeline analysis",
+      "type": "technique"
+    },
+    {
+      "source": "thehive-2",
+      "target": "credential access",
+      "type": "technique"
+    },
+    {
+      "source": "thehive-2",
+      "target": "thehive",
+      "type": "tool"
+    },
+    {
+      "source": "thehive-2",
+      "target": "mimikatz",
+      "type": "tool"
+    },
+    {
+      "source": "thehive-2",
+      "target": "blueteam",
+      "type": "tag"
+    },
+    {
+      "source": "thehive-2",
+      "target": "forense",
+      "type": "tag"
+    },
+    {
+      "source": "thehive-2",
+      "target": "soar",
+      "type": "tag"
+    },
+    {
+      "source": "thehive-2",
+      "target": "incidentresponse",
+      "type": "tag"
+    },
+    {
+      "source": "thehive-2",
+      "target": "timeline",
+      "type": "tag"
+    },
+    {
       "source": "thehives",
       "target": "windows",
       "type": "os"
@@ -1975,6 +4456,961 @@
     {
       "source": "thehives",
       "target": "blueteam",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "[[clickjacking]]",
+      "type": "technique"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "iframe overlay",
+      "type": "technique"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "opacity manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "[[exploit server portswigger]]",
+      "type": "tool"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "[[browser devtools]]",
+      "type": "tool"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "clickjacking",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "csrf",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "ui_redressing",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "target_website",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "decoy_website",
+      "type": "tag"
+    },
+    {
+      "source": "basic-clickjacking-with-csrf-token-protection",
+      "target": "fff",
+      "type": "tag"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "clickjacking",
+      "type": "technique"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "iframe sandbox bypass",
+      "type": "technique"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "frame buster evasion",
+      "type": "technique"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "exploit server portswigger",
+      "type": "tool"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "sandboxbypass",
+      "type": "tag"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "ui_redressing",
+      "type": "tag"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "target_website",
+      "type": "tag"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "decoy_website",
+      "type": "tag"
+    },
+    {
+      "source": "clickjacking-with-a-frame-buster-scrip",
+      "target": "fff",
+      "type": "tag"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "html injection",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "formulario auto-enviado",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-vulnerability-with-no-defenses",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "referer bypass",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "meta tag manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-referer-validation-depends-on-header-being-present",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "double submit cookies",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "token duplication",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "weak validation",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-duplicated-in-cookie",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "csrf token reuse",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "token reutilización",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "tokens no vinculados a sesión",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-not-tied-to-user-session",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "csrf token reuse",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "cookie injection",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "http response splitting",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "search parameter injection",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-is-tied-to-non-session-cookie",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "csrf token bypass",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "method override (post→get)",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "incomplete validation",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-request-method",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "csrf token bypass",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "omitir parámetro csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "validación de presencia",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-where-token-validation-depends-on-token-being-present",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "referer spoofing",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "history.pushstate",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "broken referer validation",
+      "type": "technique"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "csrf-with-broken-referer-validation",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "samesite lax bypass",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "cookie refresh",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "window.open()",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "oauth flow exploitation",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "oauth",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "samesite",
+      "type": "tag"
+    },
+    {
+      "source": "samesite-lax-bypass-via-cookie-refresh",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "insane",
+      "type": "difficulty"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "samesite lax bypass",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "method override",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "get to post",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "samesite",
+      "type": "tag"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "lax",
+      "type": "tag"
+    },
+    {
+      "source": "samesite-lax-bypass-via-method-override",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "client-side redirect",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "samesite strict bypass",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "samesite",
+      "type": "tag"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "strict",
+      "type": "tag"
+    },
+    {
+      "source": "samesite-strict-bypass-via-client-side-redirect",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "websocket hijacking",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "cswsh",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "xss via parameter injection",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "base64 exfiltration",
+      "type": "technique"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "websocket client",
+      "type": "tool"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "websocket",
+      "type": "tag"
+    },
+    {
+      "source": "samesite-strict-bypass-via-sibling-domain",
+      "target": "hijacking",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "directory traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "secuencias de recorrido básicas",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "path_traversal",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-simple-case",
+      "target": "web_vulnerability",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "absolute path bypass",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "rutas absolutas",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "path_traversal",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "web_vulnerability",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass",
+      "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "nested sequences",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "non-recursive stripping",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "path_traversal",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "web_vulnerability",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-non-recursively",
+      "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "url encoding",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "double url encoding",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "cyberchef",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "path_traversal",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "web_vulnerability",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode",
+      "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "null byte injection",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "extension validation bypass",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "path_traversal",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "web_vulnerability",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-validation-of-file-extension-with-null-byte-bypass",
+      "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "start path validation bypass",
+      "type": "technique"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "path_traversal",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "web_vulnerability",
+      "type": "tag"
+    },
+    {
+      "source": "file-path-traversal-validation-of-start-of-path",
+      "target": "bypass",
       "type": "tag"
     },
     {
@@ -2998,6 +6434,206 @@
       "type": "tag"
     },
     {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "web cache deception",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "webcache",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "cachedeception",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "pathdelimiters",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-delimitadores-de-ruta-para-el-engano-de-la-cache-web",
+      "target": "websecurity",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "linux",
+      "type": "os"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "web cache deception",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "delimiter manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "curl",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "vulnerabilidad",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-cache-para-el-engano-de-la-cache-web",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "web cache deception",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "normalización de delimitadores",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "cache poisoning",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "intruder",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "repeater",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "web_cache_deception",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "burpsuite_academy",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-la-normalizacion-del-servidor-de-origen-para-el-engano-de-la-cache-web",
+      "target": "explotaci",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "insane",
+      "type": "difficulty"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "web cache deception",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "path traversal",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "delimiter manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "intruder",
+      "type": "tool"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "vulnerabilidad",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "tecnica",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "explotacion",
+      "type": "tag"
+    },
+    {
+      "source": "explotacion-de-las-reglas-de-cache-de-coincidencia-exacta-para-el-engano-de-la-cache-web",
+      "target": "webcache",
+      "type": "tag"
+    },
+    {
       "source": "explotacion-del-mapeo-de-rutas-para-el-engano-de-la-cache-web",
       "target": "linux",
       "type": "os"
@@ -3014,7 +6650,7 @@
     },
     {
       "source": "explotacion-del-mapeo-de-rutas-para-el-engano-de-la-cache-web",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
     },
     {
@@ -3034,12 +6670,1842 @@
     },
     {
       "source": "explotacion-del-mapeo-de-rutas-para-el-engano-de-la-cache-web",
+      "target": "websecurity",
+      "type": "tag"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "cross-site websocket hijacking",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "data exfiltration",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "base64 encoding",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "javascript websocket api",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "fetch api",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
       "target": "burpsuite",
       "type": "tool"
     },
     {
-      "source": "explotacion-del-mapeo-de-rutas-para-el-engano-de-la-cache-web",
-      "target": "websecurity",
+      "source": "cross-site-websocket-hijacking",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "cswsh",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "cross-site-websocket-hijacking",
+      "target": "exfiltration",
+      "type": "tag"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "websocket handshake manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "waf bypass via x-forwarded-for",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "xss filter evasion",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "case mixing",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "manipulating-the-websocket-handshake-to-exploit-vulnerabilities",
+      "target": "waf_bypass",
+      "type": "tag"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "websocket message manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "stored xss in websocket",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "input validation bypass",
+      "type": "technique"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "manipulating-websocket-messages-to-exploit-vulnerabilities",
+      "target": "stored",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "angularjs expression interpolation",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "prototype chain pollution",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "javascript function() constructor",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "constructor.constructor() exploitation",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "angularjs",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "document.write sink",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "location.search source",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "context escape in select element",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch-inside-a-select-element",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "document.write sink",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "location.search source",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "waf bypass",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-documentwrite-sink-using-source-locationsearch",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "source location.search",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "sink innerhtml",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "javascript",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-innerhtml-sink-using-source-locationsearch",
+      "target": "burpsuite_academy",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "source location.search",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "sink setattribute",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "browser",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "jquery",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "javascript",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "burpsuite_academy",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source",
+      "target": "backlink",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "event handlers (onload)",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "jquery selector injection",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "hash manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "exploit server portswigger",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "jquery",
+      "type": "tool"
+    },
+    {
+      "source": "dom-xss-in-jquery-selector-sink-using-a-hashchange-event",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "dom manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "credential exfiltration",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "csrf bypass",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "burp collaborator",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "stored_xss",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "credential_exfiltration",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-capture-passwords",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "document.cookie api",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "session hijacking",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "automated exfiltration",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "burp collaborator",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "stored_xss",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "cookie_stealing",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "session_hijacking",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-cross-site-scripting-to-steal-cookies",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "csrf token extraction",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "dom querying",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "account modification",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "domcontentloaded event",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "burp repeater",
+      "type": "tool"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "csrf",
+      "type": "technique"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "stored_xss",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "csrf_bypass",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "account_takeover",
+      "type": "tag"
+    },
+    {
+      "source": "exploiting-xss-to-bypass-csrf-defenses",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "dom xss",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "json injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "eval() exploitation",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "quote escaping",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "comment injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "eval()",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "json",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-dom-xss",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "reflected xss",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "character filtering bypass",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "tostring override",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "error handling",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "javascript tricks",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "burp repeater",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "reflected_xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "character_filtering",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "waf_bypass",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "javascript_tricks",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-a-javascript-url-with-some-characters-blocked",
+      "target": "x27",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "reflected xss",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "attribute injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "accesskey abuse",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "browser hotkeys",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "character filtering bypass",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "burp intruder",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "reflected_xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "attribute_injection",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "accesskey",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "browser_hotkeys",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "waf_bypass",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-in-canonical-link-tag",
+      "target": "x27",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "backslash escape bypass",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "javascript string breakout",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-escaped",
+      "target": "javascript",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "javascript string escape",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "script context breakout",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded",
+      "target": "javascript",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "javascript tag closure",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "script context breakout",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-javascript-string-with-single-quote-and-backslash-escaped",
+      "target": "javascript",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "template literal injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "expression interpolation",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "templateliteral",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "x27",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-a-template-literal-with-angle-brackets-single-double-quotes-backslash-and-backticks-unicode-escaped",
+      "target": "x5c",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "html attribute injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "event handler in attributes",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "htmlattribute",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-attribute-with-angle-brackets-html-encoded",
+      "target": "x27",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "custom tag injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "onfocus event",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "waf bypass",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "tag enumeration",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "event handler abuse",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "intruder",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-most-tags-and-attributes-blocked",
+      "target": "waf",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "reflected xss",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "parameter pollution",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "url-based payload injection",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-into-html-context-with-nothing-encoded",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "csp bypass",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "directive fallback",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "token manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-protected-by-csp-with-csp-bypass",
+      "target": "csp",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "dangling markup attack",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "form hijacking",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "csrf token exfiltration",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "csp",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-protected-by-very-strict-csp-with-dangling-markup-attack",
+      "target": "danglingmarkup",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "insane",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "angularjs sandbox escape",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "filter chain abuse",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "csp bypass via framework",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "exploit server",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "angularjs",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-and-csp",
+      "target": "sandbox",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "insane",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "string.fromcharcode bypass",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "angularjs sandbox escape without strings",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "prototype pollution",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "angularjs",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-angularjs-sandbox-escape-without-strings",
+      "target": "nostrings",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "svg element abuse",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "attribute name manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "tag enumeration",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "intruder",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "svg",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-event-handlers-and-href-attributes-blocked",
+      "target": "eventblocked",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "svg event handlers",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "tag enumeration",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "animation events",
+      "type": "technique"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "intruder",
+      "type": "tool"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "reflected",
+      "type": "tag"
+    },
+    {
+      "source": "reflected-xss-with-some-svg-markup-allowed",
+      "target": "svg",
+      "type": "tag"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "sanitización bypass",
+      "type": "technique"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "escapehtml() vulnerability",
+      "type": "technique"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "double tag injection",
+      "type": "technique"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "innerhtml assignment",
+      "type": "technique"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "stored",
+      "type": "tag"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "dom",
+      "type": "tag"
+    },
+    {
+      "source": "stored-dom-xss",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "anchor href injection",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "data persistence",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "repeater",
+      "type": "tool"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "stored",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded",
+      "target": "anchorhref",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "easy",
+      "type": "difficulty"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "dom injection",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "html context exploitation",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "browser devtools",
+      "type": "tool"
+    },
+    {
+      "source": "stored-xss-into-html-context-with-nothing-encoded",
+      "target": "web_security",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "stored xss",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "onclick event escape",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "quote bypass",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "html entity encoding",
+      "type": "technique"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "repeater",
+      "type": "tool"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "xss",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "stored",
+      "type": "tag"
+    },
+    {
+      "source": "stored-xss-into-onclick-event-with-angle-brackets-and-double-quotes-html-encoded-and-single-quotes-and-backslash-escaped",
+      "target": "onclickevent",
+      "type": "tag"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "authentication bypass",
+      "type": "technique"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "parameter tampering",
+      "type": "technique"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "api enumeration",
+      "type": "technique"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "access control bypass",
+      "type": "technique"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "curl",
+      "type": "tool"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "burp suite",
+      "type": "tool"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "navegador web",
+      "type": "tool"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "web",
+      "type": "tag"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "joomla",
+      "type": "tag"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "authbypass",
+      "type": "tag"
+    },
+    {
+      "source": "cve-2023-23752joomlaapiauthbypass",
+      "target": "api",
       "type": "tag"
     },
     {
@@ -3054,27 +8520,27 @@
     },
     {
       "source": "farewell",
-      "target": "[[user enumeration via json response]]",
+      "target": "user enumeration via json response",
       "type": "technique"
     },
     {
       "source": "farewell",
-      "target": "[[brute force script python waf bypass]]",
+      "target": "brute force script python waf bypass",
       "type": "technique"
     },
     {
       "source": "farewell",
-      "target": "[[waf bypass x-forwarded-for]]",
+      "target": "waf bypass x-forwarded-for",
       "type": "technique"
     },
     {
       "source": "farewell",
-      "target": "[[xss#xss almacenado]]",
+      "target": "xss almacenado",
       "type": "technique"
     },
     {
       "source": "farewell",
-      "target": "[[waf bypass xss base64 eval]]",
+      "target": "waf bypass xss base64 eval",
       "type": "technique"
     },
     {
@@ -3089,18 +8555,13 @@
     },
     {
       "source": "farewell",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
     },
     {
       "source": "farewell",
       "target": "python http server",
       "type": "tool"
-    },
-    {
-      "source": "farewell",
-      "target": "xss",
-      "type": "tag"
     },
     {
       "source": "farewell",
@@ -3150,6 +8611,41 @@
     {
       "source": "farewell",
       "target": "informationdisclosure",
+      "type": "tag"
+    },
+    {
+      "source": "gophish",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "gophish",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "gophish",
+      "target": "phishing",
+      "type": "technique"
+    },
+    {
+      "source": "gophish",
+      "target": "suplantación de identidad",
+      "type": "technique"
+    },
+    {
+      "source": "gophish",
+      "target": "ingeniería social",
+      "type": "technique"
+    },
+    {
+      "source": "gophish",
+      "target": "gophish-",
+      "type": "tool"
+    },
+    {
+      "source": "gophish",
+      "target": "social",
       "type": "tag"
     },
     {
@@ -3214,12 +8710,12 @@
     },
     {
       "source": "padelify",
-      "target": "[[xss#xss almacenado]]",
+      "target": "xss almacenado",
       "type": "technique"
     },
     {
       "source": "padelify",
-      "target": "[[lfi - waf bypass url encoding]]",
+      "target": "lfi - waf bypass url encoding",
       "type": "technique"
     },
     {
@@ -3241,11 +8737,6 @@
       "source": "padelify",
       "target": "python http server",
       "type": "tool"
-    },
-    {
-      "source": "padelify",
-      "target": "xss",
-      "type": "tag"
     },
     {
       "source": "padelify",
@@ -3284,22 +8775,22 @@
     },
     {
       "source": "sequence",
-      "target": "[[xss#xss almacenado]]",
+      "target": "xss almacenado",
       "type": "technique"
     },
     {
       "source": "sequence",
-      "target": "[[csrf token débil]]",
+      "target": "csrf token débil",
       "type": "technique"
     },
     {
       "source": "sequence",
-      "target": "[[ssrf]]",
+      "target": "ssrf",
       "type": "technique"
     },
     {
       "source": "sequence",
-      "target": "[[file upload sin restricciones]]",
+      "target": "file upload sin restricciones",
       "type": "technique"
     },
     {
@@ -3324,18 +8815,8 @@
     },
     {
       "source": "sequence",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
-    },
-    {
-      "source": "sequence",
-      "target": "xss",
-      "type": "tag"
-    },
-    {
-      "source": "sequence",
-      "target": "ssrf",
-      "type": "tag"
     },
     {
       "source": "sequence",
@@ -3350,7 +8831,7 @@
     {
       "source": "sequence",
       "target": "csrf",
-      "type": "tag"
+      "type": "technique"
     },
     {
       "source": "sequence",
@@ -3384,17 +8865,12 @@
     },
     {
       "source": "sqli-case-mixing-bypass",
-      "target": "waf",
-      "type": "technique"
-    },
-    {
-      "source": "sqli-case-mixing-bypass",
       "target": "case mixing",
       "type": "technique"
     },
     {
       "source": "sqli-case-mixing-bypass",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
     },
     {
@@ -3410,6 +8886,11 @@
     {
       "source": "sqli-case-mixing-bypass",
       "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "sqli-case-mixing-bypass",
+      "target": "waf",
       "type": "tag"
     },
     {
@@ -3454,7 +8935,7 @@
     },
     {
       "source": "sqli-protocol-manipulation",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
     },
     {
@@ -3490,7 +8971,7 @@
     {
       "source": "sqli-protocol-manipulation",
       "target": "waf",
-      "type": "technique"
+      "type": "tag"
     },
     {
       "source": "sqli-protocol-manipulation",
@@ -3519,11 +9000,6 @@
     },
     {
       "source": "sqli-union-comment-bypass",
-      "target": "waf",
-      "type": "technique"
-    },
-    {
-      "source": "sqli-union-comment-bypass",
       "target": "comment injection",
       "type": "technique"
     },
@@ -3534,7 +9010,7 @@
     },
     {
       "source": "sqli-union-comment-bypass",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
     },
     {
@@ -3573,6 +9049,11 @@
       "type": "tag"
     },
     {
+      "source": "sqli-union-comment-bypass",
+      "target": "waf",
+      "type": "tag"
+    },
+    {
       "source": "ssti-hex-encoding-bypass",
       "target": "windows",
       "type": "os"
@@ -3594,17 +9075,12 @@
     },
     {
       "source": "ssti-hex-encoding-bypass",
-      "target": "waf",
-      "type": "technique"
-    },
-    {
-      "source": "ssti-hex-encoding-bypass",
       "target": "rce",
       "type": "technique"
     },
     {
       "source": "ssti-hex-encoding-bypass",
-      "target": "burp suite",
+      "target": "burpsuite",
       "type": "tool"
     },
     {
@@ -3631,6 +9107,151 @@
       "source": "ssti-hex-encoding-bypass",
       "target": "redteam",
       "type": "tag"
+    },
+    {
+      "source": "ssti-hex-encoding-bypass",
+      "target": "waf",
+      "type": "tag"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "medium",
+      "type": "difficulty"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "backup operator abuse",
+      "type": "technique"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "rid hijacking",
+      "type": "technique"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "pass-the-hash",
+      "type": "technique"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "registry manipulation",
+      "type": "technique"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "evil-winrm",
+      "type": "tool"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "secretsdump.py",
+      "type": "tool"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "psexec",
+      "type": "tool"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "regedit",
+      "type": "tool"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "privesc",
+      "type": "tag"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "usermanipulation",
+      "type": "tag"
+    },
+    {
+      "source": "tampering-with-unprivileged-accounts",
+      "target": "remote",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "windows",
+      "type": "os"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "hard",
+      "type": "difficulty"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "unicode encoding",
+      "type": "technique"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "base64 encoding",
+      "type": "technique"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "html entity encoding",
+      "type": "technique"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "burpsuite",
+      "type": "tool"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "curl",
+      "type": "tool"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "python",
+      "type": "tool"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "bypass",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "unicode",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "base64",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "blog",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "waf",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "redteam",
+      "type": "tag"
+    },
+    {
+      "source": "xss-blog-unicode-base64-bypass",
+      "target": "x0d",
+      "type": "tag"
     }
   ],
   "colors": {
@@ -3643,15 +9264,10 @@
     "tool": "#00ffcc",
     "tag": "#EF9F27"
   },
-  "subColors": {
-    "htb": "#008000",
-    "portswigger": "#ff8000",
-    "thm": "#ae0000",
-    "hard": "#ff0000"
-  },
+  "subColors": {},
   "meta": {
-    "totalWriteups": 34,
+    "totalWriteups": 94,
     "totalPlatforms": 3,
-    "totalMeta": 162
+    "totalMeta": 406
   }
 }
