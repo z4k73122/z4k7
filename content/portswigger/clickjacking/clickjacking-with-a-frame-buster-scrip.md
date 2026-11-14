@@ -16,7 +16,6 @@ tags:
   - "UI_Redressing"
   - "target_website"
   - "decoy_website"
-  - "fff"
 techniques:
   - "Clickjacking"
   - "iframe sandbox bypass"
