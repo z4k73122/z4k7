@@ -12,7 +12,7 @@ const links = [
   {
     icon: "💼",
     label: "LinkedIn",
-    url: "https://linkedin.com/in/tu-perfil",
+    url: "https://www.linkedin.com/in/jhon-edward-calderon-aguirre/",
     color: "#00d4ff",
   },
   {
