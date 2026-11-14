@@ -16,14 +16,13 @@ tags:
   - "UI_Redressing"
   - "target_website"
   - "decoy_website"
-  - "fff"
 techniques:
-  - "[[Clickjacking]]"
+  - "Clickjacking"
   - "iframe overlay"
   - "opacity manipulation"
 tools:
-  - "[[Exploit Server PortSwigger]]"
-  - "[[Browser DevTools]]"
+  - "Exploit Server PortSwigger"
+  - "Browser DevTools"
 flags_list:
   - label: "user"
     value: "hash_aqui"
